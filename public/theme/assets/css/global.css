@@ -1,0 +1,54 @@
+:root {
+  /* ------------------------------------------------------------------
+     Psikolog Merve Kalaycı — Site Renk Paleti (v2)
+     Bu değişkenlerin varsayılanları aşağıdadır. Admin panelinden
+     "Ayarlar > Site Görünümü / Renkler" bölümünde bir renk değiştirildiğinde,
+     genel/layout/header.blade.php içinde enjekte edilen <style> bloğu
+     bu varsayılanların üzerine yazar; yani site rengini kod dokunmadan
+     panelden değiştirmek mümkündür.
+
+     v2 notu: Site artık TEK TİP koyu zemin kullanıyor (anasayfa dahil
+     her bölüm aynı koyu rengi paylaşıyor) ve TÜM yazılar bu koyu zemin
+     üzerinde her zaman okunaklı olacak şekilde açık/beyaz tonda.
+     ------------------------------------------------------------------ */
+
+  /* Ana marka rengi (sıcak turuncu) — butonlar, linkler, ikonlar, hover'lar. */
+  --base-color: #D9784B;
+  --base-color-1: #D9784B;
+  --base-color-3: #D9784B;
+  --base-color-5: #D9784B;
+  --base-color-7: #D9784B;
+
+  /* İkincil renk (adaçayı yeşili) — vurgu detayları, ikon arka planları */
+  --base-color-2: #7FA36F;
+  --base-color-4: #7FA36F;
+  --base-color-6: #7FA36F;
+
+  /* Başlık ve gövde metin renkleri: site tek tip koyu zemin kullandığı
+     için ikisi de her zaman AÇIK/BEYAZ tonda olmalı. */
+  --heading-color: #FFFFFF;
+  --body-color: #E7E3D8;
+
+  /* Ana sayfa arka planı: koyu zemin (istenirse admin panelinden
+     değiştirilebilir; siyaha yakın kalması önerilir çünkü tüm yazı
+     renkleri bu zemin üzerinde okunaklı olacak şekilde ayarlanmıştır) */
+  --page-bg: #1B1F1C;
+
+  /* "Kart" yüzeyleri: footer, hizmet kartları, blog kenar çubuğu widget'ları,
+     iletişim/randevu formu — ana zeminden hafif farklı, biraz daha açık
+     bir koyu ton (görsel katmanlama için). */
+  --dark-surface: #232823;
+  --surface-border: rgba(255, 255, 255, 0.08);
+
+  --on-surface: #FFFFFF;
+  --on-surface-muted: #C9C4B4;
+
+  /* Fonts */
+  --heading-1: 'Arimo';
+  --heading-2: 'Oswald';
+  --heading-3: 'Jost';
+  --heading-4: 'Poppins';
+  --heading: 'Nunito';
+  --body-font: 'Rubik';
+  --transition: 500ms all ease;
+}

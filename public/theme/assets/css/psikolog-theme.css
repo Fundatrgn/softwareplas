@@ -1,0 +1,308 @@
+/* =====================================================================
+   Psikolog Merve Kalaycı — Özel Tema Düzeltmeleri (v2 — koyu tema)
+   Bu dosya style.css'ten SONRA yüklenir. Site artık tek tip koyu zemin
+   kullanıyor; bu dosyanın amacı (1) tüm metinlerin bu zemin üzerinde
+   her koşulda okunaklı (açık/beyaz) kalmasını garanti altına almak,
+   (2) WhatsApp butonu gibi yeni bileşenleri biçimlendirmek.
+   ===================================================================== */
+
+/* Sayfanın geneli koyu zemin kullanır */
+html, body {
+  background-color: var(--page-bg);
+}
+
+/* ---- GÜVENLİK AĞI: site genelinde varsayılan metin rengi ----
+   Bunlar DÜŞÜK ÖZGÜLLÜKTE (low specificity) kurallardır; herhangi bir
+   bileşenin KENDİ (daha özgül) rengi varsa o kazanır. Burada amaç,
+   "unutulmuş" / özel renk atanmamış hiçbir metnin koyu zeminde
+   kaybolmamasını garanti etmektir. */
+body, p, li, td, th, label, h1, h2, h3, h4, h5, h6 {
+  color: var(--body-color);
+}
+h1, h2, h3, h4, h5, h6 {
+  color: var(--heading-color);
+}
+a {
+  color: inherit;
+}
+a:hover {
+  color: var(--base-color-1);
+}
+
+/* Formlardaki input/textarea/select metinleri de her zaman açık kalsın */
+input, textarea, select {
+  color: var(--heading-color);
+}
+
+/* ---- Kart / bölüm yüzeyleri: hepsi aynı koyu tonu paylaşır ---- */
+.ori-service-page-service-inner-item .service-text h3,
+.ori-service-page-service-inner-item .service-text h3 a,
+.ori-service-page-service-inner-item .service-icon i {
+  color: var(--heading-color);
+}
+.ori-service-details-widget .widget-title {
+  color: var(--heading-color);
+}
+.ori-service-details-widget .category-widget ul li a {
+  color: var(--body-color);
+}
+.ori-service-details-widget .category-widget ul li a:hover {
+  color: var(--heading-color);
+}
+.ori-footer-widget .widget-title {
+  color: var(--heading-color);
+}
+.ori-footer-widget .menu-location-widget li a,
+.ori-footer-widget .contact-widget span,
+.ori-footer-widget .contact-widget a {
+  color: var(--body-color);
+}
+.ori-footer-widget .menu-location-widget li a:hover {
+  color: var(--heading-color);
+}
+.ori-copyright-text {
+  color: var(--body-color);
+}
+.ori-blog-inner-item .blog-inner-text h3 a {
+  color: var(--heading-color);
+}
+.ori-blog-inner-item .read-more {
+  color: var(--base-color-1);
+}
+.ori-inner-section-title .sub-title {
+  color: var(--base-color-1);
+}
+
+/* =====================================================================
+   WhatsApp Hızlı Randevu Butonu
+   ===================================================================== */
+.ori-whatsapp-float {
+  position: fixed;
+  right: 24px;
+  bottom: 24px;
+  z-index: 999;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background-color: #25D366;
+  color: #fff;
+  padding: 14px 20px;
+  border-radius: 50px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 15px;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+.ori-whatsapp-float:hover {
+  color: #fff;
+  transform: translateY(-3px);
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.4);
+}
+.ori-whatsapp-float i {
+  font-size: 22px;
+}
+.ori-whatsapp-float-text {
+  white-space: nowrap;
+}
+@media (max-width: 576px) {
+  .ori-whatsapp-float {
+    right: 16px;
+    bottom: 16px;
+    padding: 14px;
+  }
+  .ori-whatsapp-float-text {
+    display: none;
+  }
+}
+
+/* =====================================================================
+   Sayfa geçiş efekti kaldırıldı: bazı tarayıcı/eklenti kombinasyonlarında
+   sayfalar arası geçişte kısa bir kararma/solma hissi oluşturan efektler
+   burada devre dışı bırakılıyor.
+   ===================================================================== */
+.ori-page-transition,
+.ori-transition-overlay {
+  display: none !important;
+}
+
+/* =====================================================================
+   Mobil Düzeltme: Header'daki "Randevu Al" butonu, logo mobilde ortaya
+   alınıp konumu değiştiğinde onunla üst üste biniyordu. Bu genişlikten
+   sonra gizleniyor; zaten aynı buton mobil menünün içinde de var.
+   ===================================================================== */
+@media screen and (max-width: 991px) {
+  .ori-header-randevu-btn {
+    display: none !important;
+  }
+}
+
+/* =====================================================================
+   Mobil Düzeltme: Şablonun fare imlecini takip eden özel "cursor" efekti
+   (masaüstüne özel bir tasarım detayı) dokunmatik cihazlarda hiçbir
+   mouse hareketi olmadığı için ekranda sabit bir noktada takılı
+   kalıyordu. Dokunmatik/mobil cihazlarda tamamen gizleniyor.
+   ===================================================================== */
+@media (hover: none), (max-width: 991px) {
+  .cursor {
+    display: none !important;
+  }
+}
+
+/* =====================================================================
+   Mobil Düzeltme: Header içindeki logo ve menü butonu "position: absolute"
+   ile ortalandığı için, onları saran kutunun yüksekliği neredeyse sıfıra
+   iniyor ve ikisi de ekranın en üstüne yapışık görünüyordu. Kutuya somut
+   bir minimum yükseklik vererek ortalamanın gerçekten çalışmasını
+   sağlıyoruz.
+   ===================================================================== */
+@media screen and (max-width: 991px) {
+  .ori-header-section .ori-header-content-area {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    min-height: 64px;
+  }
+  .ori-header-section .ori-header-content {
+    position: static;
+    flex: 1;
+  }
+  .ori-header-section .mobile_menu {
+    position: static;
+    flex-shrink: 0;
+  }
+  .ori-header-section .mobile_menu_button {
+    position: static !important;
+    transform: none !important;
+    display: block !important;
+    line-height: 1 !important;
+  }
+  .ori-header-section .brand-logo {
+    position: static !important;
+    transform: none !important;
+    margin: 0 auto;
+  }
+}
+
+/* =====================================================================
+   Mobil Düzeltme: Kart üzerine gelince beliren ok ikonu (.ori-service-more,
+   120px!) dokunmatik cihazlarda "hover" durumu takılı kalabildiği için
+   bazen ekranda asılı kalabiliyordu. Şimdi "hover"a bağlı olmadan,
+   küçük ve sabit bir rozet olarak her zaman görünüyor.
+   ===================================================================== */
+@media (hover: none), (max-width: 991px) {
+  .ori-service-inner-item .ori-service-more {
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    opacity: 1 !important;
+    top: auto !important;
+    bottom: 14px;
+    right: 14px;
+    left: auto !important;
+    transform: none !important;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background-color: rgba(0, 0, 0, 0.45);
+  }
+  .ori-service-inner-item .ori-service-more a {
+    font-size: 18px !important;
+  }
+}
+
+/* =====================================================================
+   Slider Sayfa Numaraları (01, 02, 03...) Düzeltmesi: Şablonun
+   varsayılan tasarımı her nokta arasına 100px boşluk koyuyordu, bu
+   yüzden slider sayısı arttıkça bu liste ekranın dışına taşıp
+   "uzayıp gidiyordu". style.css içinde boyut/boşluk küçültülüp
+   yüksekliği sınırlandırıldı. Mobilde yer kaplamaması için tamamen
+   gizleniyor.
+   ===================================================================== */
+@media screen and (max-width: 991px) {
+  .ori-slider-wrap-1 .slick-dots {
+    display: none !important;
+  }
+}
+
+/* =====================================================================
+   Hero Metni Görünürlük Düzeltmesi: Başlık, alt açıklama ve buton
+   orijinal tasarımda Slick carousel'in "aktif slayt" sınıfını eklemesine
+   bağlı bir "solma/kayma" animasyonuyla görünür hale geliyordu. Bu,
+   bazı cihazlarda/tarayıcılarda (özellikle mobilde) carousel geç veya
+   eksik başlatıldığında metnin görünmez ya da yarı saydam/kaymış
+   halde "takılı" kalmasına yol açabiliyordu. Artık başlık ve buton
+   carousel durumundan bağımsız olarak her zaman anında görünür.
+   ===================================================================== */
+.ori-slider-text h1,
+.ori-slider-text .slider-play-btn {
+  opacity: 1 !important;
+  transform: translateY(0) !important;
+}
+
+/* =====================================================================
+   "Kaydırınca Beliren" (WOW.js) Animasyon Düzeltmesi: Şablon, birçok
+   başlık/kart/buton elemanını sayfa kaydırılırken görünür hale gelecek
+   şekilde tasarlamış (class="wow fadeInLeft" vb.). Bu efekt, tetikleme
+   mekanizması güvenilir çalışmadığında elemanları KALICI OLARAK
+   "visibility: hidden" durumunda bırakabiliyor — bu hem elemanın hiç
+   görünmemesine hem de üzerine TIKLANAMAMASINA yol açıyor (görünmeyen
+   "Hizmetlerimiz" / "Bloglarımız" başlık ve butonlarının tıklanamaması
+   sorununun nedeni budur). Bu riski tamamen ortadan kaldırmak için tüm
+   "wow" elemanları artık bu animasyona bağlı olmadan her zaman anında
+   görünür ve tıklanabilir.
+   ===================================================================== */
+.wow {
+  visibility: visible !important;
+}
+
+/* =====================================================================
+   Hizmet Kartı Görsel Boyutu Düzeltmesi: Kart görseli için sabit bir
+   yükseklik/oranı tanımlı değildi; admin panelinden yüklenen görselin
+   kendi en-boy oranına göre kart boyu çok uzayabiliyor, bu da kartlar
+   arasında (özellikle mobilde) çok büyük boşluklar gibi görünen bir
+   etki yaratıyordu. Artık hangi görsel yüklenirse yüklensin, kart
+   görseli her zaman tutarlı bir yükseklikte ve orantılı kırpılarak
+   gösteriliyor.
+   ===================================================================== */
+.ori-service-inner-item .ori-service-img {
+  height: 360px !important;
+  overflow: hidden !important;
+}
+.ori-service-inner-item .ori-service-img img {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+}
+.ori-service-content-1 .row {
+  align-items: flex-start !important;
+}
+@media screen and (max-width: 480px) {
+  .ori-service-inner-item .ori-service-img {
+    height: 260px !important;
+  }
+}
+
+/* =====================================================================
+   Dokunmatik Cihazlarda Dokununca Kayma Sorunu: Kartın kendisi, fare
+   ile üzerine gelince (hover) çeşitli geçiş efektleri (karartma katmanı
+   genişlemesi, ok simgesinin yeniden konumlanması) tetikleyecek şekilde
+   tasarlanmış. Dokunmatik cihazlarda bir dokunuş bazen ":hover" durumunu
+   tetikleyip bu geçişlerin YARIDA/yanlış konumda kalmasına neden
+   olabiliyordu. Dokunmatik cihazlarda bu geçişlerin tamamı devre dışı
+   bırakıldı; kart her zaman sabit, "dinlenme" halindeki görünümünü korur.
+   ===================================================================== */
+@media (hover: none), (max-width: 991px) {
+  .ori-service-inner-item,
+  .ori-service-inner-item * {
+    transition: none !important;
+  }
+  .ori-service-inner-item .ori-service-more {
+    top: auto !important;
+    bottom: 14px !important;
+    opacity: 1 !important;
+  }
+  .ori-service-inner-item:before {
+    width: 0 !important;
+  }
+}
