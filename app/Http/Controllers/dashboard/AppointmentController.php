@@ -149,6 +149,7 @@ class AppointmentController extends Controller
             'saat' => 'required|date_format:H:i',
             'not' => 'nullable|string|max:2000',
             'source' => 'required|in:panel,yuz_yuze',
+            'tekrar_hafta' => 'nullable|integer|min:1|max:12',
         ]);
 
         $startsAt = Carbon::parse($request->tarih . ' ' . $request->saat);
@@ -183,26 +184,53 @@ class AppointmentController extends Controller
         }
 
         $duration = $availability->slotDuration();
+        $tekrarHafta = (int) ($request->tekrar_hafta ?: 1);
 
-        $appointment = Appointment::create([
-            'patient_id' => $patient->id,
-            'service_id' => $request->service_id,
-            'user_id' => $request->user_id,
-            'created_by' => auth()->id(),
-            'starts_at' => $startsAt,
-            'ends_at' => $startsAt->copy()->addMinutes($duration),
-            'duration_minutes' => $duration,
-            'status' => Appointment::STATUS_CONFIRMED,
-            'source' => $request->source,
-            'patient_name_snapshot' => $patient->name,
-            'patient_phone_snapshot' => $patient->phone,
-            'patient_email_snapshot' => $patient->email,
-            'request_note' => $request->not,
-        ]);
+        $ilkRandevu = null;
+        $olusturulan = 0;
+        $atlanan = [];
 
-        $notifier->notifyCreated($appointment);
+        for ($i = 0; $i < $tekrarHafta; $i++) {
+            $bu = $startsAt->copy()->addWeeks($i);
 
-        return redirect('/admin/randevular/' . $appointment->id)->with('success', 'Randevu oluşturuldu.');
+            if ($i > 0 && ! $availability->isSlotAvailable($bu)) {
+                $atlanan[] = $bu->translatedFormat('d.m.Y H:i') . ' (bu saat dolu/uygun değil)';
+                continue;
+            }
+
+            $appointment = Appointment::create([
+                'patient_id' => $patient->id,
+                'service_id' => $request->service_id,
+                'user_id' => $request->user_id,
+                'created_by' => auth()->id(),
+                'starts_at' => $bu,
+                'ends_at' => $bu->copy()->addMinutes($duration),
+                'duration_minutes' => $duration,
+                'status' => Appointment::STATUS_CONFIRMED,
+                'source' => $request->source,
+                'patient_name_snapshot' => $patient->name,
+                'patient_phone_snapshot' => $patient->phone,
+                'patient_email_snapshot' => $patient->email,
+                'request_note' => $request->not,
+            ]);
+
+            $notifier->notifyCreated($appointment);
+            $olusturulan++;
+
+            if ($i === 0) {
+                $ilkRandevu = $appointment;
+            }
+        }
+
+        $mesaj = $tekrarHafta > 1
+            ? "{$olusturulan}/{$tekrarHafta} randevu oluşturuldu (haftalık tekrar)."
+            : 'Randevu oluşturuldu.';
+
+        if (! empty($atlanan)) {
+            $mesaj .= ' Atlanan tarihler: ' . implode(', ', $atlanan) . '.';
+        }
+
+        return redirect('/admin/randevular/' . $ilkRandevu->id)->with('success', $mesaj);
     }
 
     public function show($id)

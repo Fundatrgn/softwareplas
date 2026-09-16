@@ -93,6 +93,17 @@
                             </div>
                             @endif
 
+                            <div class="col-md-4">
+                                <label class="form-label">Tekrar (haftalık)</label>
+                                <select class="form-select" name="tekrar_hafta">
+                                    <option value="1">Tekrar yok (sadece bu tarih)</option>
+                                    @foreach([2,3,4,6,8,10,12] as $n)
+                                        <option value="{{ $n }}" {{ old('tekrar_hafta') == $n ? 'selected' : '' }}>{{ $n }} hafta boyunca, aynı gün/saat</option>
+                                    @endforeach
+                                </select>
+                                <div class="form-text">Danışan her hafta aynı gün/saatte geliyorsa, tek seferde birden fazla hafta için randevu açabilirsiniz. Dolu olan haftalar otomatik atlanır.</div>
+                            </div>
+
                             <div class="col-md-12">
                                 <label class="form-label">Not (opsiyonel)</label>
                                 <textarea class="form-control" name="not" rows="3">{{ old('not') }}</textarea>

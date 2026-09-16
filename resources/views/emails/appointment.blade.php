@@ -38,6 +38,14 @@
         <p style="margin-top:20px; color:#4B5A5E;"><strong>Not:</strong> {{ $appointment->request_note }}</p>
         @endif
 
+        @if(!empty($cancelUrl))
+        <div style="margin-top:28px; text-align:center;">
+            <a href="{{ $cancelUrl }}" style="display:inline-block; background:#f3e9e6; color:#a94442; padding:12px 22px; border-radius:8px; text-decoration:none; font-weight:600; font-size:14px;">
+                Randevuyu İptal Et
+            </a>
+        </div>
+        @endif
+
         <p style="margin-top:28px; font-size:13px; color:#8a9599;">Bu e-posta otomatik olarak gönderilmiştir.</p>
     </div>
 </body>

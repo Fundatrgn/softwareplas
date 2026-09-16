@@ -3,11 +3,13 @@
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\dashboard\AppointmentController as DashboardAppointmentController;
+use App\Http\Controllers\dashboard\DashboardController;
 use App\Http\Controllers\dashboard\BlogCategoryController;
 use App\Http\Controllers\dashboard\BlogController;
 use App\Http\Controllers\dashboard\CkeditorController;
 use App\Http\Controllers\dashboard\ContactController;
 use App\Http\Controllers\dashboard\PatientController;
+use App\Http\Controllers\dashboard\ReportController;
 use App\Http\Controllers\dashboard\HakkimizdaController;
 use App\Http\Controllers\dashboard\HizmetlerCategories;
 use App\Http\Controllers\dashboard\HizmetlerController;
@@ -73,6 +75,10 @@ Route::get('/randevu', [GeneralAppointmentController::class, 'index']);
 Route::get('/randevu/musaitlik', [GeneralAppointmentController::class, 'monthAvailability']);
 Route::get('/randevu/saatler', [GeneralAppointmentController::class, 'dayAvailability']);
 Route::post('/randevu', [GeneralAppointmentController::class, 'store']);
+Route::get('/randevu/iptal/{id}', [GeneralAppointmentController::class, 'cancel'])
+    ->whereNumber('id')
+    ->middleware('signed')
+    ->name('randevu.iptal');
 Route::post('/iletisim', [ContactController::class,'store']);
 Route::post('ckeditor/image_upload', [CkeditorController::class, 'upload'])->name('upload');
 
@@ -81,9 +87,7 @@ Route::post('ckeditor/image_upload', [CkeditorController::class, 'upload'])->nam
 Route::get('login', [LoginController::class,'index'])->name('login');
 Route::post('/login',[LoginController::class,'login']);
 Route::prefix('/admin')->middleware('auth')->group(function () {
-    Route::get('/', function () {
-        return view('dashboard.home');
-    });
+    Route::get('/', [DashboardController::class, 'index']);
     Route::get('/logout',[LoginController::class,'logout']);
 
     // Randevular (CRM)
@@ -104,6 +108,10 @@ Route::prefix('/admin')->middleware('auth')->group(function () {
     Route::get('/danisanlar/add/{id}', [PatientController::class, 'edit'])->whereNumber('id');
     Route::get('/danisanlar/{id}', [PatientController::class, 'show'])->whereNumber('id');
     // Danışanlar
+
+    // Raporlar (CRM)
+    Route::get('/raporlar', [ReportController::class, 'index']);
+    // Raporlar
 
     // hakkımızda
     Route::get('/hakkimizda', [HakkimizdaController::class, 'index']);

@@ -82,6 +82,14 @@
                     </a>
                 </li>
                 <li>
+                    <a href="/admin/raporlar">
+                        <div class="parent-icon">
+                            <ion-icon name="bar-chart-outline"></ion-icon>
+                        </div>
+                        <div class="menu-title">Raporlar</div>
+                    </a>
+                </li>
+                <li>
                     <a class="has-arrow" href="javascript:;">
                         <div class="parent-icon">
                             <ion-icon name="people-outline"></ion-icon>

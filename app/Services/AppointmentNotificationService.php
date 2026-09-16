@@ -109,8 +109,14 @@ class AppointmentNotificationService
             return;
         }
 
+        $cancellable = ! in_array($appointment->status, [
+            Appointment::STATUS_CANCELLED,
+            Appointment::STATUS_COMPLETED,
+            Appointment::STATUS_NO_SHOW,
+        ], true);
+
         try {
-            Mail::to($to)->send(new AppointmentNotificationMail($appointment, $heading, $intro));
+            Mail::to($to)->send(new AppointmentNotificationMail($appointment, $heading, $intro, $cancellable));
 
             NotificationLog::create([
                 'appointment_id' => $appointment->id,

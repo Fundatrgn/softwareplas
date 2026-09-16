@@ -3,7 +3,12 @@
     <div class="page-content-wrapper">
         <div class="page-content">
             <div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
-                <div class="breadcrumb-title pe-3">{{ $patient->name }}</div>
+                <div class="breadcrumb-title pe-3">
+                    {{ $patient->name }}
+                    @if($gelmediSayisi >= \App\Http\Controllers\dashboard\ReportController::NO_SHOW_WARNING_THRESHOLD)
+                        <span class="badge bg-danger ms-2" title="Sık randevuya gelmeyen danışan">⚠ {{ $gelmediSayisi }} kez gelmedi</span>
+                    @endif
+                </div>
                 <div class="ps-3">
                     <nav aria-label="breadcrumb">
                         <ol class="breadcrumb mb-0 p-0 align-items-center">

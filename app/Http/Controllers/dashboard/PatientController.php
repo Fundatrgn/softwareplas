@@ -31,7 +31,13 @@ class PatientController extends Controller
             ->orderByDesc('starts_at')
             ->get();
 
-        return view('dashboard.danisanlar.show', ['patient' => $patient, 'appointments' => $appointments]);
+        $gelmediSayisi = $appointments->where('status', \App\Models\Appointment::STATUS_NO_SHOW)->count();
+
+        return view('dashboard.danisanlar.show', [
+            'patient' => $patient,
+            'appointments' => $appointments,
+            'gelmediSayisi' => $gelmediSayisi,
+        ]);
     }
 
     public function edit($id)

@@ -143,4 +143,34 @@ class AppointmentController extends Controller
 
         return redirect('/randevu')->with('success', 'Randevu talebiniz alındı! ' . $startsAt->translatedFormat('d F Y, H:i') . ' için kaydınız oluşturuldu. En kısa sürede sizinle iletişime geçilecektir.');
     }
+
+    /**
+     * Danışanın, e-postasındaki imzalı (signed) linke tıklayarak kendi
+     * randevusunu giriş yapmadan iptal edebilmesi. Link sahte/tahmin
+     * edilemez olsun diye Laravel'in imzalı URL mekanizması kullanılır
+     * (bkz. App\Mail\AppointmentNotificationMail); imza geçersizse/
+     * değiştirilmişse "signed" middleware 403 döner.
+     */
+    public function cancel(Request $request, $id, AppointmentNotificationService $notifier)
+    {
+        $appointment = Appointment::findOrFail($id);
+
+        if (in_array($appointment->status, [Appointment::STATUS_CANCELLED, Appointment::STATUS_COMPLETED, Appointment::STATUS_NO_SHOW], true)) {
+            return view('general.randevu-iptal', [
+                'appointment' => $appointment,
+                'zatenIslendi' => true,
+            ]);
+        }
+
+        $appointment->status = Appointment::STATUS_CANCELLED;
+        $appointment->cancel_reason = 'Danışan tarafından e-posta linki ile iptal edildi.';
+        $appointment->save();
+
+        $notifier->notifyStatusChanged($appointment);
+
+        return view('general.randevu-iptal', [
+            'appointment' => $appointment,
+            'zatenIslendi' => false,
+        ]);
+    }
 }
