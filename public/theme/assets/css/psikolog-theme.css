@@ -330,6 +330,64 @@ input, textarea, select {
   opacity: 0.6;
 }
 
+/* =====================================================================
+   Anasayfa Slider — Yazı Konumu (Sol / Orta / Sağ)
+   Admin panelinden ("Anasayfa Slider > Yazı Konumu") her slayt için
+   ayrı ayrı seçilebilir. .ori-slider-text varsayılan olarak
+   margin:0 auto ile ortalanıyordu (bkz. style.css); sol/sağ seçildiğinde
+   bu ortalama devre dışı bırakılıp metin bloğu ilgili kenara yaslanıyor.
+   ===================================================================== */
+.ori-slider-text.ori-slider-align-orta {
+  margin: 0 auto;
+  text-align: center;
+}
+.ori-slider-text.ori-slider-align-sol {
+  margin: 0;
+  text-align: left;
+  /* Slider bölümü kenardan kenara (full-bleed) olduğu için, metin
+     tam sol kenara yapışıp taşmasın diye bir "nefes payı" (gutter)
+     veriyoruz. Sol kenarda ayrıca dikey Instagram/Facebook linkleri
+     (.ori-slider-social, left:100px) bulunduğu için soldaki pay
+     bunları da temizleyecek kadar geniş tutuluyor. */
+  padding: 0 6vw 0 clamp(24px, 12vw, 170px);
+}
+.ori-slider-text.ori-slider-align-sag {
+  margin: 0 0 0 auto;
+  text-align: right;
+  padding: 0 clamp(24px, 8vw, 100px) 0 6vw;
+}
+
+.ori-slider-subtitle {
+  margin-top: 20px;
+}
+.ori-slider-align-orta .ori-slider-subtitle {
+  margin-left: auto;
+  margin-right: auto;
+}
+.ori-slider-align-sol .ori-slider-subtitle {
+  margin-left: 0;
+  margin-right: auto;
+}
+.ori-slider-align-sag .ori-slider-subtitle {
+  margin-left: auto;
+  margin-right: 0;
+}
+
+@media (max-width: 767px) {
+  /* Dar ekranlarda sola/sağa yaslanmış uzun başlıklar taşabildiği
+     için mobilde okunabilirlik adına her zaman ortalanır. */
+  .ori-slider-text.ori-slider-align-sol,
+  .ori-slider-text.ori-slider-align-sag {
+    margin: 0 auto;
+    text-align: center;
+  }
+  .ori-slider-align-sol .ori-slider-subtitle,
+  .ori-slider-align-sag .ori-slider-subtitle {
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+
 :root[data-theme="dark"] {
   --heading-color: #FFFFFF;
   --body-color: #E7E3D8;

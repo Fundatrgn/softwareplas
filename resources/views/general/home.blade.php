@@ -15,7 +15,7 @@
             <div class="ori-slider-wrap-1">
                 @foreach ($data['slider'] as $item)
                     <div class="ori-slider-content-1 position-relative">
-                        <div class="ori-slider-text text-center  text-uppercase">
+                        <div class="ori-slider-text ori-slider-align-{{ $item['text_position'] ?? 'orta' }} text-uppercase">
 							<h1>
                             <?php
                                 // Kelimeler her sayfa yenilendiğinde/slayt değiştiğinde
@@ -44,7 +44,7 @@
                             ?>
                         </h1>
                             @if(!empty($item['subtitle']))
-                            <p class="ori-slider-subtitle" style="text-transform:none; max-width:640px; margin:20px auto 0; font-size:18px; color: var(--body-color);">{{ $item['subtitle'] }}</p>
+                            <p class="ori-slider-subtitle" style="text-transform:none; max-width:640px; font-size:18px; color: var(--body-color);">{{ $item['subtitle'] }}</p>
                             @endif
                             <div class="slider-play-btn">
                                 @if(!empty($item['btn_text']))

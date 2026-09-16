@@ -47,6 +47,9 @@ class SliderController extends Controller
             $item->subtitle = $request->subtitle;
             $item->btn_text = $request->btn_text;
             $item->sira = $request->sira;
+            $item->text_position = in_array($request->text_position, ['sol', 'orta', 'sag'], true)
+                ? $request->text_position
+                : 'orta';
             // Şablondan kalma, admin formunda hiç gösterilmeyen eski alanlar.
             // Veritabanında boş bırakılamaz olduğu için burada güvenli
             // varsayılan (boş metin) atanıyor.

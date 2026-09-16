@@ -48,6 +48,26 @@
                                     <input type="number" class="form-control" id="bsValidation10" name="sira"
                                         placeholder="sira" required value="{{ $data->sira ?? '' }}">
                                 </div>
+
+                                <div class="col-md-12">
+                                    <label class="form-label">Yazı Konumu</label>
+                                    <div class="d-flex gap-3">
+                                        @php $secilen = old('text_position', $data->text_position ?? 'orta'); @endphp
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="text_position" id="text_position_sol" value="sol" {{ $secilen == 'sol' ? 'checked' : '' }}>
+                                            <label class="form-check-label" for="text_position_sol">Sol</label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="text_position" id="text_position_orta" value="orta" {{ $secilen == 'orta' ? 'checked' : '' }}>
+                                            <label class="form-check-label" for="text_position_orta">Orta</label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="text_position" id="text_position_sag" value="sag" {{ $secilen == 'sag' ? 'checked' : '' }}>
+                                            <label class="form-check-label" for="text_position_sag">Sağ</label>
+                                        </div>
+                                    </div>
+                                    <div class="form-text">Görsele göre başlık/açıklama/buton metninin sola, ortaya ya da sağa yaslanmasını seçin.</div>
+                                </div>
                                 @isset($data)
                                     @if ($data->image)
                                         <div class="col-md-12">
