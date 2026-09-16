@@ -1,5 +1,18 @@
 <!DOCTYPE html>
 <html lang="tr">
+<script>
+    // Kaydedilmiş açık/koyu tema tercihi, sayfa içeriği boyanmadan
+    // (CSS yüklenmeden) hemen uygulanır; aksi halde önce açık temayla
+    // çizilip sonra koyuya geçen rahatsız edici bir "flash" oluşur.
+    (function () {
+        try {
+            var kayitli = localStorage.getItem('siteTheme');
+            if (kayitli === 'dark') {
+                document.documentElement.setAttribute('data-theme', 'dark');
+            }
+        } catch (e) {}
+    })();
+</script>
 
 <head>
     <meta charset="UTF-8">
@@ -123,6 +136,10 @@
                     </nav>
                 </div>
                 <div class="ori-header-sidebar-search d-flex align-items-center">
+                    <button type="button" id="theme-toggle-btn" aria-label="Koyu/Açık tema"
+                        style="display:inline-flex; align-items:center; justify-content:center; width:42px; height:42px; border-radius:50%; border:1px solid var(--surface-border); background:var(--dark-surface); color:var(--heading-color); margin-right:14px; cursor:pointer; font-size:16px;">
+                        <i class="fas fa-moon" id="theme-toggle-icon"></i>
+                    </button>
                     <a href="/randevu" class="ori-header-randevu-btn" style="display:inline-block; background-color:var(--base-color-1); color:#fff; padding:12px 26px; border-radius:30px; font-weight:700; font-size:14px; white-space:nowrap; margin-right:20px;">Randevu Al</a>
                     <div class="ori-sidenav-btn navSidebar-button">
                         <button><i class="fal fa-bars"></i></button>
@@ -139,8 +156,12 @@
                         <div class="mobile_menu_close open_mobile_menu">
                             <i class="fal fa-times"></i>
                         </div>
-                        <div class="m-brand-logo">
+                        <div class="m-brand-logo d-flex align-items-center justify-content-between">
                             <a href="/"><img src="{{ asset('images/' . ($settings->image ?? '')) }}" alt="" style="max-width:170px; width:100%; height:auto;"></a>
+                            <button type="button" id="theme-toggle-btn-mobile" aria-label="Koyu/Açık tema"
+                                style="display:inline-flex; align-items:center; justify-content:center; width:38px; height:38px; border-radius:50%; border:1px solid var(--surface-border); background:var(--page-bg); color:var(--heading-color); cursor:pointer; font-size:15px;">
+                                <i class="fas fa-moon" id="theme-toggle-icon-mobile"></i>
+                            </button>
                         </div>
                         <nav class="mobile-main-navigation  clearfix ul-li">
                             <ul id="m-main-nav" class="nav navbar-nav clearfix">
@@ -270,3 +291,34 @@
             </div>
         </div>
     </div>
+
+    <script>
+    (function () {
+        function guncelIkon() {
+            var koyu = document.documentElement.getAttribute('data-theme') === 'dark';
+            ['theme-toggle-icon', 'theme-toggle-icon-mobile'].forEach(function (id) {
+                var el = document.getElementById(id);
+                if (el) el.className = koyu ? 'fas fa-sun' : 'fas fa-moon';
+            });
+        }
+
+        function temayiDegistir() {
+            var koyu = document.documentElement.getAttribute('data-theme') === 'dark';
+            if (koyu) {
+                document.documentElement.removeAttribute('data-theme');
+                try { localStorage.setItem('siteTheme', 'light'); } catch (e) {}
+            } else {
+                document.documentElement.setAttribute('data-theme', 'dark');
+                try { localStorage.setItem('siteTheme', 'dark'); } catch (e) {}
+            }
+            guncelIkon();
+        }
+
+        ['theme-toggle-btn', 'theme-toggle-btn-mobile'].forEach(function (id) {
+            var btn = document.getElementById(id);
+            if (btn) btn.addEventListener('click', temayiDegistir);
+        });
+
+        guncelIkon();
+    })();
+    </script>

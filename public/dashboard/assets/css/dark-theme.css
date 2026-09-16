@@ -708,3 +708,10 @@ html.dark-theme .top-header .navbar .full-search-bar {
 
 
 
+
+/* Randevu/CRM sayfalarında sıkça kullanılan Bootstrap .text-muted,
+   koyu temada varsayılan gri tonuyla (#6c757d) kart arka planında
+   neredeyse görünmez kalıyordu; okunabilir açık gri tona çevrildi. */
+html.dark-theme .text-muted {
+    color: #a3a3a3 !important;
+}

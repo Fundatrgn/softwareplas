@@ -306,3 +306,21 @@ input, textarea, select {
     width: 0 !important;
   }
 }
+
+/* =====================================================================
+   Koyu Tema (ziyaretçinin sağ üstteki ay/güneş ikonuyla açıp kapattığı
+   tercih; varsayılan her zaman açık temadır). Tercih localStorage'da
+   tutulur (bkz. general/layout/header.blade.php script'i). Öznitelik
+   seçicisi (:root[data-theme="dark"]) sayesinde, admin panelinden
+   enjekte edilen renk değişkenlerinin (header.blade.php <style> bloğu)
+   ÜZERİNE, dosya sırasından bağımsız olarak yazar — çünkü CSS'te eşit
+   kökenli kurallarda önce özgüllük (specificity), sonra sıra kazanır. */
+:root[data-theme="dark"] {
+  --heading-color: #FFFFFF;
+  --body-color: #E7E3D8;
+  --page-bg: #1B1F1C;
+  --dark-surface: #232823;
+  --surface-border: rgba(255, 255, 255, 0.08);
+  --on-surface: #FFFFFF;
+  --on-surface-muted: #C9C4B4;
+}
