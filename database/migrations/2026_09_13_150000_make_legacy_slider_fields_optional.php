@@ -19,6 +19,10 @@ return new class extends Migration
      */
     public function up(): void
     {
+        if (DB::connection()->getDriverName() !== 'mysql') {
+            return;
+        }
+
         DB::statement("UPDATE `slider` SET `first` = '' WHERE `first` IS NULL");
         DB::statement("UPDATE `slider` SET `second` = '' WHERE `second` IS NULL");
         DB::statement("UPDATE `slider` SET `threed` = '' WHERE `threed` IS NULL");

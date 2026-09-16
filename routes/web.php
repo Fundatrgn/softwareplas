@@ -2,10 +2,12 @@
 
 use Illuminate\Support\Facades\Route;
 
+use App\Http\Controllers\dashboard\AppointmentController as DashboardAppointmentController;
 use App\Http\Controllers\dashboard\BlogCategoryController;
 use App\Http\Controllers\dashboard\BlogController;
 use App\Http\Controllers\dashboard\CkeditorController;
 use App\Http\Controllers\dashboard\ContactController;
+use App\Http\Controllers\dashboard\PatientController;
 use App\Http\Controllers\dashboard\HakkimizdaController;
 use App\Http\Controllers\dashboard\HizmetlerCategories;
 use App\Http\Controllers\dashboard\HizmetlerController;
@@ -20,6 +22,7 @@ use App\Http\Controllers\dashboard\TarihceController;
 use App\Http\Controllers\dashboard\TeamController;
 use App\Http\Controllers\dashboard\UsersController;
 use App\Http\Controllers\dashboard\SliderController;
+use App\Http\Controllers\general\AppointmentController as GeneralAppointmentController;
 use App\Http\Controllers\general\BlogController as GeneralBlogController;
 use App\Http\Controllers\general\HakkimizdaController as GeneralHakkimizdaController;
 use App\Http\Controllers\general\HizmetlerController as GeneralHizmetlerController;
@@ -66,9 +69,10 @@ Route::get('/hizmetler/detay/{id}/{slug}', [GeneralHizmetlerController::class, '
 Route::get('/iletisim', function () {
     return view('general.contact');
 });
-Route::get('/randevu', function () {
-    return view('general.randevu');
-});
+Route::get('/randevu', [GeneralAppointmentController::class, 'index']);
+Route::get('/randevu/musaitlik', [GeneralAppointmentController::class, 'monthAvailability']);
+Route::get('/randevu/saatler', [GeneralAppointmentController::class, 'dayAvailability']);
+Route::post('/randevu', [GeneralAppointmentController::class, 'store']);
 Route::post('/iletisim', [ContactController::class,'store']);
 Route::post('ckeditor/image_upload', [CkeditorController::class, 'upload'])->name('upload');
 
@@ -81,6 +85,26 @@ Route::prefix('/admin')->middleware('auth')->group(function () {
         return view('dashboard.home');
     });
     Route::get('/logout',[LoginController::class,'logout']);
+
+    // Randevular (CRM)
+    Route::get('/randevular', [DashboardAppointmentController::class, 'index']);
+    Route::get('/randevular/ay', [DashboardAppointmentController::class, 'month']);
+    Route::get('/randevular/gun', [DashboardAppointmentController::class, 'day']);
+    Route::get('/randevular/ekle', [DashboardAppointmentController::class, 'create']);
+    Route::post('/randevular', [DashboardAppointmentController::class, 'store']);
+    Route::get('/randevular/{id}', [DashboardAppointmentController::class, 'show'])->whereNumber('id');
+    Route::post('/randevular/{id}/durum', [DashboardAppointmentController::class, 'updateStatus'])->whereNumber('id');
+    // Randevular
+
+    // Danışanlar (CRM)
+    Route::get('/danisanlar', [PatientController::class, 'index']);
+    Route::get('/danisanlar/ara', [DashboardAppointmentController::class, 'searchPatients']);
+    Route::get('/danisanlar/add', [PatientController::class, 'add']);
+    Route::post('/danisanlar/add', [PatientController::class, 'store']);
+    Route::get('/danisanlar/add/{id}', [PatientController::class, 'edit'])->whereNumber('id');
+    Route::get('/danisanlar/{id}', [PatientController::class, 'show'])->whereNumber('id');
+    // Danışanlar
+
     // hakkımızda
     Route::get('/hakkimizda', [HakkimizdaController::class, 'index']);
     Route::get('/hakkimizda/add', [HakkimizdaController::class, 'add']);

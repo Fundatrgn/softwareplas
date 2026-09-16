@@ -41,10 +41,13 @@
             --base-color-2: {{ $settings->secondary_color ?? '#7FA36F' }};
             --base-color-4: {{ $settings->secondary_color ?? '#7FA36F' }};
             --base-color-6: {{ $settings->secondary_color ?? '#7FA36F' }};
-            --heading-color: {{ $settings->heading_color ?? '#FFFFFF' }};
-            --body-color: {{ $settings->body_text_color ?? '#E7E3D8' }};
-            --page-bg: {{ $settings->background_color ?? '#1B1F1C' }};
-            --dark-surface: {{ $settings->background_color ?? '#1B1F1C' }};
+            --heading-color: {{ $settings->heading_color ?? '#1F2D30' }};
+            --body-color: {{ $settings->body_text_color ?? '#4B5A5E' }};
+            --page-bg: {{ $settings->background_color ?? '#F7F5F0' }};
+            --dark-surface: #FFFFFF;
+            --surface-border: rgba(31, 45, 48, 0.12);
+            --on-surface: {{ $settings->heading_color ?? '#1F2D30' }};
+            --on-surface-muted: {{ $settings->body_text_color ?? '#4B5A5E' }};
         }
     </style>
     <link rel="stylesheet" href="{{ asset('theme/assets/css/style.css') }}?v=33">

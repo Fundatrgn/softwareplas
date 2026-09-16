@@ -52,11 +52,45 @@ class SettingController extends Controller
         // Site Görünümü / Renkler
         $item->accent_color = $request->accent_color ?: '#D9784B';
         $item->secondary_color = $request->secondary_color ?: '#7FA36F';
-        $item->heading_color = $request->heading_color ?: '#FFFFFF';
-        $item->body_text_color = $request->body_text_color ?: '#E7E3D8';
-        $item->background_color = $request->background_color ?: '#1B1F1C';
+        $item->heading_color = $request->heading_color ?: '#1F2D30';
+        $item->body_text_color = $request->body_text_color ?: '#4B5A5E';
+        $item->background_color = $request->background_color ?: '#F7F5F0';
         $item->whatsapp_number = $request->whatsapp_number;
-        
+
+        // Randevu / Çalışma Saatleri
+        $workingHours = [];
+        foreach (['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun'] as $day) {
+            $dayInput = $request->input("hours.$day");
+            if (! empty($dayInput['acik'])) {
+                $workingHours[$day] = [
+                    'start' => $dayInput['start'] ?? '09:00',
+                    'end' => $dayInput['end'] ?? '18:00',
+                    'break_start' => $dayInput['break_start'] ?? null,
+                    'break_end' => $dayInput['break_end'] ?? null,
+                ];
+            } else {
+                $workingHours[$day] = null;
+            }
+        }
+        $item->working_hours = $workingHours;
+
+        $closedDates = collect(preg_split('/[\r\n,]+/', (string) $request->closed_dates))
+            ->map(fn ($d) => trim($d))
+            ->filter()
+            ->values()
+            ->all();
+        $item->closed_dates = $closedDates;
+
+        $item->appointment_duration_minutes = $request->appointment_duration_minutes ?: 50;
+
+        // Bildirimler (E-posta / SMS)
+        $item->notify_email_enabled = $request->boolean('notify_email_enabled');
+        $item->notify_sms_enabled = $request->boolean('notify_sms_enabled');
+        $item->sms_provider = $request->sms_provider ?: 'log';
+        $item->sms_api_key = $request->sms_api_key;
+        $item->sms_api_secret = $request->sms_api_secret;
+        $item->sms_sender_title = $request->sms_sender_title;
+
         try {
             $imageName = $this->uploadImage($request, 'image');
             if ($imageName) {

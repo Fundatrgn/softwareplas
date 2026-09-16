@@ -72,6 +72,35 @@
                         <div class="menu-title">Anasayfa</div>
                     </a>
                 </li>
+                <li class="menu-label">Randevu / CRM</li>
+                <li>
+                    <a href="/admin/randevular">
+                        <div class="parent-icon">
+                            <ion-icon name="calendar-outline"></ion-icon>
+                        </div>
+                        <div class="menu-title">Randevu Takvimi</div>
+                    </a>
+                </li>
+                <li>
+                    <a class="has-arrow" href="javascript:;">
+                        <div class="parent-icon">
+                            <ion-icon name="people-outline"></ion-icon>
+                        </div>
+                        <div class="menu-title">Danışanlar</div>
+                    </a>
+                    <ul>
+                        <li> <a href="/admin/danisanlar">
+                                <ion-icon name="ellipse-outline"></ion-icon>Tümünü Gör
+                            </a>
+                        </li>
+                        <li> <a href="/admin/danisanlar/add">
+                                <ion-icon name="ellipse-outline"></ion-icon>Yeni Ekle
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+
+                <li class="menu-label">İçerik</li>
                 <li>
                     <a class="has-arrow" href="javascript:;">
                         <div class="parent-icon">

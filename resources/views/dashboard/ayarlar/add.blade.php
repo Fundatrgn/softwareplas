@@ -150,26 +150,24 @@
                                     <div class="form-text mb-2">Bir temaya tıkla, aşağıdaki tüm renkler otomatik doldurulur — sonra "Kaydet"e bas.</div>
                                     <div class="d-flex flex-wrap gap-2" id="tema-presets">
                                         <button type="button" class="btn btn-sm" data-tema="turuncu"
-                                            style="background:#1B1F1C; border:2px solid #D9784B; color:#D9784B; font-weight:600;">🟠 Turuncu (varsayılan)</button>
+                                            style="background:#F7F5F0; border:2px solid #D9784B; color:#8a5a3a; font-weight:600;">🟠 Turuncu (varsayılan)</button>
                                         <button type="button" class="btn btn-sm" data-tema="yesil"
-                                            style="background:#1B1F1C; border:2px solid #6FA37F; color:#6FA37F; font-weight:600;">🟢 Yeşil</button>
+                                            style="background:#F5F8F4; border:2px solid #6FA37F; color:#3f6b4d; font-weight:600;">🟢 Yeşil</button>
                                         <button type="button" class="btn btn-sm" data-tema="mavi"
-                                            style="background:#1B1F1C; border:2px solid #4F8FB0; color:#4F8FB0; font-weight:600;">🔵 Mavi</button>
+                                            style="background:#F3F7F9; border:2px solid #4F8FB0; color:#2f5c72; font-weight:600;">🔵 Mavi</button>
                                         <button type="button" class="btn btn-sm" data-tema="mor"
-                                            style="background:#1B1F1C; border:2px solid #A585C9; color:#A585C9; font-weight:600;">🟣 Mor</button>
-                                        <button type="button" class="btn btn-sm" data-tema="acik"
-                                            style="background:#F7F6F2; border:2px solid #D9784B; color:#8a5a3a; font-weight:600;">⚪ Açık Zemin</button>
+                                            style="background:#F8F5FA; border:2px solid #A585C9; color:#6a4b8a; font-weight:600;">🟣 Mor</button>
                                     </div>
+                                    <div class="form-text mt-1">Zemin renkleri her zaman açık tonda tutulur; okunabilirlik için başlık/metin renkleri koyu kalır.</div>
                                 </div>
 
                                 <script>
                                 (function() {
                                     var temalar = {
-                                        turuncu: { accent_color: '#D9784B', secondary_color: '#7FA36F', background_color: '#1B1F1C', heading_color: '#FFFFFF', body_text_color: '#E7E3D8' },
-                                        yesil:   { accent_color: '#6FA37F', secondary_color: '#C9A46A', background_color: '#171C19', heading_color: '#FFFFFF', body_text_color: '#E3E7E1' },
-                                        mavi:    { accent_color: '#4F8FB0', secondary_color: '#8FA888', background_color: '#161C22', heading_color: '#FFFFFF', body_text_color: '#DCE4E7' },
-                                        mor:     { accent_color: '#A585C9', secondary_color: '#D9784B', background_color: '#1C1922', heading_color: '#FFFFFF', body_text_color: '#E5E1EA' },
-                                        acik:    { accent_color: '#D9784B', secondary_color: '#7FA36F', background_color: '#F7F6F2', heading_color: '#1F2D30', body_text_color: '#4B5B57' }
+                                        turuncu: { accent_color: '#D9784B', secondary_color: '#7FA36F', background_color: '#F7F5F0', heading_color: '#1F2D30', body_text_color: '#4B5A5E' },
+                                        yesil:   { accent_color: '#6FA37F', secondary_color: '#C9A46A', background_color: '#F5F8F4', heading_color: '#1F2D30', body_text_color: '#45524B' },
+                                        mavi:    { accent_color: '#4F8FB0', secondary_color: '#8FA888', background_color: '#F3F7F9', heading_color: '#1F2D30', body_text_color: '#445258' },
+                                        mor:     { accent_color: '#A585C9', secondary_color: '#D9784B', background_color: '#F8F5FA', heading_color: '#1F2D30', body_text_color: '#4E4756' }
                                     };
                                     document.querySelectorAll('#tema-presets button').forEach(function(btn) {
                                         btn.addEventListener('click', function() {
@@ -199,20 +197,104 @@
                                 <div class="col-md-4 col-6">
                                     <label for="background_color" class="form-label">Sayfa Arka Plan Rengi</label>
                                     <input type="color" class="form-control form-control-color w-100" id="background_color"
-                                        name="background_color" value="{{ $data->background_color ?? '#1B1F1C' }}" title="Arka plan rengi">
+                                        name="background_color" value="{{ $data->background_color ?? '#F7F5F0' }}" title="Arka plan rengi">
                                     <div class="form-text">Bölüm arka planları</div>
                                 </div>
                                 <div class="col-md-4 col-6">
                                     <label for="heading_color" class="form-label">Başlık Yazı Rengi</label>
                                     <input type="color" class="form-control form-control-color w-100" id="heading_color"
-                                        name="heading_color" value="{{ $data->heading_color ?? '#FFFFFF' }}" title="Başlık rengi">
+                                        name="heading_color" value="{{ $data->heading_color ?? '#1F2D30' }}" title="Başlık rengi">
                                     <div class="form-text">Tüm başlıklar (H1-H6)</div>
                                 </div>
                                 <div class="col-md-4 col-6">
                                     <label for="body_text_color" class="form-label">Gövde Yazı Rengi</label>
                                     <input type="color" class="form-control form-control-color w-100" id="body_text_color"
-                                        name="body_text_color" value="{{ $data->body_text_color ?? '#E7E3D8' }}" title="Metin rengi">
+                                        name="body_text_color" value="{{ $data->body_text_color ?? '#4B5A5E' }}" title="Metin rengi">
                                     <div class="form-text">Paragraf ve açıklama metinleri</div>
+                                </div>
+
+                                <div class="col-md-12 mt-4">
+                                    <hr>
+                                    <h5 class="mb-1">Randevu Ayarları</h5>
+                                    <p class="text-muted mb-3">Çalışma saatleri, seans süresi ve kapalı (tatil/izin) günler burada yönetilir. Randevu takvimindeki müsaitlik hesaplaması bu ayarlara göre yapılır.</p>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <label class="form-label">Seans Süresi (dakika)</label>
+                                    <input type="number" min="10" step="5" class="form-control" name="appointment_duration_minutes"
+                                        value="{{ $data->appointment_duration_minutes ?? 50 }}">
+                                </div>
+                                <div class="col-md-8">
+                                    <label class="form-label">Kapalı Günler (tatil/izin)</label>
+                                    <textarea class="form-control" name="closed_dates" rows="2" placeholder="Her satıra bir tarih: 2026-10-29">{{ implode("\n", $data->closed_dates ?? []) }}</textarea>
+                                    <div class="form-text">YYYY-AA-GG formatında, her satıra bir tarih. Bu günlerde randevu alınamaz.</div>
+                                </div>
+
+                                <div class="col-md-12">
+                                    @php
+                                        $gunEtiketleri = ['mon' => 'Pazartesi', 'tue' => 'Salı', 'wed' => 'Çarşamba', 'thu' => 'Perşembe', 'fri' => 'Cuma', 'sat' => 'Cumartesi', 'sun' => 'Pazar'];
+                                        $mevcutSaatler = $data->working_hours ?? \App\Services\AvailabilityService::DEFAULT_WORKING_HOURS;
+                                    @endphp
+                                    <div class="table-responsive mt-2">
+                                        <table class="table table-sm align-middle">
+                                            <thead>
+                                                <tr>
+                                                    <th>Gün</th><th>Açık mı?</th><th>Başlangıç</th><th>Bitiş</th><th>Öğle Arası Başlangıç</th><th>Öğle Arası Bitiş</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach($gunEtiketleri as $key => $label)
+                                                    @php $g = $mevcutSaatler[$key] ?? null; @endphp
+                                                    <tr>
+                                                        <td>{{ $label }}</td>
+                                                        <td>
+                                                            <input type="checkbox" class="form-check-input" name="hours[{{ $key }}][acik]" value="1" {{ $g ? 'checked' : '' }}>
+                                                        </td>
+                                                        <td><input type="time" class="form-control form-control-sm" name="hours[{{ $key }}][start]" value="{{ $g['start'] ?? '09:00' }}"></td>
+                                                        <td><input type="time" class="form-control form-control-sm" name="hours[{{ $key }}][end]" value="{{ $g['end'] ?? '18:00' }}"></td>
+                                                        <td><input type="time" class="form-control form-control-sm" name="hours[{{ $key }}][break_start]" value="{{ $g['break_start'] ?? '' }}"></td>
+                                                        <td><input type="time" class="form-control form-control-sm" name="hours[{{ $key }}][break_end]" value="{{ $g['break_end'] ?? '' }}"></td>
+                                                    </tr>
+                                                @endforeach
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-12 mt-4">
+                                    <hr>
+                                    <h5 class="mb-1">Randevu Bildirimleri</h5>
+                                    <p class="text-muted mb-3">Randevu oluşturulduğunda/durumu değiştiğinde otomatik e-posta ve SMS gönderimi. SMS için henüz gerçek bir sağlayıcı bağlı değil; "Log" seçiliyken mesajlar sadece sunucu loguna yazılır (test amaçlı alt yapı).</p>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-check form-switch mt-2">
+                                        <input class="form-check-input" type="checkbox" role="switch" id="notify_email_enabled" name="notify_email_enabled" value="1" {{ ($data->notify_email_enabled ?? true) ? 'checked' : '' }}>
+                                        <label class="form-check-label" for="notify_email_enabled">E-posta bildirimleri</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-check form-switch mt-2">
+                                        <input class="form-check-input" type="checkbox" role="switch" id="notify_sms_enabled" name="notify_sms_enabled" value="1" {{ ($data->notify_sms_enabled ?? false) ? 'checked' : '' }}>
+                                        <label class="form-check-label" for="notify_sms_enabled">SMS bildirimleri</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <label class="form-label">SMS Sağlayıcı</label>
+                                    <select class="form-select" name="sms_provider">
+                                        <option value="log" {{ ($data->sms_provider ?? 'log') == 'log' ? 'selected' : '' }}>Log (test / henüz bağlı değil)</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-3">
+                                    <label class="form-label">SMS Gönderici Başlığı</label>
+                                    <input type="text" class="form-control" name="sms_sender_title" value="{{ $data->sms_sender_title ?? '' }}" placeholder="Örn: MERVEPSK">
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">SMS API Key</label>
+                                    <input type="text" class="form-control" name="sms_api_key" value="{{ $data->sms_api_key ?? '' }}" placeholder="Sağlayıcı bağlandığında doldurulacak">
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">SMS API Secret</label>
+                                    <input type="password" class="form-control" name="sms_api_secret" value="{{ $data->sms_api_secret ?? '' }}" placeholder="Sağlayıcı bağlandığında doldurulacak">
                                 </div>
 
                                 <div class="col-md-12">

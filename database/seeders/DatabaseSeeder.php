@@ -50,9 +50,9 @@ class DatabaseSeeder extends Seeder
             'address' => 'Manisa, Türkiye',
             'accent_color' => '#D9784B',
             'secondary_color' => '#7FA36F',
-            'heading_color' => '#FFFFFF',
-            'body_text_color' => '#E7E3D8',
-            'background_color' => '#1B1F1C',
+            'heading_color' => '#1F2D30',
+            'body_text_color' => '#4B5A5E',
+            'background_color' => '#F7F5F0',
             'whatsapp_number' => null,
             'sidebar_bio' => 'Manisa\'da ve online olarak bireysel ve çift terapisi hizmeti veriyorum. Randevu almak için benimle iletişime geçebilirsiniz.',
             'kvkk_text' => "<p><strong>Kişisel Verilerin Korunması Hakkında Aydınlatma Metni</strong></p>" .

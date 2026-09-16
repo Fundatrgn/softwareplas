@@ -52,8 +52,8 @@
                                         <td>
                                             <span title="Ana Marka Rengi" style="display:inline-block;width:22px;height:22px;border-radius:50%;background:{{ $item->accent_color ?? '#D9784B' }};border:1px solid #ccc;"></span>
                                             <span title="İkincil Renk" style="display:inline-block;width:22px;height:22px;border-radius:50%;background:{{ $item->secondary_color ?? '#7FA36F' }};border:1px solid #ccc;"></span>
-                                            <span title="Başlık Rengi" style="display:inline-block;width:22px;height:22px;border-radius:50%;background:{{ $item->heading_color ?? '#FFFFFF' }};border:1px solid #ccc;"></span>
-                                            <span title="Gövde Metin Rengi" style="display:inline-block;width:22px;height:22px;border-radius:50%;background:{{ $item->body_text_color ?? '#E7E3D8' }};border:1px solid #ccc;"></span>
+                                            <span title="Başlık Rengi" style="display:inline-block;width:22px;height:22px;border-radius:50%;background:{{ $item->heading_color ?? '#1F2D30' }};border:1px solid #ccc;"></span>
+                                            <span title="Gövde Metin Rengi" style="display:inline-block;width:22px;height:22px;border-radius:50%;background:{{ $item->body_text_color ?? '#4B5A5E' }};border:1px solid #ccc;"></span>
                                         </td>
                                         <td>
                                             <a href="{{ $item->instagram ?? '' }}" target="_blank">

@@ -12,7 +12,9 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule): void
     {
-        // $schedule->command('inspire')->hourly();
+        // Randevu hatırlatmaları: sunucuda crontab'a Laravel scheduler
+        // bağlandığında (bkz. komut docblock'u) her saat başı çalışır.
+        $schedule->command('appointments:send-reminders')->hourly();
     }
 
     /**

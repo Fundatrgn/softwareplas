@@ -9,7 +9,7 @@
 
 <div id="kvkk-modal-overlay" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.65); z-index:99999; align-items:center; justify-content:center; padding:20px;">
     <div style="background: var(--dark-surface); border-radius:12px; max-width:600px; width:100%; max-height:65vh; display:flex; flex-direction:column; overflow:hidden; box-shadow:0 20px 60px rgba(0,0,0,0.5);">
-        <div style="padding:18px 24px; border-bottom:1px solid rgba(255,255,255,0.1); display:flex; justify-content:space-between; align-items:center; flex-shrink:0;">
+        <div style="padding:18px 24px; border-bottom:1px solid var(--surface-border); display:flex; justify-content:space-between; align-items:center; flex-shrink:0;">
             <h4 style="margin:0; color:var(--heading-color); font-size:18px;">KVKK Aydınlatma Metni</h4>
             <button type="button" id="kvkk-kapat-btn" aria-label="Kapat" style="background:none; border:none; color:var(--heading-color); font-size:26px; cursor:pointer; line-height:1; padding:0;">&times;</button>
         </div>

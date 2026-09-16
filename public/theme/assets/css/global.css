@@ -1,15 +1,15 @@
 :root {
   /* ------------------------------------------------------------------
-     Psikolog Merve Kalaycı — Site Renk Paleti (v2)
+     Psikolog Merve Kalaycı — Site Renk Paleti (v3 — açık tema)
      Bu değişkenlerin varsayılanları aşağıdadır. Admin panelinden
      "Ayarlar > Site Görünümü / Renkler" bölümünde bir renk değiştirildiğinde,
      genel/layout/header.blade.php içinde enjekte edilen <style> bloğu
      bu varsayılanların üzerine yazar; yani site rengini kod dokunmadan
      panelden değiştirmek mümkündür.
 
-     v2 notu: Site artık TEK TİP koyu zemin kullanıyor (anasayfa dahil
-     her bölüm aynı koyu rengi paylaşıyor) ve TÜM yazılar bu koyu zemin
-     üzerinde her zaman okunaklı olacak şekilde açık/beyaz tonda.
+     v3 notu: Site artık AÇIK/krem tonda bir zemin kullanıyor; başlık ve
+     gövde metinleri bu açık zemin üzerinde okunaklı olacak şekilde koyu
+     tonda tanımlı.
      ------------------------------------------------------------------ */
 
   /* Ana marka rengi (sıcak turuncu) — butonlar, linkler, ikonlar, hover'lar. */
@@ -24,24 +24,22 @@
   --base-color-4: #7FA36F;
   --base-color-6: #7FA36F;
 
-  /* Başlık ve gövde metin renkleri: site tek tip koyu zemin kullandığı
-     için ikisi de her zaman AÇIK/BEYAZ tonda olmalı. */
-  --heading-color: #FFFFFF;
-  --body-color: #E7E3D8;
+  /* Başlık ve gövde metin renkleri: site açık zemin kullandığı için
+     ikisi de her zaman KOYU tonda olmalı. */
+  --heading-color: #1F2D30;
+  --body-color: #4B5A5E;
 
-  /* Ana sayfa arka planı: koyu zemin (istenirse admin panelinden
-     değiştirilebilir; siyaha yakın kalması önerilir çünkü tüm yazı
-     renkleri bu zemin üzerinde okunaklı olacak şekilde ayarlanmıştır) */
-  --page-bg: #1B1F1C;
+  /* Ana sayfa arka planı: yumuşak krem/açık zemin (istenirse admin
+     panelinden değiştirilebilir). */
+  --page-bg: #F7F5F0;
 
   /* "Kart" yüzeyleri: footer, hizmet kartları, blog kenar çubuğu widget'ları,
-     iletişim/randevu formu — ana zeminden hafif farklı, biraz daha açık
-     bir koyu ton (görsel katmanlama için). */
-  --dark-surface: #232823;
-  --surface-border: rgba(255, 255, 255, 0.08);
+     iletişim/randevu formu — sayfa zemininden ayırt edilsin diye saf beyaz. */
+  --dark-surface: #FFFFFF;
+  --surface-border: rgba(31, 45, 48, 0.12);
 
-  --on-surface: #FFFFFF;
-  --on-surface-muted: #C9C4B4;
+  --on-surface: #1F2D30;
+  --on-surface-muted: #6B7B7E;
 
   /* Fonts */
   --heading-1: 'Arimo';
