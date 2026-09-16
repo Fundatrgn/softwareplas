@@ -212,9 +212,4 @@ Route::prefix('/admin')->middleware('auth')->group(function () {
     Route::get('/hizmetler/kategori/add/{id}', [HizmetlerCategories::class, 'edit']);
     Route::post('/hizmetler/kategori/add', [HizmetlerCategories::class, 'store']);
     Route::get('/hizmetler/kategori/del/{id}', [HizmetlerCategories::class, 'del']);
-
-    Route::get('/static', [StaticController::class, 'index']);
-    Route::get('/static/add/{id}', [StaticController::class, 'add']);
-    Route::post('/static/add', [StaticController::class, 'store']);
-    Route::get('/static/del/{id}', [StaticController::class, 'del']);
 });
