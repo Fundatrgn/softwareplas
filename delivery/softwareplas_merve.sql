@@ -28,8 +28,8 @@ CREATE TABLE `about` (
 LOCK TABLES `about` WRITE;
 /*!40000 ALTER TABLE `about` DISABLE KEYS */;
 INSERT INTO `about` VALUES
-(1,'MERHABA','Ben Merve Kalaycı','<p>Psikoloji alanındaki eğitimim ve mesleki deneyimimle, Manisa\'da ve online olarak bireysel ve çift danışmanlığı hizmeti veriyorum. Danışanlarımla çalışırken güncel bilimsel yaklaşımlardan yararlanır, her sürecin o kişiye özgü olduğuna inanırım.</p><p><em>(Bu metin örnektir — eğitim geçmişiniz, unvanınız ve deneyiminizle güncellemenizi öneririz.)</em></p>','about-1.svg','1','2026-09-16 21:31:16','2026-09-16 21:31:16'),
-(2,'YAKLAŞIMIM','Güvenli, Yargısız Bir Alan','<p>Terapiye gelen her kişinin kendine has bir hikâyesi olduğuna inanıyorum. Seanslarda sizi dinlemeyi, birlikte anlamlandırmayı ve kendi çözümlerinizi bulmanıza eşlik etmeyi önceliğim olarak görüyorum. Paylaştığınız her şey gizlilik ilkesi çerçevesinde korunur.</p>','about-1.svg','2','2026-09-16 21:31:16','2026-09-16 21:31:16');
+(1,'MERHABA','Ben Merve Kalaycı','<p>Psikoloji alanındaki eğitimim ve mesleki deneyimimle, Manisa\'da ve online olarak bireysel ve çift danışmanlığı hizmeti veriyorum. Danışanlarımla çalışırken güncel bilimsel yaklaşımlardan yararlanır, her sürecin o kişiye özgü olduğuna inanırım.</p><p><em>(Bu metin örnektir — eğitim geçmişiniz, unvanınız ve deneyiminizle güncellemenizi öneririz.)</em></p>','about-1.svg','1','2026-09-20 14:44:05','2026-09-20 14:44:05'),
+(2,'YAKLAŞIMIM','Güvenli, Yargısız Bir Alan','<p>Terapiye gelen her kişinin kendine has bir hikâyesi olduğuna inanıyorum. Seanslarda sizi dinlemeyi, birlikte anlamlandırmayı ve kendi çözümlerinizi bulmanıza eşlik etmeyi önceliğim olarak görüyorum. Paylaştığınız her şey gizlilik ilkesi çerçevesinde korunur.</p>','about-1.svg','2','2026-09-20 14:44:05','2026-09-20 14:44:05');
 /*!40000 ALTER TABLE `about` ENABLE KEYS */;
 UNLOCK TABLES;
 DROP TABLE IF EXISTS `appointments`;
@@ -90,7 +90,7 @@ CREATE TABLE `blog_categories` (
 LOCK TABLES `blog_categories` WRITE;
 /*!40000 ALTER TABLE `blog_categories` DISABLE KEYS */;
 INSERT INTO `blog_categories` VALUES
-(1,'Psikoeğitim','psikoegitim','2026-09-16 21:31:16','2026-09-16 21:31:16');
+(1,'Psikoeğitim','psikoegitim','2026-09-20 14:44:05','2026-09-20 14:44:05');
 /*!40000 ALTER TABLE `blog_categories` ENABLE KEYS */;
 UNLOCK TABLES;
 DROP TABLE IF EXISTS `blog_posts`;
@@ -98,13 +98,13 @@ DROP TABLE IF EXISTS `blog_posts`;
 /*!40101 SET character_set_client = utf8mb4 */;
 CREATE TABLE `blog_posts` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-  `category_id` int(11) NOT NULL,
+  `category_id` int(11) DEFAULT NULL,
   `title` varchar(255) NOT NULL,
   `summary` text NOT NULL,
   `content` text NOT NULL,
-  `tags` varchar(255) NOT NULL,
+  `tags` varchar(255) DEFAULT NULL,
   `slug` varchar(255) NOT NULL,
-  `image` varchar(255) NOT NULL,
+  `image` varchar(255) DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
@@ -115,9 +115,9 @@ CREATE TABLE `blog_posts` (
 LOCK TABLES `blog_posts` WRITE;
 /*!40000 ALTER TABLE `blog_posts` DISABLE KEYS */;
 INSERT INTO `blog_posts` VALUES
-(1,1,'Kaygıyla Baş Etmenin Yolları','Günlük hayatta karşılaştığımız kaygı hissiyle sağlıklı bir şekilde baş etmenin genel yollarına dair bilgilendirici bir yazı.','<p>Kaygı, hayatın normal ve zaman zaman koruyucu bir parçasıdır; ancak sıklaştığında ya da günlük yaşamı zorlaştırdığında üzerinde durmaya değer bir konu haline gelir.</p><p><strong>Nefes çalışmaları:</strong> Yavaş ve derin nefes almak, bedenin stres tepkisini yatıştırmaya yardımcı olabilir.</p><p><strong>Düşünceleri fark etmek:</strong> Kaygılı anlarda zihinden geçenleri yargılamadan not etmek, onlarla aramıza bir mesafe koymamızı sağlayabilir.</p><p><strong>Rutin ve uyku:</strong> Düzenli uyku ve günlük rutin, kaygı yönetiminde önemli bir zemin oluşturur.</p><p>Kaygı uzun süredir hayatınızı zorlaştırıyorsa, bir uzmandan destek almak atabileceğiniz değerli bir adımdır. Bu yazı genel bilgilendirme amaçlıdır; kişisel durumunuz için bir görüşme planlamaktan çekinmeyin.</p>','kaygı, stres yönetimi, psikoeğitim','kaygiyla-bas-etmenin-yollari','blog-kaygi.svg','2026-09-16 21:31:16','2026-09-16 21:31:16'),
-(2,1,'Online Terapi Nedir, Nasıl İşler?','Görüntülü görüşme yoluyla yürütülen online terapinin ne olduğu ve süreçte nelere dikkat edilmesi gerektiği hakkında merak edilenler.','<p>Online terapi, danışan ve terapistin güvenli bir görüntülü görüşme platformu üzerinden bir araya geldiği bir çalışma biçimidir.</p><p><strong>Nasıl başlar?</strong> Randevu sonrası size özel bir bağlantı paylaşılır; seans, tıpkı yüz yüze görüşmede olduğu gibi belirlenen saatte gerçekleşir.</p><p><strong>Gizlilik nasıl korunur?</strong> Görüşmenin sizin için sessiz ve kesintisiz bir ortamda yapılması, gizliliğin korunması açısından önemlidir.</p><p><strong>Kimler için uygundur?</strong> Seyahat, yoğun iş temposu ya da farklı bir şehirde/ülkede yaşama gibi nedenlerle yüz yüze görüşemeyen pek çok kişi online terapiden fayda görebilir.</p>','online terapi, sıkça sorulanlar','online-terapi-nedir-nasil-isler','blog-online-terapi.svg','2026-09-16 21:31:16','2026-09-16 21:31:16'),
-(3,1,'İlk Terapi Seansında Neler Olur?','Terapiye ilk kez başlayacak olanlar için ilk seansta genel olarak neler konuşulduğuna dair bilgilendirici bir rehber.','<p>Terapiye başlamak, pek çok kişi için heyecan verici olduğu kadar biraz da endişe uyandırıcı olabilir. İlk seans, genellikle birbirimizi tanımaya ve sizi buraya getiren konuyu anlamaya ayrılır.</p><p>Bu görüşmede geçmişiniz, şu anki yaşam koşullarınız ve terapiden beklentileriniz hakkında sorular sorarım; ancak anlatmak istemediğiniz hiçbir şeyi paylaşmak zorunda değilsiniz.</p><p>Amaç, ilk seansın sonunda birlikte çalışmanın sizin için doğru hissedip hissetmediğine karar verebilmenizdir.</p>','ilk seans, terapiye başlarken','ilk-terapi-seansinda-neler-olur','blog-ilk-seans.svg','2026-09-16 21:31:16','2026-09-16 21:31:16');
+(1,1,'Kaygıyla Baş Etmenin Yolları','Günlük hayatta karşılaştığımız kaygı hissiyle sağlıklı bir şekilde baş etmenin genel yollarına dair bilgilendirici bir yazı.','<p>Kaygı, hayatın normal ve zaman zaman koruyucu bir parçasıdır; ancak sıklaştığında ya da günlük yaşamı zorlaştırdığında üzerinde durmaya değer bir konu haline gelir.</p><p><strong>Nefes çalışmaları:</strong> Yavaş ve derin nefes almak, bedenin stres tepkisini yatıştırmaya yardımcı olabilir.</p><p><strong>Düşünceleri fark etmek:</strong> Kaygılı anlarda zihinden geçenleri yargılamadan not etmek, onlarla aramıza bir mesafe koymamızı sağlayabilir.</p><p><strong>Rutin ve uyku:</strong> Düzenli uyku ve günlük rutin, kaygı yönetiminde önemli bir zemin oluşturur.</p><p>Kaygı uzun süredir hayatınızı zorlaştırıyorsa, bir uzmandan destek almak atabileceğiniz değerli bir adımdır. Bu yazı genel bilgilendirme amaçlıdır; kişisel durumunuz için bir görüşme planlamaktan çekinmeyin.</p>','kaygı, stres yönetimi, psikoeğitim','kaygiyla-bas-etmenin-yollari','blog-kaygi.svg','2026-09-20 14:44:05','2026-09-20 14:44:05'),
+(2,1,'Online Terapi Nedir, Nasıl İşler?','Görüntülü görüşme yoluyla yürütülen online terapinin ne olduğu ve süreçte nelere dikkat edilmesi gerektiği hakkında merak edilenler.','<p>Online terapi, danışan ve terapistin güvenli bir görüntülü görüşme platformu üzerinden bir araya geldiği bir çalışma biçimidir.</p><p><strong>Nasıl başlar?</strong> Randevu sonrası size özel bir bağlantı paylaşılır; seans, tıpkı yüz yüze görüşmede olduğu gibi belirlenen saatte gerçekleşir.</p><p><strong>Gizlilik nasıl korunur?</strong> Görüşmenin sizin için sessiz ve kesintisiz bir ortamda yapılması, gizliliğin korunması açısından önemlidir.</p><p><strong>Kimler için uygundur?</strong> Seyahat, yoğun iş temposu ya da farklı bir şehirde/ülkede yaşama gibi nedenlerle yüz yüze görüşemeyen pek çok kişi online terapiden fayda görebilir.</p>','online terapi, sıkça sorulanlar','online-terapi-nedir-nasil-isler','blog-online-terapi.svg','2026-09-20 14:44:05','2026-09-20 14:44:05'),
+(3,1,'İlk Terapi Seansında Neler Olur?','Terapiye ilk kez başlayacak olanlar için ilk seansta genel olarak neler konuşulduğuna dair bilgilendirici bir rehber.','<p>Terapiye başlamak, pek çok kişi için heyecan verici olduğu kadar biraz da endişe uyandırıcı olabilir. İlk seans, genellikle birbirimizi tanımaya ve sizi buraya getiren konuyu anlamaya ayrılır.</p><p>Bu görüşmede geçmişiniz, şu anki yaşam koşullarınız ve terapiden beklentileriniz hakkında sorular sorarım; ancak anlatmak istemediğiniz hiçbir şeyi paylaşmak zorunda değilsiniz.</p><p>Amaç, ilk seansın sonunda birlikte çalışmanın sizin için doğru hissedip hissetmediğine karar verebilmenizdir.</p>','ilk seans, terapiye başlarken','ilk-terapi-seansinda-neler-olur','blog-ilk-seans.svg','2026-09-20 14:44:05','2026-09-20 14:44:05');
 /*!40000 ALTER TABLE `blog_posts` ENABLE KEYS */;
 UNLOCK TABLES;
 DROP TABLE IF EXISTS `contact`;
@@ -168,7 +168,7 @@ CREATE TABLE `migrations` (
   `migration` varchar(255) NOT NULL,
   `batch` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=38 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=41 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 LOCK TABLES `migrations` WRITE;
@@ -210,7 +210,10 @@ INSERT INTO `migrations` VALUES
 (34,'2026_09_16_220100_create_appointments_table',1),
 (35,'2026_09_16_220200_create_notification_logs_table',1),
 (36,'2026_09_16_220300_add_appointment_settings_to_settings_table',1),
-(37,'2026_09_16_230000_add_text_position_to_slider_table',1);
+(37,'2026_09_16_230000_add_text_position_to_slider_table',1),
+(38,'2026_09_20_140000_fix_content_forms_not_null_traps',1),
+(39,'2026_09_20_150000_add_role_to_users_table',1),
+(40,'2026_09_20_160000_add_reminder_hours_to_settings_table',1);
 /*!40000 ALTER TABLE `migrations` ENABLE KEYS */;
 UNLOCK TABLES;
 DROP TABLE IF EXISTS `notification_logs`;
@@ -347,9 +350,9 @@ DROP TABLE IF EXISTS `services`;
 CREATE TABLE `services` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `title` varchar(255) NOT NULL,
-  `image` varchar(255) NOT NULL,
+  `image` varchar(255) DEFAULT NULL,
   `slug` varchar(255) NOT NULL,
-  `category_id` varchar(255) NOT NULL,
+  `category_id` varchar(255) DEFAULT NULL,
   `order` int(11) NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
@@ -360,9 +363,9 @@ CREATE TABLE `services` (
 LOCK TABLES `services` WRITE;
 /*!40000 ALTER TABLE `services` DISABLE KEYS */;
 INSERT INTO `services` VALUES
-(1,'Bireysel Terapi','service-bireysel.svg','bireysel-terapi','1',1,'2026-09-16 21:31:16','2026-09-16 21:31:16'),
-(2,'Çift Terapisi','service-cift.svg','cift-terapisi','2',2,'2026-09-16 21:31:16','2026-09-16 21:31:16'),
-(3,'Online Terapi','service-online.svg','online-terapi','3',3,'2026-09-16 21:31:16','2026-09-16 21:31:16');
+(1,'Bireysel Terapi','service-bireysel.svg','bireysel-terapi','1',1,'2026-09-20 14:44:05','2026-09-20 14:44:05'),
+(2,'Çift Terapisi','service-cift.svg','cift-terapisi','2',2,'2026-09-20 14:44:05','2026-09-20 14:44:05'),
+(3,'Online Terapi','service-online.svg','online-terapi','3',3,'2026-09-20 14:44:05','2026-09-20 14:44:05');
 /*!40000 ALTER TABLE `services` ENABLE KEYS */;
 UNLOCK TABLES;
 DROP TABLE IF EXISTS `services_categories`;
@@ -381,9 +384,9 @@ CREATE TABLE `services_categories` (
 LOCK TABLES `services_categories` WRITE;
 /*!40000 ALTER TABLE `services_categories` DISABLE KEYS */;
 INSERT INTO `services_categories` VALUES
-(1,'Bireysel Terapi','bireysel-terapi','2026-09-16 21:31:16','2026-09-16 21:31:16'),
-(2,'Çift Terapisi','cift-terapisi','2026-09-16 21:31:16','2026-09-16 21:31:16'),
-(3,'Online Terapi','online-terapi','2026-09-16 21:31:16','2026-09-16 21:31:16');
+(1,'Bireysel Terapi','bireysel-terapi','2026-09-20 14:44:05','2026-09-20 14:44:05'),
+(2,'Çift Terapisi','cift-terapisi','2026-09-20 14:44:05','2026-09-20 14:44:05'),
+(3,'Online Terapi','online-terapi','2026-09-20 14:44:05','2026-09-20 14:44:05');
 /*!40000 ALTER TABLE `services_categories` ENABLE KEYS */;
 UNLOCK TABLES;
 DROP TABLE IF EXISTS `services_details`;
@@ -394,7 +397,7 @@ CREATE TABLE `services_details` (
   `service_id` varchar(255) NOT NULL,
   `title` varchar(255) NOT NULL,
   `subtitle` varchar(255) DEFAULT NULL,
-  `image` varchar(255) NOT NULL,
+  `image` varchar(255) DEFAULT NULL,
   `keywords` text NOT NULL,
   `position` varchar(255) NOT NULL,
   `content` text NOT NULL,
@@ -407,9 +410,9 @@ CREATE TABLE `services_details` (
 LOCK TABLES `services_details` WRITE;
 /*!40000 ALTER TABLE `services_details` DISABLE KEYS */;
 INSERT INTO `services_details` VALUES
-(1,'1','Bireysel Terapi','BİREYSEL TERAPİ','service-bireysel.svg','Bireysel Terapi, BİREYSEL TERAPİ','1','<p><strong>Kaygı, stres, tükenmişlik, özgüven, yas ya da yaşamın herhangi bir döneminde zorlandığınız konularda; yargılanmadan, kendi hızınızda ilerleyebileceğiniz bir alan sunuyorum.</strong></p><p>Bireysel terapi, kendinizi ve yaşadıklarınızı daha yakından tanımak, zorlandığınız alanlarda destek almak için ayırdığınız bir zamandır. Seanslarda kaygı, stres, tükenmişlik, özgüven, ilişki güçlükleri, yas ve kayıp gibi pek çok konuda birlikte çalışabiliriz.</p><p>Görüşmelerde güncel bilimsel yaklaşımlardan yararlanır, sürecin her adımında sizi bilgilendiririm. Paylaştığınız her bilgi gizlilik ilkesi çerçevesinde korunur.</p><p>Seans sıklığı ve süreci, ihtiyaçlarınıza göre birlikte belirlenir; bu sayfadaki bilgiler genel bir çerçeve sunmak amacıyla hazırlanmıştır.</p>','2026-09-16 21:31:16','2026-09-16 21:31:16'),
-(2,'2','Çift Terapisi','ÇİFT TERAPİSİ','service-cift.svg','Çift Terapisi, ÇİFT TERAPİSİ','2','<p><strong>İletişim güçlükleri, güven sorunları ya da hayatın farklı dönemlerinde ilişkinizi yeniden güçlendirmek isteyen çiftler için tarafsız bir üçüncü göz.</strong></p><p>Çift terapisi, ilişkinizdeki iletişim kalıplarını fark etmenizi, birbirinizi daha iyi anlamanızı ve birlikte çözüm üretmenizi hedefleyen bir süreçtir. Görüşmelere çiftler birlikte katılır; bazı durumlarda bireysel görüşmelerle desteklenebilir.</p><p>Sürecin amacı taraflardan birini \"haklı\" çıkarmak değil, ilişkideki dinamikleri birlikte görünür kılmaktır. Her iki tarafın da kendini güvende ve duyulmuş hissettiği bir ortam önceliğimdir.</p>','2026-09-16 21:31:16','2026-09-16 21:31:16'),
-(3,'3','Online Terapi','ONLİNE TERAPİ','service-online.svg','Online Terapi, ONLİNE TERAPİ','3','<p><strong>Manisa dışında ya da yoğun bir programda olsanız da, güvenli görüntülü görüşme ile aynı içerik ve gizlilikte destek alabilirsiniz.</strong></p><p>Online terapi, yüz yüze görüşmeye zaman ya da mesafe nedeniyle gelemeyen danışanlar için görüntülü görüşme üzerinden yürütülen bir terapi biçimidir. Yapılan araştırmalar, uygun koşullar sağlandığında online terapinin yüz yüze terapiyle benzer etkinlikte olabildiğini göstermektedir.</p><p>Görüşme öncesinde sizinle güvenli bağlantı bilgileri paylaşılır; sürecin gizliliği yüz yüze görüşmelerdeki ile aynı titizlikte korunur.</p>','2026-09-16 21:31:16','2026-09-16 21:31:16');
+(1,'1','Bireysel Terapi','BİREYSEL TERAPİ','service-bireysel.svg','Bireysel Terapi, BİREYSEL TERAPİ','1','<p><strong>Kaygı, stres, tükenmişlik, özgüven, yas ya da yaşamın herhangi bir döneminde zorlandığınız konularda; yargılanmadan, kendi hızınızda ilerleyebileceğiniz bir alan sunuyorum.</strong></p><p>Bireysel terapi, kendinizi ve yaşadıklarınızı daha yakından tanımak, zorlandığınız alanlarda destek almak için ayırdığınız bir zamandır. Seanslarda kaygı, stres, tükenmişlik, özgüven, ilişki güçlükleri, yas ve kayıp gibi pek çok konuda birlikte çalışabiliriz.</p><p>Görüşmelerde güncel bilimsel yaklaşımlardan yararlanır, sürecin her adımında sizi bilgilendiririm. Paylaştığınız her bilgi gizlilik ilkesi çerçevesinde korunur.</p><p>Seans sıklığı ve süreci, ihtiyaçlarınıza göre birlikte belirlenir; bu sayfadaki bilgiler genel bir çerçeve sunmak amacıyla hazırlanmıştır.</p>','2026-09-20 14:44:05','2026-09-20 14:44:05'),
+(2,'2','Çift Terapisi','ÇİFT TERAPİSİ','service-cift.svg','Çift Terapisi, ÇİFT TERAPİSİ','2','<p><strong>İletişim güçlükleri, güven sorunları ya da hayatın farklı dönemlerinde ilişkinizi yeniden güçlendirmek isteyen çiftler için tarafsız bir üçüncü göz.</strong></p><p>Çift terapisi, ilişkinizdeki iletişim kalıplarını fark etmenizi, birbirinizi daha iyi anlamanızı ve birlikte çözüm üretmenizi hedefleyen bir süreçtir. Görüşmelere çiftler birlikte katılır; bazı durumlarda bireysel görüşmelerle desteklenebilir.</p><p>Sürecin amacı taraflardan birini \"haklı\" çıkarmak değil, ilişkideki dinamikleri birlikte görünür kılmaktır. Her iki tarafın da kendini güvende ve duyulmuş hissettiği bir ortam önceliğimdir.</p>','2026-09-20 14:44:05','2026-09-20 14:44:05'),
+(3,'3','Online Terapi','ONLİNE TERAPİ','service-online.svg','Online Terapi, ONLİNE TERAPİ','3','<p><strong>Manisa dışında ya da yoğun bir programda olsanız da, güvenli görüntülü görüşme ile aynı içerik ve gizlilikte destek alabilirsiniz.</strong></p><p>Online terapi, yüz yüze görüşmeye zaman ya da mesafe nedeniyle gelemeyen danışanlar için görüntülü görüşme üzerinden yürütülen bir terapi biçimidir. Yapılan araştırmalar, uygun koşullar sağlandığında online terapinin yüz yüze terapiyle benzer etkinlikte olabildiğini göstermektedir.</p><p>Görüşme öncesinde sizinle güvenli bağlantı bilgileri paylaşılır; sürecin gizliliği yüz yüze görüşmelerdeki ile aynı titizlikte korunur.</p>','2026-09-20 14:44:05','2026-09-20 14:44:05');
 /*!40000 ALTER TABLE `services_details` ENABLE KEYS */;
 UNLOCK TABLES;
 DROP TABLE IF EXISTS `settings`;
@@ -446,6 +449,7 @@ CREATE TABLE `settings` (
   `sms_api_key` varchar(255) DEFAULT NULL,
   `sms_api_secret` varchar(255) DEFAULT NULL,
   `sms_sender_title` varchar(255) DEFAULT NULL,
+  `reminder_hours_before` smallint(5) unsigned NOT NULL DEFAULT 24,
   `slider_speed` int(11) NOT NULL DEFAULT 6000,
   `kvkk_text` longtext DEFAULT NULL,
   `sidebar_bio` text DEFAULT NULL,
@@ -458,7 +462,7 @@ CREATE TABLE `settings` (
 LOCK TABLES `settings` WRITE;
 /*!40000 ALTER TABLE `settings` DISABLE KEYS */;
 INSERT INTO `settings` VALUES
-(1,'merve-kalayci-logo.svg','favicon.svg','Psikolog Merve Kalaycı | Manisa & Online Terapi','Manisa merkezli, bireysel terapi, çift terapisi ve online terapi hizmeti sunan Psikolog Merve Kalaycı\'nın resmi web sitesi.','psikolog, manisa psikolog, turgutlu psikolog, online terapi, bireysel terapi, çift terapisi','Merve Kalaycı','','https://www.instagram.com/psikologmervekalayci/','','','','0 (5XX) XXX XX XX','info@example.com','Manisa, Türkiye','#D9784B','#7FA36F','#1F2D30','#4B5A5E','#F7F5F0',NULL,NULL,NULL,50,1,0,'log',NULL,NULL,NULL,6000,'<p><strong>Kişisel Verilerin Korunması Hakkında Aydınlatma Metni</strong></p><p>Bu internet sitesi üzerinden (randevu ve iletişim formları aracılığıyla) tarafımla paylaştığınız ad-soyad, telefon, e-posta ve mesaj içeriğinden ibaret kişisel verileriniz; 6698 sayılı Kişisel Verilerin Korunması Kanunu (\"KVKK\") kapsamında, veri sorumlusu sıfatıyla tarafımca, yalnızca randevu talebinizin değerlendirilmesi, sizinle iletişime geçilmesi ve talep ettiğiniz bilgilendirmenin yapılması amacıyla işlenmektedir.</p><p>Kişisel verileriniz, yasal zorunluluklar dışında üçüncü kişilerle paylaşılmaz, açık rızanız veya kanunda öngörülen haller dışında başka bir amaçla kullanılmaz ve gerekli teknik/idari tedbirlerle korunur.</p><p>KVKK\'nın 11. maddesi kapsamında; kişisel verilerinizin işlenip işlenmediğini öğrenme, işlenmişse buna ilişkin bilgi talep etme, işlenme amacını ve amacına uygun kullanılıp kullanılmadığını öğrenme, yurt içinde/yurt dışında aktarıldığı üçüncü kişileri bilme, eksik/yanlış işlenmişse düzeltilmesini isteme, silinmesini/yok edilmesini isteme ve bu işlemlerin ilgili üçüncü kişilere bildirilmesini isteme haklarına sahipsiniz.</p><p>Bu haklarınızı kullanmak için sitede yer alan iletişim bilgileri üzerinden tarafıma ulaşabilirsiniz.</p><p><em>(Bu metin örnek olarak hazırlanmıştır; yayına almadan önce bir hukuk danışmanına gözden geçirtmenizi öneririz. Bu alanı admin panelinden dilediğiniz gibi düzenleyebilirsiniz.)</em></p>','Manisa\'da ve online olarak bireysel ve çift terapisi hizmeti veriyorum. Randevu almak için benimle iletişime geçebilirsiniz.','2026-09-16 21:31:16','2026-09-16 21:31:16');
+(1,'merve-kalayci-logo.svg','favicon.svg','Psikolog Merve Kalaycı | Manisa & Online Terapi','Manisa merkezli, bireysel terapi, çift terapisi ve online terapi hizmeti sunan Psikolog Merve Kalaycı\'nın resmi web sitesi.','psikolog, manisa psikolog, turgutlu psikolog, online terapi, bireysel terapi, çift terapisi','Merve Kalaycı','','https://www.instagram.com/psikologmervekalayci/','','','','0 (5XX) XXX XX XX','info@example.com','Manisa, Türkiye','#D9784B','#7FA36F','#1F2D30','#4B5A5E','#F7F5F0',NULL,NULL,NULL,50,1,0,'log',NULL,NULL,NULL,24,6000,'<p><strong>Kişisel Verilerin Korunması Hakkında Aydınlatma Metni</strong></p><p>Bu internet sitesi üzerinden (randevu ve iletişim formları aracılığıyla) tarafımla paylaştığınız ad-soyad, telefon, e-posta ve mesaj içeriğinden ibaret kişisel verileriniz; 6698 sayılı Kişisel Verilerin Korunması Kanunu (\"KVKK\") kapsamında, veri sorumlusu sıfatıyla tarafımca, yalnızca randevu talebinizin değerlendirilmesi, sizinle iletişime geçilmesi ve talep ettiğiniz bilgilendirmenin yapılması amacıyla işlenmektedir.</p><p>Kişisel verileriniz, yasal zorunluluklar dışında üçüncü kişilerle paylaşılmaz, açık rızanız veya kanunda öngörülen haller dışında başka bir amaçla kullanılmaz ve gerekli teknik/idari tedbirlerle korunur.</p><p>KVKK\'nın 11. maddesi kapsamında; kişisel verilerinizin işlenip işlenmediğini öğrenme, işlenmişse buna ilişkin bilgi talep etme, işlenme amacını ve amacına uygun kullanılıp kullanılmadığını öğrenme, yurt içinde/yurt dışında aktarıldığı üçüncü kişileri bilme, eksik/yanlış işlenmişse düzeltilmesini isteme, silinmesini/yok edilmesini isteme ve bu işlemlerin ilgili üçüncü kişilere bildirilmesini isteme haklarına sahipsiniz.</p><p>Bu haklarınızı kullanmak için sitede yer alan iletişim bilgileri üzerinden tarafıma ulaşabilirsiniz.</p><p><em>(Bu metin örnek olarak hazırlanmıştır; yayına almadan önce bir hukuk danışmanına gözden geçirtmenizi öneririz. Bu alanı admin panelinden dilediğiniz gibi düzenleyebilirsiniz.)</em></p>','Manisa\'da ve online olarak bireysel ve çift terapisi hizmeti veriyorum. Randevu almak için benimle iletişime geçebilirsiniz.','2026-09-20 14:44:05','2026-09-20 14:44:05');
 /*!40000 ALTER TABLE `settings` ENABLE KEYS */;
 UNLOCK TABLES;
 DROP TABLE IF EXISTS `slider`;
@@ -484,7 +488,7 @@ CREATE TABLE `slider` (
 LOCK TABLES `slider` WRITE;
 /*!40000 ALTER TABLE `slider` DISABLE KEYS */;
 INSERT INTO `slider` VALUES
-(1,1,'Kendinize Zaman Ayırın','Bireysel, çift ve online terapiyle yanınızdayım. Değişim için ilk adımı birlikte atalım.','','','','Randevu Al','hero-slider.svg','orta','2026-09-16 21:31:16','2026-09-16 21:31:16');
+(1,1,'Kendinize Zaman Ayırın','Bireysel, çift ve online terapiyle yanınızdayım. Değişim için ilk adımı birlikte atalım.','','','','Randevu Al','hero-slider.svg','orta','2026-09-20 14:44:05','2026-09-20 14:44:05');
 /*!40000 ALTER TABLE `slider` ENABLE KEYS */;
 UNLOCK TABLES;
 DROP TABLE IF EXISTS `social`;
@@ -523,10 +527,10 @@ CREATE TABLE `sss` (
 LOCK TABLES `sss` WRITE;
 /*!40000 ALTER TABLE `sss` DISABLE KEYS */;
 INSERT INTO `sss` VALUES
-(1,'Seanslar ne kadar sürüyor?','<p>Bireysel ve çift seansları genellikle 45-50 dakika sürer. Randevu sırasında size uygun süre ve sıklık birlikte planlanır.</p>',1,'2026-09-16 21:31:16','2026-09-16 21:31:16'),
-(2,'Görüştüklerimiz gizli kalır mı?','<p>Evet. Paylaştığınız bilgiler, yasal zorunluluk durumları dışında gizlilik ilkesi çerçevesinde korunur ve üçüncü kişilerle paylaşılmaz.</p>',1,'2026-09-16 21:31:16','2026-09-16 21:31:16'),
-(3,'Online terapi yüz yüze terapi kadar etkili mi?','<p>Alanyazındaki çalışmalar, uygun koşullar sağlandığında online terapinin yüz yüze terapiyle benzer etkinlikte olabildiğini göstermektedir. Sizin için en uygun yöntemi birlikte değerlendirebiliriz.</p>',1,'2026-09-16 21:31:16','2026-09-16 21:31:16'),
-(4,'Randevu almak için ne yapmalıyım?','<p>Sitedeki \"Randevu Al\" sayfasından size uygun gün ve saati seçerek talep oluşturabilir, ya da doğrudan WhatsApp üzerinden yazabilirsiniz.</p>',1,'2026-09-16 21:31:16','2026-09-16 21:31:16');
+(1,'Seanslar ne kadar sürüyor?','<p>Bireysel ve çift seansları genellikle 45-50 dakika sürer. Randevu sırasında size uygun süre ve sıklık birlikte planlanır.</p>',1,'2026-09-20 14:44:05','2026-09-20 14:44:05'),
+(2,'Görüştüklerimiz gizli kalır mı?','<p>Evet. Paylaştığınız bilgiler, yasal zorunluluk durumları dışında gizlilik ilkesi çerçevesinde korunur ve üçüncü kişilerle paylaşılmaz.</p>',1,'2026-09-20 14:44:05','2026-09-20 14:44:05'),
+(3,'Online terapi yüz yüze terapi kadar etkili mi?','<p>Alanyazındaki çalışmalar, uygun koşullar sağlandığında online terapinin yüz yüze terapiyle benzer etkinlikte olabildiğini göstermektedir. Sizin için en uygun yöntemi birlikte değerlendirebiliriz.</p>',1,'2026-09-20 14:44:05','2026-09-20 14:44:05'),
+(4,'Randevu almak için ne yapmalıyım?','<p>Sitedeki \"Randevu Al\" sayfasından size uygun gün ve saati seçerek talep oluşturabilir, ya da doğrudan WhatsApp üzerinden yazabilirsiniz.</p>',1,'2026-09-20 14:44:05','2026-09-20 14:44:05');
 /*!40000 ALTER TABLE `sss` ENABLE KEYS */;
 UNLOCK TABLES;
 DROP TABLE IF EXISTS `sss_categories`;
@@ -545,7 +549,7 @@ CREATE TABLE `sss_categories` (
 LOCK TABLES `sss_categories` WRITE;
 /*!40000 ALTER TABLE `sss_categories` DISABLE KEYS */;
 INSERT INTO `sss_categories` VALUES
-(1,'Genel Sorular','genel-sorular','2026-09-16 21:31:16','2026-09-16 21:31:16');
+(1,'Genel Sorular','genel-sorular','2026-09-20 14:44:05','2026-09-20 14:44:05');
 /*!40000 ALTER TABLE `sss_categories` ENABLE KEYS */;
 UNLOCK TABLES;
 DROP TABLE IF EXISTS `statics`;
@@ -614,6 +618,7 @@ CREATE TABLE `users` (
   `name` varchar(255) NOT NULL,
   `created_by` int(11) NOT NULL,
   `email` varchar(255) NOT NULL,
+  `role` varchar(255) NOT NULL DEFAULT 'yonetici',
   `email_verified_at` timestamp NULL DEFAULT NULL,
   `password` varchar(255) NOT NULL,
   `remember_token` varchar(100) DEFAULT NULL,
@@ -626,7 +631,7 @@ CREATE TABLE `users` (
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
 INSERT INTO `users` VALUES
-(1,'Merve Kalaycı',1,'merve@example.com',NULL,'$2y$10$m7ymbFes67cMr3Zkwp45ZOnQkDSXe.W0Pf.0ng3pPBKFHPl95z5V.',NULL,'2026-09-16 21:31:16','2026-09-16 21:31:16');
+(1,'Merve Kalaycı',1,'merve@example.com','yonetici',NULL,'$2y$10$khRCuGzfNFqV/WWT8QDTPOcDK3B9P9nAjczXoumYHOFjXeVRuORZ2',NULL,'2026-09-20 14:44:05','2026-09-20 14:44:05');
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
