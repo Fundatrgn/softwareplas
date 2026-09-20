@@ -90,6 +90,7 @@ class SettingController extends Controller
         $item->sms_api_key = $request->sms_api_key;
         $item->sms_api_secret = $request->sms_api_secret;
         $item->sms_sender_title = $request->sms_sender_title;
+        $item->reminder_hours_before = $request->reminder_hours_before ?: 24;
 
         try {
             $imageName = $this->uploadImage($request, 'image');

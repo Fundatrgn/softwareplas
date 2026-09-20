@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use App\Models\Appointment;
+use App\Models\Setting;
 use App\Services\AppointmentNotificationService;
 use Illuminate\Console\Command;
 use Illuminate\Support\Carbon;
@@ -19,13 +20,13 @@ use Illuminate\Support\Carbon;
  */
 class SendAppointmentReminders extends Command
 {
-    protected $signature = 'appointments:send-reminders {--hours=24 : Kaç saat sonrasına kadar olan randevular hatırlatılsın}';
+    protected $signature = 'appointments:send-reminders {--hours= : Kaç saat sonrasına kadar olan randevular hatırlatılsın (boşsa Ayarlar > Randevu Bildirimleri\'ndeki değer kullanılır)}';
 
     protected $description = 'Yaklaşan randevular için hatırlatma e-postası/SMS gönderir';
 
     public function handle(AppointmentNotificationService $notifier): int
     {
-        $hours = (int) $this->option('hours');
+        $hours = (int) ($this->option('hours') ?: (Setting::first()->reminder_hours_before ?? 24));
         $windowStart = Carbon::now();
         $windowEnd = Carbon::now()->addHours($hours);
 

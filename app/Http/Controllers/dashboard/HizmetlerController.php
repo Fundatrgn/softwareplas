@@ -45,6 +45,7 @@ class HizmetlerController extends Controller
             $imageName = $this->uploadImage($request);
             if ($imageName) {
                 $item->image = $imageName;
+                $this->resizeAndCropImage(public_path('images/' . $imageName), 800, 600);
             }
         } catch (\RuntimeException $e) {
             return redirect()->back()->withInput()->with('error', $e->getMessage());

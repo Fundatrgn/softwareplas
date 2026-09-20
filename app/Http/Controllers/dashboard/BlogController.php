@@ -46,6 +46,7 @@ class BlogController extends Controller
             $imageName = $this->uploadImage($request);
             if ($imageName) {
                 $item->image = $imageName;
+                $this->resizeAndCropImage(public_path('images/' . $imageName), 850, 480);
             }
         } catch (\RuntimeException $e) {
             return redirect()->back()->withInput()->with('error', $e->getMessage());

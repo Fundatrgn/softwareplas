@@ -4,6 +4,7 @@ namespace App\Http\Controllers\dashboard;
 
 use App\Http\Controllers\Controller;
 use App\Models\Patient;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 
 class PatientController extends Controller
@@ -38,6 +39,30 @@ class PatientController extends Controller
             'appointments' => $appointments,
             'gelmediSayisi' => $gelmediSayisi,
         ]);
+    }
+
+    /**
+     * Bir danışanın tüm randevu/seans geçmişini ve doktor notlarını
+     * PDF olarak indirir. "Telefon numarasıyla sorgulama" akışı: admin
+     * Danışanlar listesinde telefonla arar, danışana tıklar, detay
+     * sayfasındaki bu butondan raporu indirir.
+     */
+    public function pdfReport($id)
+    {
+        $patient = Patient::findOrFail($id);
+        $appointments = $patient->appointments()
+            ->with('service', 'psychologist')
+            ->orderByDesc('starts_at')
+            ->get();
+
+        $pdf = Pdf::loadView('dashboard.danisanlar.pdf-rapor', [
+            'patient' => $patient,
+            'appointments' => $appointments,
+        ])->setPaper('a4');
+
+        $dosyaAdi = 'danisan-raporu-' . \Illuminate\Support\Str::slug($patient->name) . '.pdf';
+
+        return $pdf->download($dosyaAdi);
     }
 
     public function edit($id)

@@ -108,6 +108,7 @@ Route::prefix('/admin')->middleware('auth')->group(function () {
     Route::post('/danisanlar/add', [PatientController::class, 'store']);
     Route::get('/danisanlar/add/{id}', [PatientController::class, 'edit'])->whereNumber('id');
     Route::get('/danisanlar/{id}', [PatientController::class, 'show'])->whereNumber('id');
+    Route::get('/danisanlar/{id}/pdf', [PatientController::class, 'pdfReport'])->whereNumber('id');
     // Danışanlar
 
     // Raporlar (CRM)

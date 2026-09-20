@@ -18,6 +18,9 @@
                     </nav>
                 </div>
                 <div class="ms-auto d-flex gap-2">
+                    <a href="/admin/danisanlar/{{ $patient->id }}/pdf" class="btn btn-outline-danger">
+                        <ion-icon name="document-text-outline"></ion-icon> PDF Rapor İndir
+                    </a>
                     <a href="/admin/danisanlar/add/{{ $patient->id }}" class="btn btn-outline-secondary">Düzenle</a>
                     <a href="/admin/randevular/ekle?tarih={{ now()->toDateString() }}" class="btn btn-primary">Yeni Randevu</a>
                 </div>

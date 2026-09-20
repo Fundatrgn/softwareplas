@@ -70,4 +70,80 @@ class Controller extends BaseController
 
         return $imageName;
     }
+
+    /**
+     * Yüklenen bir görseli, verilen genişlik/yükseklik oranına göre
+     * ortadan kırpıp yeniden boyutlandırır (CSS "object-fit: cover" ile
+     * aynı mantık). Blog/Hizmetler gibi kart görünümlerinde, danışan
+     * hangi boyutta/oranda bir fotoğraf yüklerse yüklesin, kartların
+     * hepsi sitede aynı boyutta ve düzgün görünsün diye kullanılır.
+     * Orijinal dosya boyutu ne olursa olsun sonuç her zaman
+     * $targetWidth x $targetHeight olur.
+     */
+    protected function resizeAndCropImage(string $absolutePath, int $targetWidth, int $targetHeight): void
+    {
+        if (! extension_loaded('gd') || ! File::exists($absolutePath)) {
+            return;
+        }
+
+        $info = @getimagesize($absolutePath);
+        if (! $info) {
+            return;
+        }
+
+        [$width, $height, $type] = $info;
+
+        try {
+            $source = match ($type) {
+                IMAGETYPE_JPEG => imagecreatefromjpeg($absolutePath),
+                IMAGETYPE_PNG => imagecreatefrompng($absolutePath),
+                IMAGETYPE_GIF => imagecreatefromgif($absolutePath),
+                IMAGETYPE_WEBP => function_exists('imagecreatefromwebp') ? imagecreatefromwebp($absolutePath) : null,
+                default => null, // svg ve desteklenmeyen türler kırpılmadan bırakılır
+            };
+        } catch (\Throwable $e) {
+            $source = null;
+        }
+
+        if (! $source) {
+            return;
+        }
+
+        // Kaynak üzerinde, hedef oranla eşleşen en büyük merkezi alanı seç.
+        $sourceRatio = $width / $height;
+        $targetRatio = $targetWidth / $targetHeight;
+
+        if ($sourceRatio > $targetRatio) {
+            $cropHeight = $height;
+            $cropWidth = (int) round($height * $targetRatio);
+        } else {
+            $cropWidth = $width;
+            $cropHeight = (int) round($width / $targetRatio);
+        }
+
+        $srcX = (int) round(($width - $cropWidth) / 2);
+        $srcY = (int) round(($height - $cropHeight) / 2);
+
+        $canvas = imagecreatetruecolor($targetWidth, $targetHeight);
+
+        if ($type === IMAGETYPE_PNG || $type === IMAGETYPE_GIF) {
+            imagealphablending($canvas, false);
+            imagesavealpha($canvas, true);
+            $transparent = imagecolorallocatealpha($canvas, 0, 0, 0, 127);
+            imagefilledrectangle($canvas, 0, 0, $targetWidth, $targetHeight, $transparent);
+        }
+
+        imagecopyresampled($canvas, $source, 0, 0, $srcX, $srcY, $targetWidth, $targetHeight, $cropWidth, $cropHeight);
+
+        match ($type) {
+            IMAGETYPE_JPEG => imagejpeg($canvas, $absolutePath, 88),
+            IMAGETYPE_PNG => imagepng($canvas, $absolutePath),
+            IMAGETYPE_GIF => imagegif($canvas, $absolutePath),
+            IMAGETYPE_WEBP => function_exists('imagewebp') ? imagewebp($canvas, $absolutePath, 88) : null,
+            default => null,
+        };
+
+        imagedestroy($source);
+        imagedestroy($canvas);
+    }
 }

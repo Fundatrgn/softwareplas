@@ -293,6 +293,15 @@
                                     <input type="text" class="form-control" name="sms_api_key" value="{{ $data->sms_api_key ?? '' }}" placeholder="Sağlayıcı bağlandığında doldurulacak">
                                 </div>
                                 <div class="col-md-6">
+                                    <label class="form-label">Hatırlatma Ne Kadar Önce Gönderilsin?</label>
+                                    <select class="form-select" name="reminder_hours_before">
+                                        @foreach([2 => '2 saat önce', 6 => '6 saat önce', 12 => '12 saat önce', 24 => '1 gün önce', 48 => '2 gün önce'] as $val => $label)
+                                            <option value="{{ $val }}" {{ ($data->reminder_hours_before ?? 24) == $val ? 'selected' : '' }}>{{ $label }}</option>
+                                        @endforeach
+                                    </select>
+                                    <div class="form-text">Otomatik hatırlatmanın çalışması için sunucuda cron'un kurulu olması gerekir (bkz. kurulum notları).</div>
+                                </div>
+                                <div class="col-md-6">
                                     <label class="form-label">SMS API Secret</label>
                                     <input type="password" class="form-control" name="sms_api_secret" value="{{ $data->sms_api_secret ?? '' }}" placeholder="Sağlayıcı bağlandığında doldurulacak">
                                 </div>
