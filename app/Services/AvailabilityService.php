@@ -165,4 +165,22 @@ class AvailabilityService
 
         return ! in_array($startsAt->format('H:i'), $this->bookedSlotsForDate($startsAt, $excludeAppointmentId), true);
     }
+
+    /**
+     * CRM'den admin/psikolog randevu saatini elle (sabit ızgaraya bağlı
+     * kalmadan, ör. 10:15 gibi) belirleyebilsin diye kullanılan gerçek
+     * çakışma kontrolü. isSlotAvailable()'ın aksine saatin önceden
+     * tanımlı slotlardan biri olmasını ŞART koşmaz; sadece o saat
+     * aralığında başka "aktif" bir randevu olup olmadığına bakar.
+     */
+    public function hasConflict(Carbon $startsAt, Carbon $endsAt, ?int $excludeAppointmentId = null): bool
+    {
+        $query = Appointment::blocking()->overlapping($startsAt, $endsAt);
+
+        if ($excludeAppointmentId) {
+            $query->where('id', '!=', $excludeAppointmentId);
+        }
+
+        return $query->exists();
+    }
 }

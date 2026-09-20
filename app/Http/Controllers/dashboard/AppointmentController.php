@@ -113,6 +113,7 @@ class AppointmentController extends Controller
             'psikologlar' => User::orderBy('name')->get(),
             'tarih' => $request->query('tarih'),
             'saat' => $request->query('saat'),
+            'varsayilanSure' => (new AvailabilityService(Setting::first()))->slotDuration(),
         ]);
     }
 
@@ -147,6 +148,7 @@ class AppointmentController extends Controller
             'user_id' => 'nullable|exists:users,id',
             'tarih' => 'required|date',
             'saat' => 'required|date_format:H:i',
+            'sure' => 'nullable|integer|min:10|max:240',
             'not' => 'nullable|string|max:2000',
             'source' => 'required|in:panel,yuz_yuze',
             'tekrar_hafta' => 'nullable|integer|min:1|max:12',
@@ -156,9 +158,13 @@ class AppointmentController extends Controller
 
         $settings = Setting::first();
         $availability = new AvailabilityService($settings);
+        $duration = (int) ($request->sure ?: $availability->slotDuration());
 
-        if (! $availability->isSlotAvailable($startsAt)) {
-            return redirect()->back()->withInput()->with('error', 'Bu saat dolu ya da uygun değil. Lütfen başka bir saat seçin.');
+        // CRM'den randevu açarken saat sabit ızgaraya bağlı kalmaz (admin
+        // istediği saati elle girebilir, ör. 10:15); sadece gerçek bir
+        // çakışma olup olmadığına bakılır.
+        if ($availability->hasConflict($startsAt, $startsAt->copy()->addMinutes($duration))) {
+            return redirect()->back()->withInput()->with('error', 'Bu saat aralığında başka bir randevu var. Lütfen farklı bir saat seçin.');
         }
 
         if ($request->patient_id) {
@@ -183,7 +189,6 @@ class AppointmentController extends Controller
             }
         }
 
-        $duration = $availability->slotDuration();
         $tekrarHafta = (int) ($request->tekrar_hafta ?: 1);
 
         $ilkRandevu = null;
@@ -193,8 +198,8 @@ class AppointmentController extends Controller
         for ($i = 0; $i < $tekrarHafta; $i++) {
             $bu = $startsAt->copy()->addWeeks($i);
 
-            if ($i > 0 && ! $availability->isSlotAvailable($bu)) {
-                $atlanan[] = $bu->translatedFormat('d.m.Y H:i') . ' (bu saat dolu/uygun değil)';
+            if ($i > 0 && $availability->hasConflict($bu, $bu->copy()->addMinutes($duration))) {
+                $atlanan[] = $bu->translatedFormat('d.m.Y H:i') . ' (bu saat aralığında başka randevu var)';
                 continue;
             }
 
@@ -238,6 +243,40 @@ class AppointmentController extends Controller
         $appointment = Appointment::with('patient', 'service', 'psychologist', 'notificationLogs')->findOrFail($id);
 
         return view('dashboard.randevular.show', ['appointment' => $appointment]);
+    }
+
+    /**
+     * Var olan bir randevuyu farklı bir gün/saate taşır (danışan aynı
+     * kalır). Sabit ızgaraya bağlı değildir; admin istediği saati elle
+     * girebilir, sadece gerçek bir çakışma engellenir.
+     */
+    public function reschedule(Request $request, $id, AppointmentNotificationService $notifier)
+    {
+        $appointment = Appointment::findOrFail($id);
+
+        $request->validate([
+            'tarih' => 'required|date',
+            'saat' => 'required|date_format:H:i',
+            'sure' => 'nullable|integer|min:10|max:240',
+        ]);
+
+        $yeniBaslangic = Carbon::parse($request->tarih . ' ' . $request->saat);
+        $sure = (int) ($request->sure ?: $appointment->duration_minutes);
+        $yeniBitis = $yeniBaslangic->copy()->addMinutes($sure);
+
+        $availability = new AvailabilityService(Setting::first());
+        if ($availability->hasConflict($yeniBaslangic, $yeniBitis, $appointment->id)) {
+            return redirect()->back()->with('error', 'Bu saat aralığında başka bir randevu var. Lütfen farklı bir saat seçin.');
+        }
+
+        $appointment->starts_at = $yeniBaslangic;
+        $appointment->ends_at = $yeniBitis;
+        $appointment->duration_minutes = $sure;
+        $appointment->save();
+
+        $notifier->notifyStatusChanged($appointment);
+
+        return redirect('/admin/randevular/' . $appointment->id)->with('success', 'Randevu ' . $yeniBaslangic->translatedFormat('d.m.Y H:i') . ' tarihine taşındı.');
     }
 
     public function updateStatus(Request $request, $id, AppointmentNotificationService $notifier)

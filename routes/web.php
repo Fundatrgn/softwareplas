@@ -98,6 +98,7 @@ Route::prefix('/admin')->middleware('auth')->group(function () {
     Route::post('/randevular', [DashboardAppointmentController::class, 'store']);
     Route::get('/randevular/{id}', [DashboardAppointmentController::class, 'show'])->whereNumber('id');
     Route::post('/randevular/{id}/durum', [DashboardAppointmentController::class, 'updateStatus'])->whereNumber('id');
+    Route::post('/randevular/{id}/tasi', [DashboardAppointmentController::class, 'reschedule'])->whereNumber('id');
     // Randevular
 
     // Danışanlar (CRM)

@@ -63,22 +63,30 @@
                                 </select>
                             </div>
 
-                            <div class="col-md-4">
+                            <div class="col-md-3">
                                 <label class="form-label">Tarih *</label>
                                 <input type="date" class="form-control" name="tarih" id="tarih" required value="{{ old('tarih', $tarih) }}" min="{{ \Carbon\Carbon::today()->toDateString() }}">
                             </div>
-                            <div class="col-md-4">
+                            <div class="col-md-3">
                                 <label class="form-label">Saat *</label>
-                                <select class="form-select" name="saat" id="saat" required>
-                                    <option value="">Önce tarih seçin</option>
-                                </select>
+                                <input type="time" class="form-control" name="saat" id="saat" required value="{{ old('saat', $saat) }}" step="300">
+                                <div class="form-text">İstediğiniz saati serbestçe girebilirsiniz (ör. 10:15); sabit bir saat listesiyle sınırlı değildir.</div>
                             </div>
-                            <div class="col-md-4">
+                            <div class="col-md-3">
+                                <label class="form-label">Süre (dakika)</label>
+                                <input type="number" class="form-control" name="sure" id="sure" min="10" max="240" step="5" placeholder="{{ $varsayilanSure }}" value="{{ old('sure') }}">
+                                <div class="form-text">Boş bırakılırsa varsayılan ({{ $varsayilanSure }} dk) kullanılır.</div>
+                            </div>
+                            <div class="col-md-3">
                                 <label class="form-label">Randevu Kaynağı *</label>
                                 <select class="form-select" name="source" required>
                                     <option value="panel">Planlı (Panelden)</option>
                                     <option value="yuz_yuze">Yüz Yüze (Kurum Ziyareti)</option>
                                 </select>
+                            </div>
+
+                            <div class="col-md-12" id="gun-durum-alani" style="display:none;">
+                                <div class="alert alert-light border small mb-0" id="gun-durum-metni"></div>
                             </div>
 
                             @if(count($psikologlar))
@@ -129,7 +137,9 @@
         var phoneInput = document.getElementById('phone');
         var emailInput = document.getElementById('email');
         var tarihInput = document.getElementById('tarih');
-        var saatSelect = document.getElementById('saat');
+        var saatInput = document.getElementById('saat');
+        var gunDurumAlani = document.getElementById('gun-durum-alani');
+        var gunDurumMetni = document.getElementById('gun-durum-metni');
 
         var zamanlayici = null;
         aramaInput.addEventListener('input', function () {
@@ -161,44 +171,27 @@
             }, 250);
         });
 
-        function saatleriYukle() {
+        function gunDurumunuGoster() {
             var tarih = tarihInput.value;
-            saatSelect.innerHTML = '<option value="">Yükleniyor...</option>';
-            if (!tarih) { saatSelect.innerHTML = '<option value="">Önce tarih seçin</option>'; return; }
+            if (!tarih) { gunDurumAlani.style.display = 'none'; return; }
 
             fetch('/admin/randevular/gun?tarih=' + tarih)
                 .then(function (r) { return r.json(); })
                 .then(function (data) {
-                    saatSelect.innerHTML = '';
+                    gunDurumAlani.style.display = 'block';
                     if (data.closed) {
-                        saatSelect.innerHTML = '<option value="">Bu gün kapalı</option>';
+                        gunDurumMetni.textContent = 'Bu gün klinik normal çalışma saatlerine göre kapalı görünüyor. Yine de dilerseniz bu tarihe randevu ekleyebilirsiniz.';
                         return;
                     }
-                    var bosVar = false;
-                    data.slots.forEach(function (slot) {
-                        var opt = document.createElement('option');
-                        opt.value = slot.time;
-                        opt.textContent = slot.time + (slot.available ? '' : ' (dolu)');
-                        opt.disabled = !slot.available;
-                        if (slot.available) bosVar = true;
-                        saatSelect.appendChild(opt);
-                    });
-                    if (!bosVar) {
-                        var uyari = document.createElement('option');
-                        uyari.value = '';
-                        uyari.textContent = 'Bu gün için müsait saat yok';
-                        saatSelect.prepend(uyari);
-                    }
-
-                    @if($saat)
-                        var onceden = "{{ $saat }}";
-                        if (onceden) saatSelect.value = onceden;
-                    @endif
+                    var dolular = data.slots.filter(function (s) { return !s.available; }).map(function (s) { return s.time; });
+                    gunDurumMetni.textContent = dolular.length
+                        ? ('Bu günde dolu/geçmiş saatler: ' + dolular.join(', '))
+                        : 'Bu gün için henüz hiç randevu yok, istediğiniz saati girebilirsiniz.';
                 });
         }
 
-        tarihInput.addEventListener('change', saatleriYukle);
-        if (tarihInput.value) saatleriYukle();
+        tarihInput.addEventListener('change', gunDurumunuGoster);
+        if (tarihInput.value) gunDurumunuGoster();
     })();
     </script>
 @endsection

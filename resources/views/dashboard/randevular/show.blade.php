@@ -89,6 +89,31 @@
                             </form>
                         </div>
                     </div>
+
+                    <div class="card">
+                        <div class="card-body">
+                            <h6>Randevuyu Yeniden Planla</h6>
+                            <p class="text-muted small">Danışan aynı kalır, sadece gün/saat değişir. İstediğiniz saati serbestçe girebilirsiniz (sabit bir saat listesiyle sınırlı değildir); sadece gerçek bir çakışma engellenir.</p>
+                            <form method="POST" action="/admin/randevular/{{ $appointment->id }}/tasi">
+                                @csrf
+                                <div class="row g-2">
+                                    <div class="col-md-4">
+                                        <label class="form-label">Yeni Tarih</label>
+                                        <input type="date" class="form-control" name="tarih" required value="{{ $appointment->starts_at->toDateString() }}">
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label class="form-label">Yeni Saat</label>
+                                        <input type="time" class="form-control" name="saat" required value="{{ $appointment->starts_at->format('H:i') }}" step="300">
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label class="form-label">Süre (dk)</label>
+                                        <input type="number" class="form-control" name="sure" min="10" max="240" step="5" value="{{ $appointment->duration_minutes }}">
+                                    </div>
+                                </div>
+                                <button type="submit" class="btn btn-outline-primary mt-3">Randevuyu Taşı</button>
+                            </form>
+                        </div>
+                    </div>
                 </div>
 
                 <div class="col-lg-5">
