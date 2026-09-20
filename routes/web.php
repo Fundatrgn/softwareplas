@@ -8,6 +8,7 @@ use App\Http\Controllers\dashboard\BlogCategoryController;
 use App\Http\Controllers\dashboard\BlogController;
 use App\Http\Controllers\dashboard\CkeditorController;
 use App\Http\Controllers\dashboard\ContactController;
+use App\Http\Controllers\dashboard\EmailSettingController;
 use App\Http\Controllers\dashboard\FooterMenuController;
 use App\Http\Controllers\dashboard\PatientController;
 use App\Http\Controllers\dashboard\ReportController;
@@ -206,6 +207,11 @@ Route::prefix('/admin')->middleware(['auth', 'role:yonetici'])->group(function (
     Route::post('/ayarlar/add', [DashboardSettingController::class, 'store']);
     Route::get('/ayarlar/del/{id}', [DashboardSettingController::class, 'del']);
     // ayarlar
+
+    // E-posta Ayarları (randevu onay/hatırlatma e-postaları)
+    Route::get('/email-ayarlar', [EmailSettingController::class, 'index']);
+    Route::post('/email-ayarlar', [EmailSettingController::class, 'store']);
+    Route::get('/email-ayarlar/onizleme', [EmailSettingController::class, 'preview']);
     // ayarlar
     Route::get('/contact', [ContactController::class, 'index']);
     Route::get('/contact/add', [ContactController::class, 'add']);

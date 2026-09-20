@@ -3,12 +3,12 @@
     <div class="page-content-wrapper">
         <div class="page-content">
             <div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
-                <div class="breadcrumb-title pe-3">Footer Menü</div>
+                <div class="breadcrumb-title pe-3">Sayfa Sonu</div>
                 <div class="ps-3">
                     <nav aria-label="breadcrumb">
                         <ol class="breadcrumb mb-0 p-0 align-items-center">
                             <li class="breadcrumb-item"><a href="javascript:;"><ion-icon name="home-outline"></ion-icon></a></li>
-                            <li class="breadcrumb-item active" aria-current="page">Footer Menü</li>
+                            <li class="breadcrumb-item active" aria-current="page">Sayfa Sonu</li>
                         </ol>
                     </nav>
                 </div>
@@ -24,7 +24,7 @@
             <div class="card mb-3">
                 <div class="card-body">
                     <h6>Bu Menünün Başlığı</h6>
-                    <p class="text-muted small">Sitenin footer (alt) bölümünde "Hizmetlerimiz" sekmesinin yanında görünecek yeni sütunun başlığı. Örn: "Kurumsal", "Sayfalar".</p>
+                    <p class="text-muted small">Sitenin sayfa sonu (footer) bölümünde "Hizmetlerimiz" sekmesinin yanında görünecek yeni sütunun başlığı. Örn: "Kurumsal", "Sayfalar".</p>
                     <form method="POST" action="/admin/footer-menu/baslik" class="row g-2">
                         @csrf
                         <div class="col-md-8">
@@ -34,14 +34,14 @@
                             <button type="submit" class="btn btn-primary w-100">Başlığı Kaydet</button>
                         </div>
                     </form>
-                    <div class="form-text mt-2">Başlık boş bırakılırsa, hiç bağlantı eklenmemiş olsa bile bu sütun footer'da görünmez.</div>
+                    <div class="form-text mt-2">Başlık boş bırakılırsa, hiç bağlantı eklenmemiş olsa bile bu sütun sayfa sonunda görünmez.</div>
                 </div>
             </div>
 
             <div class="card">
                 <div class="card-body">
                     <h6>Bağlantılar</h6>
-                    <p class="text-muted small">Bu listedeki bağlantılar, yukarıdaki başlık altında sırasıyla footer'da görünür.</p>
+                    <p class="text-muted small">Bu listedeki bağlantılar, yukarıdaki başlık altında sırasıyla sayfa sonunda görünür.</p>
                     <div class="table-responsive">
                         <table class="table table-striped align-middle">
                             <thead>

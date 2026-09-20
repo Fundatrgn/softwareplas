@@ -276,14 +276,8 @@
 
                                 <div class="col-md-12 mt-4">
                                     <hr>
-                                    <h5 class="mb-1">Randevu Bildirimleri</h5>
-                                    <p class="text-muted mb-3">Randevu oluşturulduğunda/durumu değiştiğinde otomatik e-posta ve SMS gönderimi. SMS için henüz gerçek bir sağlayıcı bağlı değil; "Log" seçiliyken mesajlar sadece sunucu loguna yazılır (test amaçlı alt yapı).</p>
-                                </div>
-                                <div class="col-md-3">
-                                    <div class="form-check form-switch mt-2">
-                                        <input class="form-check-input" type="checkbox" role="switch" id="notify_email_enabled" name="notify_email_enabled" value="1" {{ ($data->notify_email_enabled ?? true) ? 'checked' : '' }}>
-                                        <label class="form-check-label" for="notify_email_enabled">E-posta bildirimleri</label>
-                                    </div>
+                                    <h5 class="mb-1">SMS Bildirimleri</h5>
+                                    <p class="text-muted mb-3">Randevu oluşturulduğunda/durumu değiştiğinde otomatik SMS gönderimi. Henüz gerçek bir sağlayıcı bağlı değil; "Log" seçiliyken mesajlar sadece sunucu loguna yazılır (test amaçlı alt yapı). <strong>E-posta bildirimleri ve hatırlatma zamanlaması artık <a href="/admin/email-ayarlar">E-posta Ayarları</a> sayfasından yönetiliyor.</strong></p>
                                 </div>
                                 <div class="col-md-3">
                                     <div class="form-check form-switch mt-2">
@@ -301,18 +295,9 @@
                                     <label class="form-label">SMS Gönderici Başlığı</label>
                                     <input type="text" class="form-control" name="sms_sender_title" value="{{ $data->sms_sender_title ?? '' }}" placeholder="Örn: MERVEPSK">
                                 </div>
-                                <div class="col-md-6">
+                                <div class="col-md-3">
                                     <label class="form-label">SMS API Key</label>
                                     <input type="text" class="form-control" name="sms_api_key" value="{{ $data->sms_api_key ?? '' }}" placeholder="Sağlayıcı bağlandığında doldurulacak">
-                                </div>
-                                <div class="col-md-6">
-                                    <label class="form-label">Hatırlatma Ne Kadar Önce Gönderilsin?</label>
-                                    <select class="form-select" name="reminder_hours_before">
-                                        @foreach([2 => '2 saat önce', 6 => '6 saat önce', 12 => '12 saat önce', 24 => '1 gün önce', 48 => '2 gün önce'] as $val => $label)
-                                            <option value="{{ $val }}" {{ ($data->reminder_hours_before ?? 24) == $val ? 'selected' : '' }}>{{ $label }}</option>
-                                        @endforeach
-                                    </select>
-                                    <div class="form-text">Otomatik hatırlatmanın çalışması için sunucuda cron'un kurulu olması gerekir (bkz. kurulum notları).</div>
                                 </div>
                                 <div class="col-md-6">
                                     <label class="form-label">SMS API Secret</label>

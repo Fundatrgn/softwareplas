@@ -141,7 +141,7 @@
                         <div class="parent-icon">
                             <ion-icon name="link-outline"></ion-icon>
                         </div>
-                        <div class="menu-title">Footer Menü</div>
+                        <div class="menu-title">Sayfa Sonu</div>
                     </a>
                 </li>
                 <li>
@@ -319,6 +319,10 @@
                 <ul>
                     <li> <a href="/admin/ayarlar">
                             <ion-icon name="ellipse-outline"></ion-icon>Site Ayarları
+                        </a>
+                    </li>
+                    <li> <a href="/admin/email-ayarlar">
+                            <ion-icon name="ellipse-outline"></ion-icon>E-posta Ayarları
                         </a>
                     </li>
                     {{-- <li> <a href="/admin/static">

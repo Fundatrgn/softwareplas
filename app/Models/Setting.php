@@ -14,5 +14,6 @@ class Setting extends Model
         'closed_dates' => 'array',
         'notify_email_enabled' => 'boolean',
         'notify_sms_enabled' => 'boolean',
+        'reminder_intervals_days' => 'array',
     ];
 }

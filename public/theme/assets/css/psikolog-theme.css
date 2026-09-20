@@ -296,6 +296,29 @@ input, textarea, select {
 }
 
 /* =====================================================================
+   Blog Kartı Görsel Boyutu Düzeltmesi (Anasayfa "Son Postlarımız" ve
+   Blog listesi): Hizmet kartlarındaki ile aynı sorun — kart görseli
+   için sabit bir yükseklik/oran tanımlı değildi, admin panelinden
+   yüklenen görselin kendi en-boy oranına göre kart boyu değişip
+   kartlar arasında düzensiz görünüme yol açıyordu. Artık hangi görsel
+   yüklenirse yüklensin, kart görseli her zaman tutarlı bir yükseklikte
+   ve orantılı kırpılarak gösteriliyor.
+   ===================================================================== */
+.ori-blog-inner-item .blog-inner-img {
+  height: 260px !important;
+}
+.ori-blog-inner-item .blog-inner-img img {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+}
+@media screen and (max-width: 480px) {
+  .ori-blog-inner-item .blog-inner-img {
+    height: 220px !important;
+  }
+}
+
+/* =====================================================================
    Dokunmatik Cihazlarda Dokununca Kayma Sorunu: Kartın kendisi, fare
    ile üzerine gelince (hover) çeşitli geçiş efektleri (karartma katmanı
    genişlemesi, ok simgesinin yeniden konumlanması) tetikleyecek şekilde

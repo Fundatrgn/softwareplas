@@ -9,10 +9,13 @@ use Illuminate\Console\Command;
 use Illuminate\Support\Carbon;
 
 /**
- * Ertesi gün randevusu olan danışanlara otomatik hatırlatma (e-posta/SMS)
- * gönderir. Zamanlayıcı (app/Console/Kernel.php) tarafından her saat
- * başı tetiklenir; bir randevu için hatırlatma sadece bir kez gönderilir
- * (reminder_sent_at alanı işaretlenir).
+ * Yaklaşan randevusu olan danışanlara, admin panelinde (E-posta Ayarları)
+ * seçilen her bir zamanlama için (ör. "7 gün kala" VE "1 gün kala" aynı
+ * anda) otomatik hatırlatma (e-posta/SMS) gönderir. Zamanlayıcı
+ * (app/Console/Kernel.php) tarafından her saat başı tetiklenir; her
+ * randevu + zamanlama kombinasyonu için hatırlatma sadece bir kez
+ * gönderilir (notification_logs tablosunda "hatirlatma_{gun}gun" tipiyle
+ * kaydedilmiş olması kontrol edilir).
  *
  * Bu komutun gerçekten çalışması için sunucuda Laravel scheduler'ın
  * cron'a bağlanmış olması gerekir:
@@ -20,26 +23,48 @@ use Illuminate\Support\Carbon;
  */
 class SendAppointmentReminders extends Command
 {
-    protected $signature = 'appointments:send-reminders {--hours= : Kaç saat sonrasına kadar olan randevular hatırlatılsın (boşsa Ayarlar > Randevu Bildirimleri\'ndeki değer kullanılır)}';
+    protected $signature = 'appointments:send-reminders {--gun= : Sadece belirli bir gün önce (ör. 1) için gönder; boşsa Ayarlar > E-posta Ayarları\'ndaki tüm seçili zamanlamalar kullanılır}';
 
-    protected $description = 'Yaklaşan randevular için hatırlatma e-postası/SMS gönderir';
+    protected $description = 'Yaklaşan randevular için (admin panelinde seçilen tüm zamanlamalarda) hatırlatma e-postası/SMS gönderir';
 
     public function handle(AppointmentNotificationService $notifier): int
     {
-        $hours = (int) ($this->option('hours') ?: (Setting::first()->reminder_hours_before ?? 24));
-        $windowStart = Carbon::now();
-        $windowEnd = Carbon::now()->addHours($hours);
+        $settings = Setting::first();
 
-        $appointments = Appointment::whereNull('reminder_sent_at')
-            ->whereIn('status', [Appointment::STATUS_PENDING, Appointment::STATUS_CONFIRMED])
-            ->whereBetween('starts_at', [$windowStart, $windowEnd])
-            ->get();
+        $gunSecenekleri = $this->option('gun')
+            ? [(int) $this->option('gun')]
+            : ($settings->reminder_intervals_days ?: [1]);
 
-        foreach ($appointments as $appointment) {
-            $notifier->notifyReminder($appointment);
+        $toplamGonderilen = 0;
+
+        foreach ($gunSecenekleri as $gunOnce) {
+            $gunOnce = (int) $gunOnce;
+            if ($gunOnce < 1) {
+                continue;
+            }
+
+            $type = "hatirlatma_{$gunOnce}gun";
+            $hedefSaat = Carbon::now()->addDays($gunOnce);
+            // Saatlik cron'a uygun 1 saatlik dar bir pencere: aynı randevu
+            // için bu zamanlama daha önce hiç kontrol edilmemiş gibi
+            // davranıp gereksiz yere her çalıştırmada taranmasını önler.
+            $windowStart = $hedefSaat->copy()->subHour();
+            $windowEnd = $hedefSaat;
+
+            $appointments = Appointment::whereIn('status', [Appointment::STATUS_PENDING, Appointment::STATUS_CONFIRMED])
+                ->whereBetween('starts_at', [$windowStart, $windowEnd])
+                ->whereDoesntHave('notificationLogs', function ($q) use ($type) {
+                    $q->where('type', $type);
+                })
+                ->get();
+
+            foreach ($appointments as $appointment) {
+                $notifier->notifyReminder($appointment, $gunOnce);
+                $toplamGonderilen++;
+            }
         }
 
-        $this->info("{$appointments->count()} randevu için hatırlatma gönderildi.");
+        $this->info("{$toplamGonderilen} randevu için hatırlatma gönderildi.");
 
         return self::SUCCESS;
     }

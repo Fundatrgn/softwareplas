@@ -7,11 +7,11 @@
     <div class="page-content-wrapper">
         <div class="page-content">
             <div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
-                <div class="breadcrumb-title pe-3">Footer Bağlantısı</div>
+                <div class="breadcrumb-title pe-3">Sayfa Sonu Bağlantısı</div>
                 <div class="ps-3">
                     <nav aria-label="breadcrumb">
                         <ol class="breadcrumb mb-0 p-0 align-items-center">
-                            <li class="breadcrumb-item"><a href="/admin/footer-menu">Footer Menü</a></li>
+                            <li class="breadcrumb-item"><a href="/admin/footer-menu">Sayfa Sonu</a></li>
                             <li class="breadcrumb-item active">{{ isset($data) ? 'Düzenle' : 'Yeni Bağlantı' }}</li>
                         </ol>
                     </nav>

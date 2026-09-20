@@ -54,14 +54,24 @@ class AppointmentNotificationService
             "Sayın {$this->patientName($appointment)}, {$appointment->starts_at->format('d.m.Y H:i')} tarihli randevunuzun durumu: {$appointment->statusLabel()}.");
     }
 
-    public function notifyReminder(Appointment $appointment): void
+    /**
+     * @param int $gunOnce Randevudan kaç gün önce gönderildiği (ör. 1, 7).
+     *                     notification_logs'ta bu bilgiye göre ayrı bir
+     *                     "type" ile kaydedilir, böylece aynı randevu için
+     *                     farklı hatırlatma zamanlamaları birbirini
+     *                     engellemez/tekrar etmez.
+     */
+    public function notifyReminder(Appointment $appointment, int $gunOnce = 1): void
     {
         $settings = Setting::first();
+        $type = "hatirlatma_{$gunOnce}gun";
 
-        $this->sendEmail($appointment, $settings, 'hatirlatma', 'Randevu Hatırlatması',
-            'Yaklaşan randevunuzu hatırlatmak isteriz.');
-        $this->sendSms($appointment, $settings, 'hatirlatma',
-            "Sayın {$this->patientName($appointment)}, {$appointment->starts_at->format('d.m.Y H:i')} tarihinde randevunuz bulunmaktadır.");
+        $gunMetni = $gunOnce === 1 ? '1 gün' : "{$gunOnce} gün";
+
+        $this->sendEmail($appointment, $settings, $type, 'Randevu Hatırlatması',
+            "Randevunuza {$gunMetni} kaldı. Yaklaşan randevunuzu hatırlatmak isteriz.");
+        $this->sendSms($appointment, $settings, $type,
+            "Sayın {$this->patientName($appointment)}, {$appointment->starts_at->format('d.m.Y H:i')} tarihinde randevunuz bulunmaktadır ({$gunMetni} kaldı).");
 
         $appointment->update(['reminder_sent_at' => now()]);
     }
