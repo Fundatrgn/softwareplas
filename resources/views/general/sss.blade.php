@@ -28,11 +28,11 @@
         @forelse($data['sorular'] as $item)
             <div class="ori-faq-item" style="margin-bottom: 18px; border-radius: 10px; overflow: hidden; background-color: var(--dark-surface);">
                 <button type="button" class="ori-faq-question" data-faq-toggle
-                    style="width:100%; text-align:left; padding:22px 26px; background:none; border:none; color:#fff; font-weight:700; font-size:18px; display:flex; justify-content:space-between; align-items:center; cursor:pointer;">
+                    style="width:100%; text-align:left; padding:22px 26px; background:none; border:none; color:var(--heading-color); font-weight:700; font-size:18px; display:flex; justify-content:space-between; align-items:center; cursor:pointer;">
                     <span>{{ $item->title }}</span>
                     <i class="fal fa-chevron-down"></i>
                 </button>
-                <div class="ori-faq-answer" style="display:none; padding: 0 26px 26px; color:#E7E4DA;">
+                <div class="ori-faq-answer" style="display:none; padding: 0 26px 26px; color:var(--body-color);">
                     {!! $item->content !!}
                 </div>
             </div>
