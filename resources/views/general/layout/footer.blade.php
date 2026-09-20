@@ -84,7 +84,7 @@
         </div>
         <div class="ori-footer-copyright ori-footer-copyright-refresh d-flex justify-content-between align-items-center">
             <div class="ori-copyright-text">
-                © {{ date('Y') }} All Right: Yunuscan ZEYBEK | Tüm Hakları Saklıdır
+                © {{ date('Y') }} {{ $settings->footer_copyright_text ?: 'All Right: Yunuscan ZEYBEK | Tüm Hakları Saklıdır' }}
             </div>
             <div class="ori-copyright-social">
                 <a target="_blank" href="{{ $settings->instagram ?? '#' }}"><i class="fab fa-instagram"></i></a>

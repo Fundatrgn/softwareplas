@@ -49,6 +49,9 @@ class SettingController extends Controller
         $item->email = $request->email ?? '';
         $item->address = $request->address ?? '';
 
+        // Footer Ayarları
+        $item->footer_copyright_text = $request->footer_copyright_text ?: null;
+
         // Site Görünümü / Renkler
         $item->accent_color = $request->accent_color ?: '#D9784B';
         $item->secondary_color = $request->secondary_color ?: '#7FA36F';

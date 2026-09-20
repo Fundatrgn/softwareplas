@@ -141,6 +141,19 @@
 
                                 <div class="col-md-12 mt-4">
                                     <hr>
+                                    <h5 class="mb-1">Footer Ayarları</h5>
+                                    <p class="text-muted mb-3">Sitenin en altındaki footer bölümü şu bilgileri kullanır: yukarıdaki <strong>Logo</strong>, <strong>Telefon / E-posta / Adres</strong> ve <strong>Sosyal Medya</strong> alanları footer'da otomatik görünür. Aşağıdan sadece footer'a özel telif hakkı yazısını düzenleyebilirsiniz.</p>
+                                </div>
+                                <div class="col-md-12">
+                                    <label for="footer_copyright_text" class="form-label">Footer Telif Hakkı Yazısı</label>
+                                    <input type="text" class="form-control" id="footer_copyright_text" name="footer_copyright_text"
+                                        placeholder="© {{ date('Y') }} All Right: Yunuscan ZEYBEK | Tüm Hakları Saklıdır"
+                                        value="{{ $data->footer_copyright_text ?? '' }}">
+                                    <div class="form-text">Boş bırakırsanız varsayılan yazı ("© {{ date('Y') }} All Right: Yunuscan ZEYBEK | Tüm Hakları Saklıdır") kullanılır. Yıl her zaman otomatik güncel yıl olarak eklenir, siz sadece geri kalan kısmı yazın (örn: "All Right: Firma Adı | Tüm Hakları Saklıdır").</div>
+                                </div>
+
+                                <div class="col-md-12 mt-4">
+                                    <hr>
                                     <h5 class="mb-1">Site Görünümü / Renkler</h5>
                                     <p class="text-muted mb-3">Aşağıdaki renkleri değiştirdiğinde sitedeki tüm ilgili butonlar, başlıklar ve yazılar otomatik olarak güncellenir. Herhangi bir kod bilgisi gerekmez.</p>
                                 </div>
