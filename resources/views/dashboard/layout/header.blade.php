@@ -137,6 +137,14 @@
                     </ul>
                 </li>
                 <li>
+                    <a href="/admin/footer-menu">
+                        <div class="parent-icon">
+                            <ion-icon name="link-outline"></ion-icon>
+                        </div>
+                        <div class="menu-title">Footer Menü</div>
+                    </a>
+                </li>
+                <li>
                     <a class="has-arrow" href="javascript:;">
                         <div class="parent-icon">
                             <ion-icon name="leaf-outline"></ion-icon>

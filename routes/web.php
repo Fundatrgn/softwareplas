@@ -8,6 +8,7 @@ use App\Http\Controllers\dashboard\BlogCategoryController;
 use App\Http\Controllers\dashboard\BlogController;
 use App\Http\Controllers\dashboard\CkeditorController;
 use App\Http\Controllers\dashboard\ContactController;
+use App\Http\Controllers\dashboard\FooterMenuController;
 use App\Http\Controllers\dashboard\PatientController;
 use App\Http\Controllers\dashboard\ReportController;
 use App\Http\Controllers\dashboard\HakkimizdaController;
@@ -145,6 +146,14 @@ Route::prefix('/admin')->middleware(['auth', 'role:yonetici'])->group(function (
     Route::post('/slider/add', [SliderController::class, 'store']);
     Route::get('/slider/del/{id}', [SliderController::class, 'del']);
     Route::post('/slider/hiz', [SliderController::class, 'updateSpeed']);
+
+    // Footer Menü (Hizmetlerimiz'in yanındaki üçüncü bağlantı listesi)
+    Route::get('/footer-menu', [FooterMenuController::class, 'index']);
+    Route::get('/footer-menu/add', [FooterMenuController::class, 'add']);
+    Route::get('/footer-menu/add/{id}', [FooterMenuController::class, 'edit']);
+    Route::post('/footer-menu/add', [FooterMenuController::class, 'store']);
+    Route::get('/footer-menu/del/{id}', [FooterMenuController::class, 'del']);
+    Route::post('/footer-menu/baslik', [FooterMenuController::class, 'updateBaslik']);
     // Referanslar (Portfolyo) özelliği bu site için tamamen kaldırıldı.
     // tarihce
     Route::get('/tarihce', [TarihceController::class, 'index']);

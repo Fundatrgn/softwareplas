@@ -23,50 +23,31 @@
                         <div class="menu-location-widget ul-li-block">
                             <h2 class="widget-title text-uppercase">Hizmetlerimiz</h2>
                             <ul>
-                                @php
-                                    $count1 = 0;
-                                @endphp
-                                @foreach ($services_categories as $item)
-                                    @if ($count1 < 4)
-                                        <li>
-                                            <a
-                                                href="/hizmetler/{{ $item->id ?? '' }}/{{ $item->slug ?? '' }}">{{ $item->title ?? '' }}</a>
-                                        </li>
-                                    @endif
-
-                                    @php
-                                        $count1++;
-                                    @endphp
+                                @foreach ($services_categories->take(8) as $item)
+                                    <li>
+                                        <a href="/hizmetler/{{ $item->id ?? '' }}/{{ $item->slug ?? '' }}">{{ $item->title ?? '' }}</a>
+                                    </li>
                                 @endforeach
-
                             </ul>
                         </div>
                     </div>
                 </div>
+                @if(!empty($settings->footer_menu_title) && isset($footer_links) && $footer_links->isNotEmpty())
                 <div class="col-lg-3 col-md-6">
                     <div class="ori-footer-widget">
                         <div class="menu-location-widget ul-li-block">
-                            <h2 class="widget-title text-uppercase" aria-hidden="true" style="visibility:hidden;">Hizmetlerimiz</h2>
-                                @php
-                                    $count1 = 0;
-                                @endphp
-                                @foreach ($services_categories as $item)
-                                    @if ($count1 >= 4 && $count1 <= 8)
-                                        <li>
-                                            <a
-                                                href="/hizmetler/{{ $item->id ?? '' }}/{{ $item->slug ?? '' }}">{{ $item->title ?? '' }}</a>
-                                        </li>
-                                    @endif
-
-                                    @php
-                                        $count1++;
-                                    @endphp
+                            <h2 class="widget-title text-uppercase">{{ $settings->footer_menu_title }}</h2>
+                            <ul>
+                                @foreach ($footer_links as $link)
+                                    <li>
+                                        <a href="{{ $link->url }}">{{ $link->title }}</a>
+                                    </li>
                                 @endforeach
-
                             </ul>
                         </div>
                     </div>
                 </div>
+                @endif
                 <div class="col-lg-3 col-md-6">
                     <div class="ori-footer-widget">
                         <div class="contact-widget ul-li-block">

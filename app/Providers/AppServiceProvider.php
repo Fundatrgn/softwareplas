@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Models\FooterLink;
 use App\Models\Services;
 use App\Models\ServicesCategory;
 use App\Models\Setting;
@@ -46,6 +47,9 @@ class AppServiceProvider extends ServiceProvider
         }
         if (Schema::hasTable('services')) {
             view()->share('services', Services::orderBy('order', 'ASC')->get());
+        }
+        if (Schema::hasTable('footer_links')) {
+            view()->share('footer_links', FooterLink::orderBy('order')->orderBy('id')->get());
         }
     }
 }
