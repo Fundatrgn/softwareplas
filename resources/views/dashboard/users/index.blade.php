@@ -36,6 +36,7 @@
                                 <tr>
                                     <th>Ad Soyad</th>
                                     <th>Email</th>
+                                    <th>Rol</th>
                                     <th>Oluşturulan</th>
                                     <th>Oluşturulma Tarihi</th>
                                     <th>#</th>
@@ -46,7 +47,8 @@
                                     <tr>
                                         <td>{{ $item->name ?? '' }}</td>
 
-                                        <td>{{ $item->email ?? '' }}</td>                                     
+                                        <td>{{ $item->email ?? '' }}</td>
+                                        <td><span class="badge {{ $item->isYonetici() ? 'bg-primary' : 'bg-secondary' }}">{{ $item->roleLabel() }}</span></td>
                                         <td>{{ $item->created_by ?? '' }}</td>
                                         <td>{{ $item->created_at ?? '' }}</td>
                                         <td>
@@ -72,6 +74,7 @@
                             <tfoot>
                                 <th>Ad Soyad</th>
                                 <th>Email</th>
+                                <th>Rol</th>
                                 <th>Oluşturulan</th>
                                 <th>Oluşturulma Tarihi</th>
                                 <th>#</th>

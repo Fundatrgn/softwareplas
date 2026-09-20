@@ -37,9 +37,21 @@
                                 <div class="col-md-12">
                                     <label for="bsValidation3" class="form-label">Şifre</label>
                                     <input type="text" class="form-control" id="bsValidation3" name="password"
-                                        placeholder="Şifre" required >
+                                        placeholder="Şifre" {{ isset($data) ? '' : 'required' }}>
+                                    @isset($data)
+                                        <div class="form-text">Şifreyi değiştirmek istemiyorsanız bu alanı boş bırakın.</div>
+                                    @endisset
                                 </div>
-                               
+                                <div class="col-md-12">
+                                    <label for="bsValidation3" class="form-label">Rol</label>
+                                    <select class="form-control" name="role" id="bsValidation3">
+                                        @foreach (\App\Models\User::ROLES as $key => $label)
+                                            <option value="{{ $key }}" {{ ($data->role ?? 'psikolog') == $key ? 'selected' : '' }}>{{ $label }}</option>
+                                        @endforeach
+                                    </select>
+                                    <div class="form-text">Yönetici: tüm bölümlere erişir ve kullanıcı/rol yönetimi yapabilir. Psikolog: sadece Randevu Takvimi, Danışanlar ve Raporlar bölümlerini görür.</div>
+                                </div>
+
 
                                 <div class="col-md-12">
                                     <div class="d-md-flex d-grid align-items-center gap-3">

@@ -112,7 +112,12 @@ Route::prefix('/admin')->middleware('auth')->group(function () {
     // Raporlar (CRM)
     Route::get('/raporlar', [ReportController::class, 'index']);
     // Raporlar
+});
 
+// Aşağıdaki içerik yönetimi bölümleri sadece "Yönetici" rolüne açık;
+// "Psikolog" rolündeki kullanıcılar sadece yukarıdaki randevu/CRM
+// bölümüne erişebilir (bkz. App\Http\Middleware\EnsureRole).
+Route::prefix('/admin')->middleware(['auth', 'role:yonetici'])->group(function () {
     // hakkımızda
     Route::get('/hakkimizda', [HakkimizdaController::class, 'index']);
     Route::get('/hakkimizda/add', [HakkimizdaController::class, 'add']);

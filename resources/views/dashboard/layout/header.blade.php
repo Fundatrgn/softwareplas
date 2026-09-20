@@ -108,6 +108,7 @@
                     </ul>
                 </li>
 
+                @if(auth()->user()->isYonetici())
                 <li class="menu-label">İçerik</li>
                 <li>
                     <a class="has-arrow" href="javascript:;">
@@ -325,6 +326,7 @@
                     </li>
                 </ul>
             </li>
+            @endif
             </ul>
             <!--end navigation-->
         </aside>

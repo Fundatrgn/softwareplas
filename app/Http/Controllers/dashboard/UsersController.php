@@ -29,13 +29,30 @@ class UsersController extends Controller
             $item = User::find($request->id);
         } else {
             $item = new User();
+            $item->created_by = auth()->id();
         }
 
         $item->name = $request->name;
         $item->email = $request->email;
-        $item->password = bcrypt($request->password);
-        $item->created_by = 1;
-        // auth()->user()->id
+
+        // Düzenlerken şifre alanı boş bırakılırsa mevcut şifre korunur;
+        // sadece yeni kayıtta ya da şifre gerçekten değiştirilmek
+        // istendiğinde güncellenir.
+        if ($request->filled('password')) {
+            $item->password = bcrypt($request->password);
+        }
+
+        // Rolü sadece Yönetici değiştirebilir/atayabilir; Psikolog rolündeki
+        // biri (buraya zaten role middleware'i sayesinde erişemez ama
+        // savunma amaçlı) kendi rolünü ya da başkasınınkini yükseltemez.
+        if (auth()->user()->isYonetici()) {
+            $item->role = in_array($request->role, array_keys(User::ROLES), true)
+                ? $request->role
+                : User::ROLE_PSIKOLOG;
+        } elseif (! $item->exists) {
+            $item->role = User::ROLE_PSIKOLOG;
+        }
+
         $item->save();
         return redirect('/admin/kullanicilar')->with('success', 'Kayıt Başarıyla Eklendi.');
     }

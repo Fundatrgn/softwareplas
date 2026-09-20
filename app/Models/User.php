@@ -12,6 +12,14 @@ class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
 
+    const ROLE_YONETICI = 'yonetici';
+    const ROLE_PSIKOLOG = 'psikolog';
+
+    const ROLES = [
+        self::ROLE_YONETICI => 'Yönetici (tam erişim)',
+        self::ROLE_PSIKOLOG => 'Psikolog (sadece randevu sistemi)',
+    ];
+
     /**
      * The attributes that are mass assignable.
      *
@@ -21,6 +29,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'role',
     ];
 
     /**
@@ -42,4 +51,19 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+    public function isYonetici(): bool
+    {
+        return $this->role === self::ROLE_YONETICI;
+    }
+
+    public function isPsikolog(): bool
+    {
+        return $this->role === self::ROLE_PSIKOLOG;
+    }
+
+    public function roleLabel(): string
+    {
+        return self::ROLES[$this->role] ?? $this->role;
+    }
 }
