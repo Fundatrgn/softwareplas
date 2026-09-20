@@ -11,6 +11,18 @@ html, body {
   background-color: var(--page-bg);
 }
 
+/* Metin seçimi (fare ile sürükleyip seçme) tarayıcı varsayılanı yerine
+   sitenin kendi renkleriyle görünsün; ekran görüntülerinde "mavi kutu"
+   izlenimi vermesin. */
+::selection {
+  background-color: var(--base-color-1);
+  color: #fff;
+}
+::-moz-selection {
+  background-color: var(--base-color-1);
+  color: #fff;
+}
+
 /* ---- GÜVENLİK AĞI: site genelinde varsayılan metin rengi ----
    Bunlar DÜŞÜK ÖZGÜLLÜKTE (low specificity) kurallardır; herhangi bir
    bileşenin KENDİ (daha özgül) rengi varsa o kazanır. Burada amaç,
