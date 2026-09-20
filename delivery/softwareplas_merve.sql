@@ -1,8 +1,3 @@
--- MariaDB dump 10.19  Distrib 10.11.14-MariaDB, for debian-linux-gnu (x86_64)
---
--- Host: localhost    Database: softwareplas_merve
--- ------------------------------------------------------
--- Server version	10.11.14-MariaDB-0ubuntu0.24.04.1
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -14,21 +9,6 @@
 /*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
-
---
--- Current Database: `softwareplas_merve`
---
-
-/*!40000 DROP DATABASE IF EXISTS `softwareplas_merve`*/;
-
-CREATE DATABASE /*!32312 IF NOT EXISTS*/ `softwareplas_merve` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci */;
-
-USE `softwareplas_merve`;
-
---
--- Table structure for table `about`
---
-
 DROP TABLE IF EXISTS `about`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -45,10 +25,6 @@ CREATE TABLE `about` (
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
---
--- Dumping data for table `about`
---
-
 LOCK TABLES `about` WRITE;
 /*!40000 ALTER TABLE `about` DISABLE KEYS */;
 INSERT INTO `about` VALUES
@@ -56,11 +32,6 @@ INSERT INTO `about` VALUES
 (2,'YAKLAŞIMIM','Güvenli, Yargısız Bir Alan','<p>Terapiye gelen her kişinin kendine has bir hikâyesi olduğuna inanıyorum. Seanslarda sizi dinlemeyi, birlikte anlamlandırmayı ve kendi çözümlerinizi bulmanıza eşlik etmeyi önceliğim olarak görüyorum. Paylaştığınız her şey gizlilik ilkesi çerçevesinde korunur.</p>','about-1.svg','2','2026-09-16 21:31:16','2026-09-16 21:31:16');
 /*!40000 ALTER TABLE `about` ENABLE KEYS */;
 UNLOCK TABLES;
-
---
--- Table structure for table `appointments`
---
-
 DROP TABLE IF EXISTS `appointments`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -99,19 +70,10 @@ CREATE TABLE `appointments` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
---
--- Dumping data for table `appointments`
---
-
 LOCK TABLES `appointments` WRITE;
 /*!40000 ALTER TABLE `appointments` DISABLE KEYS */;
 /*!40000 ALTER TABLE `appointments` ENABLE KEYS */;
 UNLOCK TABLES;
-
---
--- Table structure for table `blog_categories`
---
-
 DROP TABLE IF EXISTS `blog_categories`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -125,21 +87,12 @@ CREATE TABLE `blog_categories` (
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
---
--- Dumping data for table `blog_categories`
---
-
 LOCK TABLES `blog_categories` WRITE;
 /*!40000 ALTER TABLE `blog_categories` DISABLE KEYS */;
 INSERT INTO `blog_categories` VALUES
 (1,'Psikoeğitim','psikoegitim','2026-09-16 21:31:16','2026-09-16 21:31:16');
 /*!40000 ALTER TABLE `blog_categories` ENABLE KEYS */;
 UNLOCK TABLES;
-
---
--- Table structure for table `blog_posts`
---
-
 DROP TABLE IF EXISTS `blog_posts`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -159,10 +112,6 @@ CREATE TABLE `blog_posts` (
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
---
--- Dumping data for table `blog_posts`
---
-
 LOCK TABLES `blog_posts` WRITE;
 /*!40000 ALTER TABLE `blog_posts` DISABLE KEYS */;
 INSERT INTO `blog_posts` VALUES
@@ -171,11 +120,6 @@ INSERT INTO `blog_posts` VALUES
 (3,1,'İlk Terapi Seansında Neler Olur?','Terapiye ilk kez başlayacak olanlar için ilk seansta genel olarak neler konuşulduğuna dair bilgilendirici bir rehber.','<p>Terapiye başlamak, pek çok kişi için heyecan verici olduğu kadar biraz da endişe uyandırıcı olabilir. İlk seans, genellikle birbirimizi tanımaya ve sizi buraya getiren konuyu anlamaya ayrılır.</p><p>Bu görüşmede geçmişiniz, şu anki yaşam koşullarınız ve terapiden beklentileriniz hakkında sorular sorarım; ancak anlatmak istemediğiniz hiçbir şeyi paylaşmak zorunda değilsiniz.</p><p>Amaç, ilk seansın sonunda birlikte çalışmanın sizin için doğru hissedip hissetmediğine karar verebilmenizdir.</p>','ilk seans, terapiye başlarken','ilk-terapi-seansinda-neler-olur','blog-ilk-seans.svg','2026-09-16 21:31:16','2026-09-16 21:31:16');
 /*!40000 ALTER TABLE `blog_posts` ENABLE KEYS */;
 UNLOCK TABLES;
-
---
--- Table structure for table `contact`
---
-
 DROP TABLE IF EXISTS `contact`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -192,19 +136,10 @@ CREATE TABLE `contact` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
---
--- Dumping data for table `contact`
---
-
 LOCK TABLES `contact` WRITE;
 /*!40000 ALTER TABLE `contact` DISABLE KEYS */;
 /*!40000 ALTER TABLE `contact` ENABLE KEYS */;
 UNLOCK TABLES;
-
---
--- Table structure for table `failed_jobs`
---
-
 DROP TABLE IF EXISTS `failed_jobs`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -221,19 +156,10 @@ CREATE TABLE `failed_jobs` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
---
--- Dumping data for table `failed_jobs`
---
-
 LOCK TABLES `failed_jobs` WRITE;
 /*!40000 ALTER TABLE `failed_jobs` DISABLE KEYS */;
 /*!40000 ALTER TABLE `failed_jobs` ENABLE KEYS */;
 UNLOCK TABLES;
-
---
--- Table structure for table `migrations`
---
-
 DROP TABLE IF EXISTS `migrations`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -244,10 +170,6 @@ CREATE TABLE `migrations` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=38 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `migrations`
---
 
 LOCK TABLES `migrations` WRITE;
 /*!40000 ALTER TABLE `migrations` DISABLE KEYS */;
@@ -291,11 +213,6 @@ INSERT INTO `migrations` VALUES
 (37,'2026_09_16_230000_add_text_position_to_slider_table',1);
 /*!40000 ALTER TABLE `migrations` ENABLE KEYS */;
 UNLOCK TABLES;
-
---
--- Table structure for table `notification_logs`
---
-
 DROP TABLE IF EXISTS `notification_logs`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -316,19 +233,10 @@ CREATE TABLE `notification_logs` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
---
--- Dumping data for table `notification_logs`
---
-
 LOCK TABLES `notification_logs` WRITE;
 /*!40000 ALTER TABLE `notification_logs` DISABLE KEYS */;
 /*!40000 ALTER TABLE `notification_logs` ENABLE KEYS */;
 UNLOCK TABLES;
-
---
--- Table structure for table `password_reset_tokens`
---
-
 DROP TABLE IF EXISTS `password_reset_tokens`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -340,19 +248,10 @@ CREATE TABLE `password_reset_tokens` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
---
--- Dumping data for table `password_reset_tokens`
---
-
 LOCK TABLES `password_reset_tokens` WRITE;
 /*!40000 ALTER TABLE `password_reset_tokens` DISABLE KEYS */;
 /*!40000 ALTER TABLE `password_reset_tokens` ENABLE KEYS */;
 UNLOCK TABLES;
-
---
--- Table structure for table `patients`
---
-
 DROP TABLE IF EXISTS `patients`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -372,19 +271,10 @@ CREATE TABLE `patients` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
---
--- Dumping data for table `patients`
---
-
 LOCK TABLES `patients` WRITE;
 /*!40000 ALTER TABLE `patients` DISABLE KEYS */;
 /*!40000 ALTER TABLE `patients` ENABLE KEYS */;
 UNLOCK TABLES;
-
---
--- Table structure for table `personal_access_tokens`
---
-
 DROP TABLE IF EXISTS `personal_access_tokens`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -405,19 +295,10 @@ CREATE TABLE `personal_access_tokens` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
---
--- Dumping data for table `personal_access_tokens`
---
-
 LOCK TABLES `personal_access_tokens` WRITE;
 /*!40000 ALTER TABLE `personal_access_tokens` DISABLE KEYS */;
 /*!40000 ALTER TABLE `personal_access_tokens` ENABLE KEYS */;
 UNLOCK TABLES;
-
---
--- Table structure for table `prices`
---
-
 DROP TABLE IF EXISTS `prices`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -432,19 +313,10 @@ CREATE TABLE `prices` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
---
--- Dumping data for table `prices`
---
-
 LOCK TABLES `prices` WRITE;
 /*!40000 ALTER TABLE `prices` DISABLE KEYS */;
 /*!40000 ALTER TABLE `prices` ENABLE KEYS */;
 UNLOCK TABLES;
-
---
--- Table structure for table `referanslar`
---
-
 DROP TABLE IF EXISTS `referanslar`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -465,19 +337,10 @@ CREATE TABLE `referanslar` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
---
--- Dumping data for table `referanslar`
---
-
 LOCK TABLES `referanslar` WRITE;
 /*!40000 ALTER TABLE `referanslar` DISABLE KEYS */;
 /*!40000 ALTER TABLE `referanslar` ENABLE KEYS */;
 UNLOCK TABLES;
-
---
--- Table structure for table `services`
---
-
 DROP TABLE IF EXISTS `services`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -494,10 +357,6 @@ CREATE TABLE `services` (
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
---
--- Dumping data for table `services`
---
-
 LOCK TABLES `services` WRITE;
 /*!40000 ALTER TABLE `services` DISABLE KEYS */;
 INSERT INTO `services` VALUES
@@ -506,11 +365,6 @@ INSERT INTO `services` VALUES
 (3,'Online Terapi','service-online.svg','online-terapi','3',3,'2026-09-16 21:31:16','2026-09-16 21:31:16');
 /*!40000 ALTER TABLE `services` ENABLE KEYS */;
 UNLOCK TABLES;
-
---
--- Table structure for table `services_categories`
---
-
 DROP TABLE IF EXISTS `services_categories`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -524,10 +378,6 @@ CREATE TABLE `services_categories` (
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
---
--- Dumping data for table `services_categories`
---
-
 LOCK TABLES `services_categories` WRITE;
 /*!40000 ALTER TABLE `services_categories` DISABLE KEYS */;
 INSERT INTO `services_categories` VALUES
@@ -536,11 +386,6 @@ INSERT INTO `services_categories` VALUES
 (3,'Online Terapi','online-terapi','2026-09-16 21:31:16','2026-09-16 21:31:16');
 /*!40000 ALTER TABLE `services_categories` ENABLE KEYS */;
 UNLOCK TABLES;
-
---
--- Table structure for table `services_details`
---
-
 DROP TABLE IF EXISTS `services_details`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -559,10 +404,6 @@ CREATE TABLE `services_details` (
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
---
--- Dumping data for table `services_details`
---
-
 LOCK TABLES `services_details` WRITE;
 /*!40000 ALTER TABLE `services_details` DISABLE KEYS */;
 INSERT INTO `services_details` VALUES
@@ -571,11 +412,6 @@ INSERT INTO `services_details` VALUES
 (3,'3','Online Terapi','ONLİNE TERAPİ','service-online.svg','Online Terapi, ONLİNE TERAPİ','3','<p><strong>Manisa dışında ya da yoğun bir programda olsanız da, güvenli görüntülü görüşme ile aynı içerik ve gizlilikte destek alabilirsiniz.</strong></p><p>Online terapi, yüz yüze görüşmeye zaman ya da mesafe nedeniyle gelemeyen danışanlar için görüntülü görüşme üzerinden yürütülen bir terapi biçimidir. Yapılan araştırmalar, uygun koşullar sağlandığında online terapinin yüz yüze terapiyle benzer etkinlikte olabildiğini göstermektedir.</p><p>Görüşme öncesinde sizinle güvenli bağlantı bilgileri paylaşılır; sürecin gizliliği yüz yüze görüşmelerdeki ile aynı titizlikte korunur.</p>','2026-09-16 21:31:16','2026-09-16 21:31:16');
 /*!40000 ALTER TABLE `services_details` ENABLE KEYS */;
 UNLOCK TABLES;
-
---
--- Table structure for table `settings`
---
-
 DROP TABLE IF EXISTS `settings`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -619,21 +455,12 @@ CREATE TABLE `settings` (
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
---
--- Dumping data for table `settings`
---
-
 LOCK TABLES `settings` WRITE;
 /*!40000 ALTER TABLE `settings` DISABLE KEYS */;
 INSERT INTO `settings` VALUES
 (1,'merve-kalayci-logo.svg','favicon.svg','Psikolog Merve Kalaycı | Manisa & Online Terapi','Manisa merkezli, bireysel terapi, çift terapisi ve online terapi hizmeti sunan Psikolog Merve Kalaycı\'nın resmi web sitesi.','psikolog, manisa psikolog, turgutlu psikolog, online terapi, bireysel terapi, çift terapisi','Merve Kalaycı','','https://www.instagram.com/psikologmervekalayci/','','','','0 (5XX) XXX XX XX','info@example.com','Manisa, Türkiye','#D9784B','#7FA36F','#1F2D30','#4B5A5E','#F7F5F0',NULL,NULL,NULL,50,1,0,'log',NULL,NULL,NULL,6000,'<p><strong>Kişisel Verilerin Korunması Hakkında Aydınlatma Metni</strong></p><p>Bu internet sitesi üzerinden (randevu ve iletişim formları aracılığıyla) tarafımla paylaştığınız ad-soyad, telefon, e-posta ve mesaj içeriğinden ibaret kişisel verileriniz; 6698 sayılı Kişisel Verilerin Korunması Kanunu (\"KVKK\") kapsamında, veri sorumlusu sıfatıyla tarafımca, yalnızca randevu talebinizin değerlendirilmesi, sizinle iletişime geçilmesi ve talep ettiğiniz bilgilendirmenin yapılması amacıyla işlenmektedir.</p><p>Kişisel verileriniz, yasal zorunluluklar dışında üçüncü kişilerle paylaşılmaz, açık rızanız veya kanunda öngörülen haller dışında başka bir amaçla kullanılmaz ve gerekli teknik/idari tedbirlerle korunur.</p><p>KVKK\'nın 11. maddesi kapsamında; kişisel verilerinizin işlenip işlenmediğini öğrenme, işlenmişse buna ilişkin bilgi talep etme, işlenme amacını ve amacına uygun kullanılıp kullanılmadığını öğrenme, yurt içinde/yurt dışında aktarıldığı üçüncü kişileri bilme, eksik/yanlış işlenmişse düzeltilmesini isteme, silinmesini/yok edilmesini isteme ve bu işlemlerin ilgili üçüncü kişilere bildirilmesini isteme haklarına sahipsiniz.</p><p>Bu haklarınızı kullanmak için sitede yer alan iletişim bilgileri üzerinden tarafıma ulaşabilirsiniz.</p><p><em>(Bu metin örnek olarak hazırlanmıştır; yayına almadan önce bir hukuk danışmanına gözden geçirtmenizi öneririz. Bu alanı admin panelinden dilediğiniz gibi düzenleyebilirsiniz.)</em></p>','Manisa\'da ve online olarak bireysel ve çift terapisi hizmeti veriyorum. Randevu almak için benimle iletişime geçebilirsiniz.','2026-09-16 21:31:16','2026-09-16 21:31:16');
 /*!40000 ALTER TABLE `settings` ENABLE KEYS */;
 UNLOCK TABLES;
-
---
--- Table structure for table `slider`
---
-
 DROP TABLE IF EXISTS `slider`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -654,21 +481,12 @@ CREATE TABLE `slider` (
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
---
--- Dumping data for table `slider`
---
-
 LOCK TABLES `slider` WRITE;
 /*!40000 ALTER TABLE `slider` DISABLE KEYS */;
 INSERT INTO `slider` VALUES
 (1,1,'Kendinize Zaman Ayırın','Bireysel, çift ve online terapiyle yanınızdayım. Değişim için ilk adımı birlikte atalım.','','','','Randevu Al','hero-slider.svg','orta','2026-09-16 21:31:16','2026-09-16 21:31:16');
 /*!40000 ALTER TABLE `slider` ENABLE KEYS */;
 UNLOCK TABLES;
-
---
--- Table structure for table `social`
---
-
 DROP TABLE IF EXISTS `social`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -684,19 +502,10 @@ CREATE TABLE `social` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
---
--- Dumping data for table `social`
---
-
 LOCK TABLES `social` WRITE;
 /*!40000 ALTER TABLE `social` DISABLE KEYS */;
 /*!40000 ALTER TABLE `social` ENABLE KEYS */;
 UNLOCK TABLES;
-
---
--- Table structure for table `sss`
---
-
 DROP TABLE IF EXISTS `sss`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -711,10 +520,6 @@ CREATE TABLE `sss` (
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
---
--- Dumping data for table `sss`
---
-
 LOCK TABLES `sss` WRITE;
 /*!40000 ALTER TABLE `sss` DISABLE KEYS */;
 INSERT INTO `sss` VALUES
@@ -724,11 +529,6 @@ INSERT INTO `sss` VALUES
 (4,'Randevu almak için ne yapmalıyım?','<p>Sitedeki \"Randevu Al\" sayfasından size uygun gün ve saati seçerek talep oluşturabilir, ya da doğrudan WhatsApp üzerinden yazabilirsiniz.</p>',1,'2026-09-16 21:31:16','2026-09-16 21:31:16');
 /*!40000 ALTER TABLE `sss` ENABLE KEYS */;
 UNLOCK TABLES;
-
---
--- Table structure for table `sss_categories`
---
-
 DROP TABLE IF EXISTS `sss_categories`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -742,21 +542,12 @@ CREATE TABLE `sss_categories` (
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
---
--- Dumping data for table `sss_categories`
---
-
 LOCK TABLES `sss_categories` WRITE;
 /*!40000 ALTER TABLE `sss_categories` DISABLE KEYS */;
 INSERT INTO `sss_categories` VALUES
 (1,'Genel Sorular','genel-sorular','2026-09-16 21:31:16','2026-09-16 21:31:16');
 /*!40000 ALTER TABLE `sss_categories` ENABLE KEYS */;
 UNLOCK TABLES;
-
---
--- Table structure for table `statics`
---
-
 DROP TABLE IF EXISTS `statics`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -771,19 +562,10 @@ CREATE TABLE `statics` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
---
--- Dumping data for table `statics`
---
-
 LOCK TABLES `statics` WRITE;
 /*!40000 ALTER TABLE `statics` DISABLE KEYS */;
 /*!40000 ALTER TABLE `statics` ENABLE KEYS */;
 UNLOCK TABLES;
-
---
--- Table structure for table `team`
---
-
 DROP TABLE IF EXISTS `team`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -803,19 +585,10 @@ CREATE TABLE `team` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
---
--- Dumping data for table `team`
---
-
 LOCK TABLES `team` WRITE;
 /*!40000 ALTER TABLE `team` DISABLE KEYS */;
 /*!40000 ALTER TABLE `team` ENABLE KEYS */;
 UNLOCK TABLES;
-
---
--- Table structure for table `timeline`
---
-
 DROP TABLE IF EXISTS `timeline`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -829,19 +602,10 @@ CREATE TABLE `timeline` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
---
--- Dumping data for table `timeline`
---
-
 LOCK TABLES `timeline` WRITE;
 /*!40000 ALTER TABLE `timeline` DISABLE KEYS */;
 /*!40000 ALTER TABLE `timeline` ENABLE KEYS */;
 UNLOCK TABLES;
-
---
--- Table structure for table `users`
---
-
 DROP TABLE IF EXISTS `users`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8mb4 */;
@@ -859,20 +623,12 @@ CREATE TABLE `users` (
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
---
--- Dumping data for table `users`
---
-
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
 INSERT INTO `users` VALUES
 (1,'Merve Kalaycı',1,'merve@example.com',NULL,'$2y$10$m7ymbFes67cMr3Zkwp45ZOnQkDSXe.W0Pf.0ng3pPBKFHPl95z5V.',NULL,'2026-09-16 21:31:16','2026-09-16 21:31:16');
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
-
---
--- Dumping routines for database 'softwareplas_merve'
---
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -883,4 +639,3 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2026-09-16 21:31:21
