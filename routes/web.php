@@ -92,11 +92,15 @@ Route::prefix('/admin')->middleware('auth')->group(function () {
 
     // Randevular (CRM)
     Route::get('/randevular', [DashboardAppointmentController::class, 'index']);
+    Route::get('/randevular/liste', [DashboardAppointmentController::class, 'liste']);
     Route::get('/randevular/ay', [DashboardAppointmentController::class, 'month']);
     Route::get('/randevular/gun', [DashboardAppointmentController::class, 'day']);
     Route::get('/randevular/ekle', [DashboardAppointmentController::class, 'create']);
     Route::post('/randevular', [DashboardAppointmentController::class, 'store']);
     Route::get('/randevular/{id}', [DashboardAppointmentController::class, 'show'])->whereNumber('id');
+    Route::get('/randevular/{id}/duzenle', [DashboardAppointmentController::class, 'edit'])->whereNumber('id');
+    Route::post('/randevular/{id}/guncelle', [DashboardAppointmentController::class, 'update'])->whereNumber('id');
+    Route::post('/randevular/{id}/sil', [DashboardAppointmentController::class, 'destroy'])->whereNumber('id');
     Route::post('/randevular/{id}/durum', [DashboardAppointmentController::class, 'updateStatus'])->whereNumber('id');
     Route::post('/randevular/{id}/tasi', [DashboardAppointmentController::class, 'reschedule'])->whereNumber('id');
     // Randevular

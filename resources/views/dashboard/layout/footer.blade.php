@@ -1,5 +1,5 @@
 <div class="text-center p-3" style="color:#8a8a8a; font-size:13px;">
-    © {{ date('Y') }} All Right: Yunuscan ZEYBEK | © Psikolog Merve Kalaycı - Tüm Hakları Saklıdır
+    © {{ date('Y') }} All Right: Yunuscan ZEYBEK | Tüm Hakları Saklıdır
 </div>
 
 <!--Start Back To Top Button-->

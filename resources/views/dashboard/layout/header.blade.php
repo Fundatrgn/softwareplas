@@ -82,6 +82,14 @@
                     </a>
                 </li>
                 <li>
+                    <a href="/admin/randevular/liste">
+                        <div class="parent-icon">
+                            <ion-icon name="list-outline"></ion-icon>
+                        </div>
+                        <div class="menu-title">Tüm Randevular</div>
+                    </a>
+                </li>
+                <li>
                     <a href="/admin/raporlar">
                         <div class="parent-icon">
                             <ion-icon name="bar-chart-outline"></ion-icon>

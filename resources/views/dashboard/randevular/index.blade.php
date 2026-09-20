@@ -12,7 +12,8 @@
                         </ol>
                     </nav>
                 </div>
-                <div class="ms-auto">
+                <div class="ms-auto d-flex gap-2">
+                    <a href="/admin/randevular/liste" class="btn btn-outline-secondary"><ion-icon name="list-outline"></ion-icon> Tüm Randevular</a>
                     <a href="/admin/randevular/ekle" class="btn btn-primary"><ion-icon name="add-outline"></ion-icon> Yeni Randevu</a>
                 </div>
             </div>

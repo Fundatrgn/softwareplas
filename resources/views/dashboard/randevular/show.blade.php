@@ -7,10 +7,21 @@
                 <div class="ps-3">
                     <nav aria-label="breadcrumb">
                         <ol class="breadcrumb mb-0 p-0 align-items-center">
-                            <li class="breadcrumb-item"><a href="/admin/randevular">Randevu Takvimi</a></li>
+                            <li class="breadcrumb-item"><a href="/admin/randevular/liste">Tüm Randevular</a></li>
                             <li class="breadcrumb-item active">#{{ $appointment->id }}</li>
                         </ol>
                     </nav>
+                </div>
+                <div class="ms-auto d-flex gap-2">
+                    <a href="/admin/randevular/{{ $appointment->id }}/duzenle" class="btn btn-outline-primary">
+                        <ion-icon name="create-outline"></ion-icon> Düzenle
+                    </a>
+                    <form method="POST" action="/admin/randevular/{{ $appointment->id }}/sil" onsubmit="return confirm('Bu randevuyu kalıcı olarak silmek istediğinize emin misiniz?');">
+                        @csrf
+                        <button type="submit" class="btn btn-outline-danger">
+                            <ion-icon name="trash-outline"></ion-icon> Sil
+                        </button>
+                    </form>
                 </div>
             </div>
 

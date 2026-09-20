@@ -383,6 +383,42 @@ input, textarea, select {
   -webkit-text-stroke-color: var(--heading-color) !important;
 }
 
+/* =====================================================================
+   Footer Alt Bar (Telif Hakkı Şeridi) Tasarım Yenilemesi + Görünürlük:
+   Sosyal medya ikonları da aynı "koyu zemin varsayımı" ile sabit beyaz
+   renkteydi (style.css .ori-copyright-social a { color:#fff }), açık
+   zeminde görünmüyordu. Ayrıca şerit biraz daha "nefes alan", ayrı bir
+   blok gibi görünmesi için hafif üst çizgi ve dikey boşluk artırıldı.
+   ===================================================================== */
+.ori-footer-copyright-refresh {
+  border-top: 1px solid var(--surface-border) !important;
+  padding: 28px 0 !important;
+  flex-wrap: wrap;
+  gap: 14px;
+}
+.ori-footer-copyright-refresh .ori-copyright-text {
+  font-size: 13px;
+  letter-spacing: 0.02em;
+  opacity: 0.85;
+}
+.ori-footer-copyright-refresh .ori-copyright-social a {
+  color: var(--heading-color) !important;
+  width: 36px;
+  height: 36px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  border: 1px solid var(--surface-border);
+  margin-left: 10px !important;
+  transition: all 0.25s ease;
+}
+.ori-footer-copyright-refresh .ori-copyright-social a:hover {
+  color: #fff !important;
+  background-color: var(--base-color-1);
+  border-color: var(--base-color-1);
+}
+
 .ori-slider-subtitle {
   margin-top: 20px;
 }

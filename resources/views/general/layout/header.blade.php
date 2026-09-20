@@ -40,7 +40,7 @@
     <link rel="stylesheet" href="{{ asset('theme/assets/css/video.min.css') }}">
     <link rel="stylesheet" href="{{ asset('theme/assets/css/slick-theme.css') }}">
     <link rel="stylesheet" href="{{ asset('theme/assets/css/slick.css') }}">
-    <link rel="stylesheet" href="{{ asset('theme/assets/css/global.css') }}?v=33">
+    <link rel="stylesheet" href="{{ asset('theme/assets/css/global.css') }}?v=34">
     <style>
         /* Admin panelinden ("Ayarlar > Site Görünümü / Renkler") seçilen
            renkler burada :root değişkenlerinin üzerine yazılır. Herhangi
@@ -63,8 +63,8 @@
             --on-surface-muted: {{ $settings->body_text_color ?? '#4B5A5E' }};
         }
     </style>
-    <link rel="stylesheet" href="{{ asset('theme/assets/css/style.css') }}?v=33">
-    <link rel="stylesheet" href="{{ asset('theme/assets/css/psikolog-theme.css') }}?v=33">
+    <link rel="stylesheet" href="{{ asset('theme/assets/css/style.css') }}?v=34">
+    <link rel="stylesheet" href="{{ asset('theme/assets/css/psikolog-theme.css') }}?v=34">
 </head>
 
 <body class="ori-digital-studio">

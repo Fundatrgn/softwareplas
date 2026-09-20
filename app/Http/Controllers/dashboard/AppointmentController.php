@@ -24,6 +24,41 @@ class AppointmentController extends Controller
     }
 
     /**
+     * Tüm randevuları düz liste halinde gösterir; arama/filtre ve
+     * her satırda Düzenle/Sil işlemleri buradan yapılır.
+     * GET /admin/randevular/liste
+     */
+    public function liste(Request $request)
+    {
+        $query = Appointment::with('patient', 'service', 'psychologist')
+            ->orderByDesc('starts_at');
+
+        if ($request->filled('q')) {
+            $q = $request->query('q');
+            $query->where(function ($w) use ($q) {
+                $w->where('patient_name_snapshot', 'like', "%{$q}%")
+                    ->orWhere('patient_phone_snapshot', 'like', "%{$q}%")
+                    ->orWhereHas('patient', function ($p) use ($q) {
+                        $p->where('name', 'like', "%{$q}%")->orWhere('phone', 'like', "%{$q}%");
+                    });
+            });
+        }
+        if ($request->filled('durum')) {
+            $query->where('status', $request->query('durum'));
+        }
+        if ($request->filled('tarih')) {
+            $query->whereDate('starts_at', $request->query('tarih'));
+        }
+
+        $appointments = $query->paginate(25)->withQueryString();
+
+        return view('dashboard.randevular.liste', [
+            'appointments' => $appointments,
+            'filtreler' => $request->only(['q', 'durum', 'tarih']),
+        ]);
+    }
+
+    /**
      * AJAX: ay içindeki her gün için doluluk özeti.
      * GET /admin/randevular/ay?ay=2026-09
      */
@@ -277,6 +312,87 @@ class AppointmentController extends Controller
         $notifier->notifyStatusChanged($appointment);
 
         return redirect('/admin/randevular/' . $appointment->id)->with('success', 'Randevu ' . $yeniBaslangic->translatedFormat('d.m.Y H:i') . ' tarihine taşındı.');
+    }
+
+    /**
+     * Randevunun tüm ayrıntılarını (danışan bilgisi, hizmet, psikolog,
+     * gün/saat/süre, not) tek formdan düzenleme sayfası.
+     * GET /admin/randevular/{id}/duzenle
+     */
+    public function edit($id)
+    {
+        $appointment = Appointment::with('patient')->findOrFail($id);
+
+        return view('dashboard.randevular.edit', [
+            'appointment' => $appointment,
+            'hizmetler' => Services::orderBy('order', 'ASC')->get(),
+            'psikologlar' => User::orderBy('name')->get(),
+        ]);
+    }
+
+    /**
+     * Düzenleme formunun kaydı.
+     * POST /admin/randevular/{id}/guncelle
+     */
+    public function update(Request $request, $id, AppointmentNotificationService $notifier)
+    {
+        $appointment = Appointment::findOrFail($id);
+
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'phone' => 'required|string|max:32',
+            'email' => 'nullable|email|max:255',
+            'service_id' => 'nullable|exists:services,id',
+            'user_id' => 'nullable|exists:users,id',
+            'tarih' => 'required|date',
+            'saat' => 'required|date_format:H:i',
+            'sure' => 'required|integer|min:10|max:240',
+            'not' => 'nullable|string|max:2000',
+        ]);
+
+        $yeniBaslangic = Carbon::parse($request->tarih . ' ' . $request->saat);
+        $yeniBitis = $yeniBaslangic->copy()->addMinutes((int) $request->sure);
+
+        $availability = new AvailabilityService(Setting::first());
+        if ($availability->hasConflict($yeniBaslangic, $yeniBitis, $appointment->id)) {
+            return redirect()->back()->withInput()->with('error', 'Bu saat aralığında başka bir randevu var. Lütfen farklı bir saat seçin.');
+        }
+
+        if ($appointment->patient) {
+            $appointment->patient->update([
+                'name' => $request->name,
+                'phone' => $request->phone,
+                'email' => $request->email,
+            ]);
+        }
+
+        $appointment->update([
+            'patient_name_snapshot' => $request->name,
+            'patient_phone_snapshot' => $request->phone,
+            'patient_email_snapshot' => $request->email,
+            'service_id' => $request->service_id,
+            'user_id' => $request->user_id,
+            'starts_at' => $yeniBaslangic,
+            'ends_at' => $yeniBitis,
+            'duration_minutes' => (int) $request->sure,
+            'request_note' => $request->not,
+        ]);
+
+        $notifier->notifyStatusChanged($appointment);
+
+        return redirect('/admin/randevular/' . $appointment->id)->with('success', 'Randevu bilgileri güncellendi.');
+    }
+
+    /**
+     * Randevuyu tamamen siler.
+     * POST /admin/randevular/{id}/sil
+     */
+    public function destroy($id)
+    {
+        $appointment = Appointment::findOrFail($id);
+        $appointment->delete();
+
+        return redirect('/admin/randevular/liste')->with('success', 'Randevu silindi.');
     }
 
     public function updateStatus(Request $request, $id, AppointmentNotificationService $notifier)
