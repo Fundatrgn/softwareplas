@@ -37,7 +37,7 @@ class HizmetlerController extends Controller
         }
 
         $item->title = $request->title;
-        $item->category_id = $request->category_id;
+        $item->category_id = $request->category_id ?: null;
         $item->slug = Str::slug($request->title);
         $item->order = $request->order;
 

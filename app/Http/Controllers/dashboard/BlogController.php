@@ -37,7 +37,7 @@ class BlogController extends Controller
         }
 
         $item->title = $request->title;
-        $item->category_id = $request->category_id;
+        $item->category_id = $request->category_id ?: null;
         $item->summary = $request->summary;
         $item->content = $request->content;
         $item->tags = $request->tags;
