@@ -369,6 +369,20 @@ input, textarea, select {
   padding: 0 clamp(24px, 8vw, 100px) 0 6vw;
 }
 
+/* =====================================================================
+   Konturlu (outline) Metin Rengi Düzeltmesi: style.css'teki bazı "içi
+   boş, sadece kontur çizgili" başlık efektleri (-webkit-text-stroke)
+   sabit BEYAZ renk kullanıyordu; bu efekt koyu fotoğraf/zemin
+   varsayımıyla tasarlanmıştı. Sitenin genel zemini artık açık renk
+   olduğundan, beyaz kontur açık zeminde görünmez hale geliyor ("Sıcak
+   Bir Dinleyici", "Randevu Alın" düğmesindeki "Alın" kelimesi gibi
+   metinler kayboluyordu). Ana slider'daki başlık (fotoğraf üzerinde,
+   koyu geçişli zemin) buna dahil değil; o zaten uygun kontrastta. */
+.ori-text-scroll-content h3 span,
+.ori-footer-title h2 span {
+  -webkit-text-stroke-color: var(--heading-color) !important;
+}
+
 .ori-slider-subtitle {
   margin-top: 20px;
 }
