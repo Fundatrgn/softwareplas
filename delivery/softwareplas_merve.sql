@@ -246,7 +246,7 @@ CREATE TABLE `migrations` (
   `migration` varchar(255) NOT NULL,
   `batch` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=43 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=44 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -296,7 +296,8 @@ INSERT INTO `migrations` VALUES
 (39,'2026_09_20_150000_add_role_to_users_table',1),
 (40,'2026_09_20_160000_add_reminder_hours_to_settings_table',1),
 (41,'2026_09_20_170000_add_footer_copyright_text_to_settings_table',2),
-(42,'2026_09_20_180000_create_footer_links_table',2);
+(42,'2026_09_20_180000_create_footer_links_table',2),
+(43,'2026_09_20_190000_add_reminder_intervals_to_settings_table',3);
 /*!40000 ALTER TABLE `migrations` ENABLE KEYS */;
 
 --
@@ -602,6 +603,7 @@ CREATE TABLE `settings` (
   `sms_api_secret` varchar(255) DEFAULT NULL,
   `sms_sender_title` varchar(255) DEFAULT NULL,
   `reminder_hours_before` smallint(5) unsigned NOT NULL DEFAULT 24,
+  `reminder_intervals_days` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL CHECK (json_valid(`reminder_intervals_days`)),
   `slider_speed` int(11) NOT NULL DEFAULT 6000,
   `kvkk_text` longtext DEFAULT NULL,
   `sidebar_bio` text DEFAULT NULL,
@@ -617,7 +619,7 @@ CREATE TABLE `settings` (
 
 /*!40000 ALTER TABLE `settings` DISABLE KEYS */;
 INSERT INTO `settings` VALUES
-(1,'merve-kalayci-logo.svg','favicon.svg','Psikolog Merve Kalaycı | Manisa & Online Terapi','Manisa merkezli, bireysel terapi, çift terapisi ve online terapi hizmeti sunan Psikolog Merve Kalaycı\'nın resmi web sitesi.',NULL,NULL,'psikolog, manisa psikolog, turgutlu psikolog, online terapi, bireysel terapi, çift terapisi','Merve Kalaycı','','https://www.instagram.com/psikologmervekalayci/','','','','0 (5XX) XXX XX XX','info@example.com','Manisa, Türkiye','#D9784B','#7FA36F','#1F2D30','#4B5A5E','#F7F5F0',NULL,NULL,NULL,50,1,0,'log',NULL,NULL,NULL,24,6000,'<p><strong>Kişisel Verilerin Korunması Hakkında Aydınlatma Metni</strong></p><p>Bu internet sitesi üzerinden (randevu ve iletişim formları aracılığıyla) tarafımla paylaştığınız ad-soyad, telefon, e-posta ve mesaj içeriğinden ibaret kişisel verileriniz; 6698 sayılı Kişisel Verilerin Korunması Kanunu (\"KVKK\") kapsamında, veri sorumlusu sıfatıyla tarafımca, yalnızca randevu talebinizin değerlendirilmesi, sizinle iletişime geçilmesi ve talep ettiğiniz bilgilendirmenin yapılması amacıyla işlenmektedir.</p><p>Kişisel verileriniz, yasal zorunluluklar dışında üçüncü kişilerle paylaşılmaz, açık rızanız veya kanunda öngörülen haller dışında başka bir amaçla kullanılmaz ve gerekli teknik/idari tedbirlerle korunur.</p><p>KVKK\'nın 11. maddesi kapsamında; kişisel verilerinizin işlenip işlenmediğini öğrenme, işlenmişse buna ilişkin bilgi talep etme, işlenme amacını ve amacına uygun kullanılıp kullanılmadığını öğrenme, yurt içinde/yurt dışında aktarıldığı üçüncü kişileri bilme, eksik/yanlış işlenmişse düzeltilmesini isteme, silinmesini/yok edilmesini isteme ve bu işlemlerin ilgili üçüncü kişilere bildirilmesini isteme haklarına sahipsiniz.</p><p>Bu haklarınızı kullanmak için sitede yer alan iletişim bilgileri üzerinden tarafıma ulaşabilirsiniz.</p><p><em>(Bu metin örnek olarak hazırlanmıştır; yayına almadan önce bir hukuk danışmanına gözden geçirtmenizi öneririz. Bu alanı admin panelinden dilediğiniz gibi düzenleyebilirsiniz.)</em></p>','Manisa\'da ve online olarak bireysel ve çift terapisi hizmeti veriyorum. Randevu almak için benimle iletişime geçebilirsiniz.','2026-09-20 14:44:05','2026-09-20 14:44:05');
+(1,'merve-kalayci-logo.svg','favicon.svg','Psikolog Merve Kalaycı | Manisa & Online Terapi','Manisa merkezli, bireysel terapi, çift terapisi ve online terapi hizmeti sunan Psikolog Merve Kalaycı\'nın resmi web sitesi.',NULL,NULL,'psikolog, manisa psikolog, turgutlu psikolog, online terapi, bireysel terapi, çift terapisi','Merve Kalaycı','','https://www.instagram.com/psikologmervekalayci/','','','','0 (5XX) XXX XX XX','info@example.com','Manisa, Türkiye','#D9784B','#7FA36F','#1F2D30','#4B5A5E','#F7F5F0',NULL,NULL,NULL,50,1,0,'log',NULL,NULL,NULL,24,NULL,6000,'<p><strong>Kişisel Verilerin Korunması Hakkında Aydınlatma Metni</strong></p><p>Bu internet sitesi üzerinden (randevu ve iletişim formları aracılığıyla) tarafımla paylaştığınız ad-soyad, telefon, e-posta ve mesaj içeriğinden ibaret kişisel verileriniz; 6698 sayılı Kişisel Verilerin Korunması Kanunu (\"KVKK\") kapsamında, veri sorumlusu sıfatıyla tarafımca, yalnızca randevu talebinizin değerlendirilmesi, sizinle iletişime geçilmesi ve talep ettiğiniz bilgilendirmenin yapılması amacıyla işlenmektedir.</p><p>Kişisel verileriniz, yasal zorunluluklar dışında üçüncü kişilerle paylaşılmaz, açık rızanız veya kanunda öngörülen haller dışında başka bir amaçla kullanılmaz ve gerekli teknik/idari tedbirlerle korunur.</p><p>KVKK\'nın 11. maddesi kapsamında; kişisel verilerinizin işlenip işlenmediğini öğrenme, işlenmişse buna ilişkin bilgi talep etme, işlenme amacını ve amacına uygun kullanılıp kullanılmadığını öğrenme, yurt içinde/yurt dışında aktarıldığı üçüncü kişileri bilme, eksik/yanlış işlenmişse düzeltilmesini isteme, silinmesini/yok edilmesini isteme ve bu işlemlerin ilgili üçüncü kişilere bildirilmesini isteme haklarına sahipsiniz.</p><p>Bu haklarınızı kullanmak için sitede yer alan iletişim bilgileri üzerinden tarafıma ulaşabilirsiniz.</p><p><em>(Bu metin örnek olarak hazırlanmıştır; yayına almadan önce bir hukuk danışmanına gözden geçirtmenizi öneririz. Bu alanı admin panelinden dilediğiniz gibi düzenleyebilirsiniz.)</em></p>','Manisa\'da ve online olarak bireysel ve çift terapisi hizmeti veriyorum. Randevu almak için benimle iletişime geçebilirsiniz.','2026-09-20 14:44:05','2026-09-20 14:44:05');
 /*!40000 ALTER TABLE `settings` ENABLE KEYS */;
 
 --
@@ -858,4 +860,4 @@ INSERT INTO `users` VALUES
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2026-09-20 21:26:57
+-- Dump completed on 2026-09-20 21:53:50
