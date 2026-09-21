@@ -397,12 +397,17 @@ input, textarea, select {
    boş, sadece kontur çizgili" başlık efektleri (-webkit-text-stroke)
    sabit BEYAZ renk kullanıyordu; bu efekt koyu fotoğraf/zemin
    varsayımıyla tasarlanmıştı. Sitenin genel zemini artık açık renk
-   olduğundan, beyaz kontur açık zeminde görünmez hale geliyor ("Sıcak
-   Bir Dinleyici", "Randevu Alın" düğmesindeki "Alın" kelimesi gibi
-   metinler kayboluyordu). Ana slider'daki başlık (fotoğraf üzerinde,
-   koyu geçişli zemin) buna dahil değil; o zaten uygun kontrastta. */
+   olduğundan, beyaz kontur açık zeminde görünmez hale geliyordu
+   ("Sıcak Bir Dinleyici", "Randevu Alın" düğmesindeki "Alın" kelimesi,
+   ve ana sayfa slider başlığındaki ikinci kelime gibi metinler
+   kayboluyordu). Ana slider'daki başlığın altı koyu geçişli bir
+   fotoğraf zemini olsa da, başlık metninin kendisi çoğunlukla o koyu
+   alanın ÜSTÜNDE, sitenin düz (açık) zemininde duruyor; bu yüzden o da
+   dahil edildi. Kontur rengi artık temaya göre değişen --heading-color
+   değişkenini kullanıyor (açık temada koyu, koyu temada beyaz). */
 .ori-text-scroll-content h3 span,
-.ori-footer-title h2 span {
+.ori-footer-title h2 span,
+.ori-slider-text h1 span {
   -webkit-text-stroke-color: var(--heading-color) !important;
 }
 
