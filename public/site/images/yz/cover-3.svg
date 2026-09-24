@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 1000" width="1600" height="1000">
+<defs>
+<radialGradient id="g1" cx="18%" cy="20%" r="60%"><stop offset="0" stop-color="#FD3A25" stop-opacity=".75"/><stop offset="1" stop-color="#FD3A25" stop-opacity="0"/></radialGradient>
+<radialGradient id="g2" cx="85%" cy="85%" r="65%"><stop offset="0" stop-color="#F43F5E" stop-opacity=".6"/><stop offset="1" stop-color="#F43F5E" stop-opacity="0"/></radialGradient>
+<radialGradient id="g3" cx="75%" cy="10%" r="45%"><stop offset="0" stop-color="#F59E0B" stop-opacity=".55"/><stop offset="1" stop-color="#F59E0B" stop-opacity="0"/></radialGradient>
+<pattern id="grid" width="64" height="64" patternUnits="userSpaceOnUse"><path d="M64 0H0V64" fill="none" stroke="#fff" stroke-opacity=".06" stroke-width="1"/></pattern>
+<linearGradient id="card" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".16"/><stop offset="1" stop-color="#fff" stop-opacity=".04"/></linearGradient>
+<linearGradient id="acc" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#FD3A25"/><stop offset="1" stop-color="#F43F5E"/></linearGradient>
+</defs>
+<rect width="1600" height="1000" fill="#0B0B0F"/>
+<rect width="1600" height="1000" fill="url(#g1)"/><rect width="1600" height="1000" fill="url(#g2)"/><rect width="1600" height="1000" fill="url(#g3)"/>
+<rect width="1600" height="1000" fill="url(#grid)"/>
+<rect x="260" y="170" width="1080" height="660" rx="28" fill="url(#card)" stroke="#fff" stroke-opacity=".22"/><rect x="320" y="230" width="380" height="30" rx="15.0" fill="#fff" fill-opacity="0.8"/><rect x="340" y="580" width="70" height="180" rx="14" fill="url(#acc)" fill-opacity="0.45"/><rect x="460" y="500" width="70" height="260" rx="14" fill="url(#acc)" fill-opacity="0.51"/><rect x="580" y="540" width="70" height="220" rx="14" fill="url(#acc)" fill-opacity="0.57"/><rect x="700" y="420" width="70" height="340" rx="14" fill="url(#acc)" fill-opacity="0.63"/><rect x="820" y="460" width="70" height="300" rx="14" fill="url(#acc)" fill-opacity="0.69"/><rect x="940" y="340" width="70" height="420" rx="14" fill="url(#acc)" fill-opacity="0.75"/><rect x="1060" y="380" width="70" height="380" rx="14" fill="url(#acc)" fill-opacity="0.81"/><rect x="1180" y="260" width="70" height="500" rx="14" fill="url(#acc)" fill-opacity="0.87"/><polyline points="375,640 495,560 615,600 735,470 855,510 975,390 1095,430 1215,300" fill="none" stroke="#fff" stroke-width="5" stroke-opacity=".8" stroke-linejoin="round"/>
+<text x="1530" y="940" text-anchor="end" font-family="Urbanist,Arial,sans-serif" font-size="34" font-weight="700" fill="#fff" fill-opacity=".55" letter-spacing="4">YZ</text>
+</svg>
