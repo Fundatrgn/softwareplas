@@ -41,9 +41,11 @@ class DatabaseSeeder extends Seeder
         User::create([
             'name' => $name,
             'email' => env('ADMIN_EMAIL') ?: 'co@canzeybek.com.tr',
-            'password' => bcrypt(env('ADMIN_PASSWORD') ?: 'YZ-Panel-2026!'),
+            'password' => bcrypt($adminPassword = env('ADMIN_PASSWORD') ?: Str::random(16)),
             'role' => User::ROLE_YONETICI,
         ]);
+
+        $this->command?->warn('Yönetici şifresi: ' . $adminPassword . ' (ilk girişten sonra değiştirin)');
 
         // 2) Site ayarları
         Setting::create([

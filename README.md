@@ -98,14 +98,14 @@ SSH erişiminiz varsa SQL dosyası yerine şu da kullanılabilir:
 
 ```bash
 cp .env.example .env && php artisan key:generate
-php artisan migrate --seed   # ADMIN_EMAIL / ADMIN_PASSWORD .env'den okunur
+php artisan migrate --seed   # ADMIN_PASSWORD boşsa rastgele şifre üretilip ekrana yazılır
 ```
 
 ### Yönetim paneline ilk giriş
 
 - Adres: `https://alanadiniz/login`
 - E-posta: `co@canzeybek.com.tr`
-- Geçici şifre: `YZ-Panel-2026!`
+- Geçici şifre: size ayrıca iletildi (güvenlik nedeniyle depoda yazmıyor)
 
 **İlk girişten hemen sonra** Kullanıcılar > Düzenle'den şifrenizi değiştirin.
 

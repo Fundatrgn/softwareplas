@@ -1,7 +1,7 @@
 -- Yunuscan ZEYBEK web sitesi - SIFIRDAN KURULUM veritabanı
 -- phpMyAdmin > İçe Aktar ile BOŞ bir veritabanına yükleyin.
 -- UYARI: Canlı sitede TEKRAR ÇALIŞTIRMAYIN; tüm içeriğin üzerine yazar.
--- İlk giriş: co@canzeybek.com.tr / YZ-Panel-2026! (girişten sonra şifreyi değiştirin)
+-- İlk giriş e-postası: co@canzeybek.com.tr (geçici şifre size ayrıca iletildi; girişten sonra değiştirin)
 
 SET NAMES utf8mb4;
 
