@@ -1,6 +1,6 @@
-# Alan adının belge kökü proje klasörünü (public/ yerine) gösteriyorsa:
-# tüm istekleri public/ klasörüne yönlendirir; .env, vendor, storage gibi
-# dosyalara tarayıcıdan erişilmesini engeller.
+# Belge kökü bu klasörü (public/ yerine) gösteriyorsa tüm istekleri
+# public/ klasörüne yönlendirir; .env gibi gizli dosyaları engeller.
+# (Sadece mod_rewrite kullanır; Plesk'in kısıtlı .htaccess izinleriyle uyumludur.)
 <IfModule mod_rewrite.c>
     RewriteEngine On
     RewriteRule ^(\.env|\.git|composer\.(json|lock)|artisan|package\.json) - [F,L]
@@ -8,7 +8,3 @@
     RewriteCond %{REQUEST_URI} !^/(error_docs|\.well-known)/
     RewriteRule ^(.*)$ public/$1 [L]
 </IfModule>
-
-<FilesMatch "^\.">
-    Require all denied
-</FilesMatch>
