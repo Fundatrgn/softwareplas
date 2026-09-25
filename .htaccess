@@ -5,6 +5,7 @@
     RewriteEngine On
     RewriteRule ^(\.env|\.git|composer\.(json|lock)|artisan|package\.json) - [F,L]
     RewriteCond %{REQUEST_URI} !^/public/
+    RewriteCond %{REQUEST_URI} !^/(error_docs|\.well-known)/
     RewriteRule ^(.*)$ public/$1 [L]
 </IfModule>
 
