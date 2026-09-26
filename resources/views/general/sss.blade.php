@@ -25,6 +25,24 @@
 
 <section id="ori-faq" class="position-relative" style="padding: 100px 0;">
     <div class="container" style="max-width: 860px;">
+        @if($data['sorular']->count())
+        <script type="application/ld+json">
+        {!! json_encode([
+            '@context' => 'https://schema.org',
+            '@type' => 'FAQPage',
+            'mainEntity' => $data['sorular']->map(function ($item) {
+                return [
+                    '@type' => 'Question',
+                    'name' => trim(html_entity_decode(strip_tags($item->title), ENT_QUOTES, 'UTF-8')),
+                    'acceptedAnswer' => [
+                        '@type' => 'Answer',
+                        'text' => trim(html_entity_decode(strip_tags($item->content), ENT_QUOTES, 'UTF-8')),
+                    ],
+                ];
+            })->values(),
+        ], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) !!}
+        </script>
+        @endif
         @forelse($data['sorular'] as $item)
             <div class="ori-faq-item" style="margin-bottom: 18px; border-radius: 10px; overflow: hidden; background-color: var(--dark-surface);">
                 <button type="button" class="ori-faq-question" data-faq-toggle

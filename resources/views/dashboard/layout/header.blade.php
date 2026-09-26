@@ -204,6 +204,25 @@
                         </li>
                     </ul>
                 </li>
+
+                <li>
+                    <a href="javascript:;" class="has-arrow">
+                        <div class="parent-icon">
+                            <ion-icon name="chatbox-ellipses-outline"></ion-icon>
+                        </div>
+                        <div class="menu-title">Danışan Yorumları</div>
+                    </a>
+                    <ul>
+                        <li> <a href="/admin/yorumlar">
+                                <ion-icon name="ellipse-outline"></ion-icon>Yorumlar
+                            </a>
+                        </li>
+                        <li> <a href="/admin/yorumlar/add">
+                                <ion-icon name="ellipse-outline"></ion-icon>Yeni Yorum Ekle
+                            </a>
+                        </li>
+                    </ul>
+                </li>
                 {{-- <li>
                     <a class="has-arrow" href="javascript:;">
                         <div class="parent-icon">

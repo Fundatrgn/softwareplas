@@ -8,6 +8,7 @@ use App\Models\Services;
 use App\Models\ServicesCategory;
 use App\Models\Setting;
 use App\Models\Statics;
+use App\Models\Testimonial;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\ServiceProvider;
 
@@ -54,6 +55,9 @@ class AppServiceProvider extends ServiceProvider
         }
         if (Schema::hasTable('pages')) {
             view()->share('custom_pages', Page::orderBy('order')->orderBy('id')->get());
+        }
+        if (Schema::hasTable('testimonials')) {
+            view()->share('testimonials', Testimonial::orderBy('order')->orderBy('id')->get());
         }
     }
 }

@@ -344,7 +344,7 @@
                                 </div>
                                 <div class="col-md-3">
                                     <label class="form-label">SMS Gönderici Başlığı</label>
-                                    <input type="text" class="form-control" name="sms_sender_title" value="{{ $data->sms_sender_title ?? '' }}" placeholder="Örn: MERVEPSK">
+                                    <input type="text" class="form-control" name="sms_sender_title" value="{{ $data->sms_sender_title ?? '' }}" placeholder="Örn: MARYA">
                                 </div>
                                 <div class="col-md-3">
                                     <label class="form-label">SMS API Key</label>

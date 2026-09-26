@@ -78,6 +78,8 @@
     </section>
     @include('general.comp.hizmetler')
 
+    @include('general.comp.testimonials')
+
     @include('general.comp.slogan')
 
     @include('general.comp.lastpost')

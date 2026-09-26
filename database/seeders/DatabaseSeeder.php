@@ -17,7 +17,7 @@ use Illuminate\Support\Str;
 class DatabaseSeeder extends Seeder
 {
     /**
-     * Bu seeder, Psikolog Merve Kalayci icin hazirlanan site iskeletine
+     * Bu seeder, Marya Aile ve Psikoegitim Danismanligi icin hazirlanan site iskeletine
      * baslangic icerigi yukler. Buradaki tum metinler ORNEK/YER TUTUCUdur;
      * gercek yayina almadan once admin panelinden (Ayarlar, Hizmetler,
      * Blog, Slider bolumleri) gozden gecirilip guncellenmelidir.
@@ -26,7 +26,7 @@ class DatabaseSeeder extends Seeder
     {
         // 1) Admin girisi
         User::create([
-            'name' => 'Merve Kalaycı',
+            'name' => 'Marya Yönetici',
             'email' => 'merve@example.com',
             'password' => bcrypt('Degistir123!'),
             'created_by' => 1,
@@ -34,25 +34,26 @@ class DatabaseSeeder extends Seeder
 
         // 2) Genel Ayarlar
         Setting::create([
-            'image' => 'merve-kalayci-logo.svg',
-            'favicon' => 'favicon.svg',
-            'site_title' => 'Psikolog Merve Kalaycı | Manisa & Online Terapi',
-            'description' => 'Manisa merkezli, bireysel terapi, çift terapisi ve online terapi hizmeti sunan Psikolog Merve Kalaycı\'nın resmi web sitesi.',
-            'keywords' => 'psikolog, manisa psikolog, turgutlu psikolog, online terapi, bireysel terapi, çift terapisi',
-            'author' => 'Merve Kalaycı',
+            'image' => 'marya-logo-yatay.png',
+            'logo_white' => 'marya-logo-yatay-beyaz.png',
+            'favicon' => 'marya-favicon.png',
+            'site_title' => 'Marya Aile ve Psikoeğitim Danışmanlığı | Manisa & Online',
+            'description' => 'Manisa merkezli, aile danışmanlığı, çift terapisi ve online terapi hizmeti sunan Marya Aile ve Psikoeğitim Danışmanlığı\'nın resmi web sitesi.',
+            'keywords' => 'aile danışmanlığı, psikoeğitim, manisa psikolog, çift terapisi, online terapi',
+            'author' => 'Marya',
             'linkedin' => '',
-            'instagram' => 'https://www.instagram.com/psikologmervekalayci/',
+            'instagram' => 'https://www.instagram.com/maryadanismanlik/',
             'youtube' => '',
             'twitter' => '',
             'facebook' => '',
             'phone' => '0 (5XX) XXX XX XX',
             'email' => 'info@example.com',
             'address' => 'Manisa, Türkiye',
-            'accent_color' => '#D9784B',
-            'secondary_color' => '#7FA36F',
-            'heading_color' => '#1F2D30',
-            'body_text_color' => '#4B5A5E',
-            'background_color' => '#F7F5F0',
+            'accent_color' => '#223B52',
+            'secondary_color' => '#A8C39B',
+            'heading_color' => '#18212B',
+            'body_text_color' => '#45566B',
+            'background_color' => '#F7F3EA',
             'whatsapp_number' => null,
             'sidebar_bio' => 'Manisa\'da ve online olarak bireysel ve çift terapisi hizmeti veriyorum. Randevu almak için benimle iletişime geçebilirsiniz.',
             'kvkk_text' => "<p><strong>Kişisel Verilerin Korunması Hakkında Aydınlatma Metni</strong></p>" .
@@ -170,8 +171,8 @@ class DatabaseSeeder extends Seeder
         // 6) Hakkimda
         Hakkimizda::create([
             'subtitle' => 'MERHABA',
-            'title' => 'Ben Merve Kalaycı',
-            'content' => '<p>Psikoloji alanındaki eğitimim ve mesleki deneyimimle, Manisa\'da ve online olarak bireysel ve çift danışmanlığı hizmeti veriyorum. Danışanlarımla çalışırken güncel bilimsel yaklaşımlardan yararlanır, her sürecin o kişiye özgü olduğuna inanırım.</p><p><em>(Bu metin örnektir — eğitim geçmişiniz, unvanınız ve deneyiminizle güncellemenizi öneririz.)</em></p>',
+            'title' => 'Marya Ailesine Hoş Geldiniz',
+            'content' => '<p>Marya Aile ve Psikoeğitim Danışmanlığı olarak, alanında uzman ekibimizle Manisa\'da ve online olarak aile danışmanlığı, çift danışmanlığı ve bireysel danışmanlık hizmeti veriyoruz. Danışanlarımızla çalışırken güncel bilimsel yaklaşımlardan yararlanır, her sürecin o kişiye/aileye özgü olduğuna inanırız.</p><p><em>(Bu metin örnektir — ekibinizin eğitim geçmişi, unvanları ve deneyimiyle güncellemenizi öneririz.)</em></p>',
             'image' => 'about-1.svg',
             'position' => '1',
         ]);

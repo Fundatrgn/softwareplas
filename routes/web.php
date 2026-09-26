@@ -10,6 +10,7 @@ use App\Http\Controllers\dashboard\CkeditorController;
 use App\Http\Controllers\dashboard\ContactController;
 use App\Http\Controllers\dashboard\EmailSettingController;
 use App\Http\Controllers\dashboard\FooterMenuController;
+use App\Http\Controllers\dashboard\TestimonialController;
 use App\Http\Controllers\dashboard\PatientController;
 use App\Http\Controllers\dashboard\ReportController;
 use App\Http\Controllers\dashboard\HakkimizdaController;
@@ -154,6 +155,14 @@ Route::prefix('/admin')->middleware(['auth', 'role:yonetici'])->group(function (
     Route::post('/sayfalar/add', [PageController::class, 'store']);
     Route::get('/sayfalar/del/{id}', [PageController::class, 'del']);
     // Kurumsal sayfalar
+
+    // Danışan Yorumları (anasayfa testimonial bölümü)
+    Route::get('/yorumlar', [TestimonialController::class, 'index']);
+    Route::get('/yorumlar/add', [TestimonialController::class, 'add']);
+    Route::get('/yorumlar/add/{id}', [TestimonialController::class, 'edit']);
+    Route::post('/yorumlar/add', [TestimonialController::class, 'store']);
+    Route::get('/yorumlar/del/{id}', [TestimonialController::class, 'del']);
+    // Danışan Yorumları
     // Ekibimiz
     Route::get('/ekibimiz', [TeamController::class, 'index']);
     Route::get('/ekibimiz/add', [TeamController::class, 'add']);
