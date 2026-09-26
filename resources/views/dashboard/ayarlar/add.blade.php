@@ -40,7 +40,24 @@
                                 <div class="col-md-6">
                                     <label for="bsValidation4" class="form-label">Logo</label>
                                     <input type="file" class="form-control" id="bsValidation4" name="image">
+                                    <div class="form-text">Açık zeminlerde (header, çoğu bölüm) kullanılır.</div>
                                 </div>
+
+                                @isset($data)
+                                    @if ($data->logo_white)
+                                        <div class="col-md-12">
+                                            <label class="form-label">Mevcut Beyaz Logo (Koyu Zemin)</label>
+                                            <br>
+                                            <img src="{{ asset('images/' . $data->logo_white) }}" class="img-fluid" alt="" style="background:#223B52; padding:10px; border-radius:6px;">
+                                        </div>
+                                    @endif
+                                @endisset
+                                <div class="col-md-6">
+                                    <label for="logo_white" class="form-label">Beyaz Logo (Koyu Zemin İçin)</label>
+                                    <input type="file" class="form-control" id="logo_white" name="logo_white">
+                                    <div class="form-text">Footer ve koyu tema gibi koyu zeminlerde otomatik olarak bu logo gösterilir. Boş bırakılırsa yukarıdaki logo kullanılır.</div>
+                                </div>
+
                                 @isset($data)
                                 @if ($data->favicon)
                                     <div class="col-md-12">
@@ -154,6 +171,37 @@
 
                                 <div class="col-md-12 mt-4">
                                     <hr>
+                                    <h5 class="mb-1">Arama Motoru Bildirimleri</h5>
+                                    <p class="text-muted mb-3">Yeni bir blog yazısı yayınladığınızda sistem, sayfanın hemen taranması için otomatik olarak <strong>Bing</strong> ve <strong>Yandex</strong>'e (IndexNow protokolü ile) haber verir. <strong>Google</strong> için de en iyi çaba ile bir bildirim gönderilir; ancak Google artık bu tür anlık bildirimleri garanti etmiyor, yeni içeriğinizi kendi hızında tarar.</p>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="form-check form-switch mb-2">
+                                        <input class="form-check-input" type="checkbox" role="switch" id="search_ping_enabled" name="search_ping_enabled" value="1" {{ ($data->search_ping_enabled ?? true) ? 'checked' : '' }}>
+                                        <label class="form-check-label" for="search_ping_enabled">Yeni blog yazılarını arama motorlarına otomatik bildir</label>
+                                    </div>
+                                    @if(!empty($data->indexnow_key))
+                                        <div class="form-text">Doğrulama anahtarı otomatik oluşturuldu ve şu adreste yayınlanıyor: <code>{{ url('/' . $data->indexnow_key . '.txt') }}</code></div>
+                                    @else
+                                        <div class="form-text">İlk kayıttan sonra bir doğrulama anahtarı otomatik oluşturulacaktır.</div>
+                                    @endif
+                                </div>
+
+                                <div class="col-md-12 mt-4">
+                                    <hr>
+                                    <h5 class="mb-1">Reklam ve Analiz Kodları</h5>
+                                    <p class="text-muted mb-3">Google Ads / Google Analytics (gtag) ve Meta (Facebook/Instagram) Pixel kodlarını buraya yapıştırın; ilgili sağlayıcının size verdiği <code>&lt;script&gt;</code> kodunun tamamını kopyalayıp yapıştırmanız yeterli — sitenin her sayfasına otomatik olarak eklenir, ekstra bir işlem gerekmez.</p>
+                                </div>
+                                <div class="col-md-12">
+                                    <label for="google_ads_code" class="form-label">Google Ads / Analytics Kodu</label>
+                                    <textarea class="form-control" id="google_ads_code" name="google_ads_code" rows="4" placeholder="<script async src=&quot;https://www.googletagmanager.com/gtag/js?id=...&quot;></script> ...">{{ $data->google_ads_code ?? '' }}</textarea>
+                                </div>
+                                <div class="col-md-12">
+                                    <label for="meta_pixel_code" class="form-label">Meta (Facebook) Pixel Kodu</label>
+                                    <textarea class="form-control" id="meta_pixel_code" name="meta_pixel_code" rows="4" placeholder="<script>!function(f,b,e,v,n,t,s){...}</script>">{{ $data->meta_pixel_code ?? '' }}</textarea>
+                                </div>
+
+                                <div class="col-md-12 mt-4">
+                                    <hr>
                                     <h5 class="mb-1">Site Görünümü / Renkler</h5>
                                     <p class="text-muted mb-3">Aşağıdaki renkleri değiştirdiğinde sitedeki tüm ilgili butonlar, başlıklar ve yazılar otomatik olarak güncellenir. Herhangi bir kod bilgisi gerekmez.</p>
                                 </div>
@@ -162,8 +210,10 @@
                                     <label class="form-label">Hızlı Tema Seç</label>
                                     <div class="form-text mb-2">Bir temaya tıkla, aşağıdaki tüm renkler otomatik doldurulur — sonra "Kaydet"e bas.</div>
                                     <div class="d-flex flex-wrap gap-2" id="tema-presets">
+                                        <button type="button" class="btn btn-sm" data-tema="marya"
+                                            style="background:#F7F3EA; border:2px solid #223B52; color:#223B52; font-weight:600;">🔷 Marya (varsayılan)</button>
                                         <button type="button" class="btn btn-sm" data-tema="turuncu"
-                                            style="background:#F7F5F0; border:2px solid #D9784B; color:#8a5a3a; font-weight:600;">🟠 Turuncu (varsayılan)</button>
+                                            style="background:#F7F5F0; border:2px solid #D9784B; color:#8a5a3a; font-weight:600;">🟠 Turuncu</button>
                                         <button type="button" class="btn btn-sm" data-tema="yesil"
                                             style="background:#F5F8F4; border:2px solid #6FA37F; color:#3f6b4d; font-weight:600;">🟢 Yeşil</button>
                                         <button type="button" class="btn btn-sm" data-tema="mavi"
@@ -177,6 +227,7 @@
                                 <script>
                                 (function() {
                                     var temalar = {
+                                        marya:   { accent_color: '#223B52', secondary_color: '#A8C39B', background_color: '#F7F3EA', heading_color: '#18212B', body_text_color: '#45566B' },
                                         turuncu: { accent_color: '#D9784B', secondary_color: '#7FA36F', background_color: '#F7F5F0', heading_color: '#1F2D30', body_text_color: '#4B5A5E' },
                                         yesil:   { accent_color: '#6FA37F', secondary_color: '#C9A46A', background_color: '#F5F8F4', heading_color: '#1F2D30', body_text_color: '#45524B' },
                                         mavi:    { accent_color: '#4F8FB0', secondary_color: '#8FA888', background_color: '#F3F7F9', heading_color: '#1F2D30', body_text_color: '#445258' },
@@ -198,31 +249,31 @@
                                 <div class="col-md-4 col-6">
                                     <label for="accent_color" class="form-label">Ana Marka Rengi</label>
                                     <input type="color" class="form-control form-control-color w-100" id="accent_color"
-                                        name="accent_color" value="{{ $data->accent_color ?? '#D9784B' }}" title="Ana marka rengi">
+                                        name="accent_color" value="{{ $data->accent_color ?? '#223B52' }}" title="Ana marka rengi">
                                     <div class="form-text">Butonlar, linkler, ikonlar</div>
                                 </div>
                                 <div class="col-md-4 col-6">
                                     <label for="secondary_color" class="form-label">İkincil Renk</label>
                                     <input type="color" class="form-control form-control-color w-100" id="secondary_color"
-                                        name="secondary_color" value="{{ $data->secondary_color ?? '#7FA36F' }}" title="İkincil renk">
+                                        name="secondary_color" value="{{ $data->secondary_color ?? '#A8C39B' }}" title="İkincil renk">
                                     <div class="form-text">Vurgu detayları, ikon arka planları</div>
                                 </div>
                                 <div class="col-md-4 col-6">
                                     <label for="background_color" class="form-label">Sayfa Arka Plan Rengi</label>
                                     <input type="color" class="form-control form-control-color w-100" id="background_color"
-                                        name="background_color" value="{{ $data->background_color ?? '#F7F5F0' }}" title="Arka plan rengi">
+                                        name="background_color" value="{{ $data->background_color ?? '#F7F3EA' }}" title="Arka plan rengi">
                                     <div class="form-text">Bölüm arka planları</div>
                                 </div>
                                 <div class="col-md-4 col-6">
                                     <label for="heading_color" class="form-label">Başlık Yazı Rengi</label>
                                     <input type="color" class="form-control form-control-color w-100" id="heading_color"
-                                        name="heading_color" value="{{ $data->heading_color ?? '#1F2D30' }}" title="Başlık rengi">
+                                        name="heading_color" value="{{ $data->heading_color ?? '#18212B' }}" title="Başlık rengi">
                                     <div class="form-text">Tüm başlıklar (H1-H6)</div>
                                 </div>
                                 <div class="col-md-4 col-6">
                                     <label for="body_text_color" class="form-label">Gövde Yazı Rengi</label>
                                     <input type="color" class="form-control form-control-color w-100" id="body_text_color"
-                                        name="body_text_color" value="{{ $data->body_text_color ?? '#4B5A5E' }}" title="Metin rengi">
+                                        name="body_text_color" value="{{ $data->body_text_color ?? '#45566B' }}" title="Metin rengi">
                                     <div class="form-text">Paragraf ve açıklama metinleri</div>
                                 </div>
 

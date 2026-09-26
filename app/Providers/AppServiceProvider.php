@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Models\FooterLink;
+use App\Models\Page;
 use App\Models\Services;
 use App\Models\ServicesCategory;
 use App\Models\Setting;
@@ -50,6 +51,9 @@ class AppServiceProvider extends ServiceProvider
         }
         if (Schema::hasTable('footer_links')) {
             view()->share('footer_links', FooterLink::orderBy('order')->orderBy('id')->get());
+        }
+        if (Schema::hasTable('pages')) {
+            view()->share('custom_pages', Page::orderBy('order')->orderBy('id')->get());
         }
     }
 }

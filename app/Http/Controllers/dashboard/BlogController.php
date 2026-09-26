@@ -5,6 +5,7 @@ namespace App\Http\Controllers\dashboard;
 use App\Http\Controllers\Controller;
 use App\Models\Blog;
 use App\Models\BlogCategory;
+use App\Services\SearchEnginePingService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
@@ -30,6 +31,8 @@ class BlogController extends Controller
     }
     public function store(Request $request)
     {
+        $yeniKayit = ! $request->id;
+
         if ($request->id) {
             $item = Blog::find($request->id);
         } else {
@@ -53,6 +56,12 @@ class BlogController extends Controller
         }
 
         $item->save();
+
+        if ($yeniKayit) {
+            $yayinUrl = url('/blog/detay/' . $item->id . '/' . $item->slug);
+            SearchEnginePingService::urlYayinlandi($yayinUrl);
+        }
+
         return redirect('/admin/blog')->with('success', 'Kayıt Başarıyla Eklendi.');
     }
     public function del($id)

@@ -15,5 +15,6 @@ class Setting extends Model
         'notify_email_enabled' => 'boolean',
         'notify_sms_enabled' => 'boolean',
         'reminder_intervals_days' => 'array',
+        'search_ping_enabled' => 'boolean',
     ];
 }

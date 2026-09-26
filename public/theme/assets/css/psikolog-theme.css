@@ -479,11 +479,175 @@ input, textarea, select {
 }
 
 :root[data-theme="dark"] {
+  /* Marya Koyu (#18212B) zemin üzerine kurulu koyu tema. */
   --heading-color: #FFFFFF;
-  --body-color: #E7E3D8;
-  --page-bg: #1B1F1C;
-  --dark-surface: #232823;
+  --body-color: #D7DCE2;
+  --page-bg: #18212B;
+  --dark-surface: #223046;
   --surface-border: rgba(255, 255, 255, 0.08);
   --on-surface: #FFFFFF;
-  --on-surface-muted: #C9C4B4;
+  --on-surface-muted: #B9C2CC;
+}
+
+/* =====================================================================
+   Marya Tipografi Sistemi: Montserrat ana yazı tipi (başlık/gövde/CTA),
+   Cormorant Garamond ise marka kılavuzuna göre SADECE seçili
+   alıntı/vurgu metinlerinde ("toplam kullanımın en fazla %10'u") —
+   müşteri yorumları (testimonial) ve blog alıntılarında (blockquote)
+   zarif bir vurgu için kullanılıyor.
+   ===================================================================== */
+.ori-testimonial-item-1 p,
+.ori-blog-details-text-wrapper blockquote p {
+  font-family: var(--accent-font), serif;
+  font-style: italic;
+  font-weight: 500;
+}
+
+/* =====================================================================
+   Marya Marka Motifi — İç İçe Çember Süslemesi: Marka kimliğindeki
+   amblemin çember/kavis diliyle uyumlu, iki iç içe halka şeklinde ince
+   bir dekor. Kaynak marka dosyaları (arka plan paketi) Instagram gönderi
+   ölçüsünde (1080x1350) hazırlandığı için doğrudan site arka planı
+   olarak kullanılmadı; aynı görsel dil CSS ile hafif ve her çözünürlükte
+   keskin kalacak şekilde yeniden üretildi. "Randevu Alın" CTA kutusunda
+   kullanılıyor.
+   ===================================================================== */
+.ori-footer-title {
+  position: relative;
+  overflow: hidden;
+}
+.ori-footer-title::before,
+.ori-footer-title::after {
+  content: "";
+  position: absolute;
+  border-radius: 50%;
+  border: 1px solid var(--base-color-2);
+  opacity: 0.35;
+  pointer-events: none;
+  z-index: 0;
+}
+.ori-footer-title::before {
+  width: 260px;
+  height: 260px;
+  top: -140px;
+  right: -60px;
+}
+.ori-footer-title::after {
+  width: 160px;
+  height: 160px;
+  bottom: -90px;
+  left: 6%;
+  border-color: var(--base-color-1);
+  opacity: 0.25;
+}
+.ori-footer-title a {
+  position: relative;
+  z-index: 1;
+}
+@media screen and (max-width: 767px) {
+  .ori-footer-title::before,
+  .ori-footer-title::after {
+    display: none;
+  }
+}
+
+/* =====================================================================
+   Mobil Uygulama "Çok Yakında" Butonları + Bildirim Kutusu
+   ===================================================================== */
+.ori-app-download-wrap {
+  padding: 40px 0 10px;
+  border-top: 1px solid var(--surface-border);
+  margin-top: 10px;
+}
+.ori-app-download-title {
+  font-weight: 600;
+  color: var(--heading-color);
+  margin-bottom: 16px;
+}
+.ori-app-download-buttons {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 14px;
+}
+.ori-app-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 22px;
+  border-radius: 12px;
+  border: 1px solid var(--surface-border);
+  background: var(--dark-surface);
+  color: var(--heading-color);
+  text-decoration: none;
+  transition: all 0.25s ease;
+}
+.ori-app-btn:hover {
+  color: #fff;
+  background: var(--base-color-1);
+  border-color: var(--base-color-1);
+}
+.ori-app-btn i {
+  font-size: 26px;
+}
+.ori-app-btn span {
+  display: flex;
+  flex-direction: column;
+  font-size: 11px;
+  line-height: 1.3;
+  text-align: left;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+.ori-app-btn span strong {
+  font-size: 15px;
+  text-transform: none;
+  letter-spacing: normal;
+}
+
+.ori-coming-soon-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  background: rgba(24, 33, 43, 0.55);
+  padding: 20px;
+}
+.ori-coming-soon-overlay.active {
+  display: flex;
+}
+.ori-coming-soon-box {
+  position: relative;
+  max-width: 380px;
+  width: 100%;
+  background: var(--page-bg);
+  color: var(--heading-color);
+  border-radius: 16px;
+  padding: 40px 30px 34px;
+  text-align: center;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+}
+.ori-coming-soon-icon {
+  font-size: 42px;
+  margin-bottom: 10px;
+}
+.ori-coming-soon-box h4 {
+  margin-bottom: 10px;
+}
+.ori-coming-soon-box p {
+  color: var(--body-color);
+  margin-bottom: 0;
+}
+.ori-coming-soon-close {
+  position: absolute;
+  top: 12px;
+  right: 16px;
+  border: none;
+  background: none;
+  font-size: 26px;
+  line-height: 1;
+  color: var(--body-color);
+  cursor: pointer;
 }

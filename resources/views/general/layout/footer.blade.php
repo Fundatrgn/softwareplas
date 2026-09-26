@@ -10,8 +10,10 @@
                 <div class="col-lg-3 col-md-6">
                     <div class="ori-footer-widget">
                         <div class="logo-widget">
-                            <a href="#"><img src="{{ asset('images/' . $settings->image ?? '') }}" alt=""
-                                    style="width:180px"></a>
+                            <a href="#"><img id="footer-logo-img" src="{{ asset('images/' . ($settings->image ?? '')) }}"
+                                    data-logo-light="{{ asset('images/' . ($settings->image ?? '')) }}"
+                                    data-logo-dark="{{ asset('images/' . ($settings->logo_white ?? $settings->image ?? '')) }}"
+                                    alt="" style="width:180px"></a>
                             <p>
                                 {!! $settings->description ?? '' !!}
                             </p>
@@ -63,6 +65,21 @@
 
             </div>
         </div>
+
+        <div class="ori-app-download-wrap text-center">
+            <p class="ori-app-download-title">📱 Marya Mobil Uygulamamız Çok Yakında!</p>
+            <div class="ori-app-download-buttons">
+                <a href="javascript:;" class="ori-app-btn" data-coming-soon-trigger>
+                    <i class="fab fa-apple"></i>
+                    <span>App Store'da<strong>Yakında</strong></span>
+                </a>
+                <a href="javascript:;" class="ori-app-btn" data-coming-soon-trigger>
+                    <i class="fab fa-google-play"></i>
+                    <span>Google Play'de<strong>Yakında</strong></span>
+                </a>
+            </div>
+        </div>
+
         <div class="ori-footer-copyright ori-footer-copyright-refresh d-flex justify-content-between align-items-center">
             <div class="ori-copyright-text">
                 © {{ date('Y') }} {{ $settings->footer_copyright_text ?: 'All Right: Yunuscan ZEYBEK | Tüm Hakları Saklıdır' }}
@@ -77,6 +94,48 @@
 </footer>
 <!-- End of Footer section
  ============================================= -->
+
+<!-- Mobil Uygulama "Çok Yakında" Bildirimi -->
+<div class="ori-coming-soon-overlay" id="comingSoonOverlay">
+    <div class="ori-coming-soon-box">
+        <button type="button" class="ori-coming-soon-close" id="comingSoonClose" aria-label="Kapat">&times;</button>
+        <div class="ori-coming-soon-icon">🚀</div>
+        <h4>Çok Yakında!</h4>
+        <p>Marya mobil uygulamamız üzerinde çalışıyoruz. Çok yakında burada olacak — takipte kalın!</p>
+    </div>
+</div>
+<script>
+(function () {
+    var overlay = document.getElementById('comingSoonOverlay');
+    var closeBtn = document.getElementById('comingSoonClose');
+    document.querySelectorAll('[data-coming-soon-trigger]').forEach(function (btn) {
+        btn.addEventListener('click', function () { overlay.classList.add('active'); });
+    });
+    if (closeBtn) closeBtn.addEventListener('click', function () { overlay.classList.remove('active'); });
+    if (overlay) overlay.addEventListener('click', function (e) { if (e.target === overlay) overlay.classList.remove('active'); });
+})();
+</script>
+
+<!-- =====================================================================
+     İçerik Koruma (Caydırıcı Önlemler): Sağ tık menüsü ve devtools/
+     kaynak-görüntüleme kısayolları (F12, Ctrl+Shift+I/J/C, Ctrl+U)
+     engellenir. ÖNEMLİ SINIRLAMA: Bu, sıradan ziyaretçiyi caydırır ama
+     teknik olarak "Sayfa Kaynağını Görüntüle"yi tamamen engellemek
+     mümkün değildir — tarayıcı bunu JavaScript çalışmadan önce, ham
+     sunucu yanıtından gösterir; hiçbir web sitesi bunu %100 engelleyemez.
+     ===================================================================== */
+<script>
+(function () {
+    document.addEventListener('contextmenu', function (e) { e.preventDefault(); });
+    document.addEventListener('keydown', function (e) {
+        var engellenecek = e.key === 'F12'
+            || (e.ctrlKey && e.key === 'u')
+            || (e.ctrlKey && e.shiftKey && ['I', 'i', 'J', 'j', 'C', 'c'].indexOf(e.key) !== -1);
+        if (engellenecek) e.preventDefault();
+    });
+    console.log('%c© {{ date("Y") }} {{ $settings->footer_copyright_text ?: "All Right: Yunuscan ZEYBEK | Tüm Hakları Saklıdır" }}', 'font-size:16px; font-weight:bold; color:#223B52;');
+})();
+</script>
 
 @if(!empty($settings->whatsapp_number))
 <a href="https://wa.me/{{ preg_replace('/\D/', '', $settings->whatsapp_number) }}?text={{ urlencode('Merhaba, bir randevu almak istiyorum.') }}"

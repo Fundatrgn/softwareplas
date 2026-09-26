@@ -194,6 +194,14 @@
                                 <ion-icon name="ellipse-outline"></ion-icon>Hakkımızda
                             </a>
                         </li>
+                        <li> <a href="/admin/sayfalar">
+                                <ion-icon name="ellipse-outline"></ion-icon>Sayfalar
+                            </a>
+                        </li>
+                        <li> <a href="/admin/sayfalar/add">
+                                <ion-icon name="ellipse-outline"></ion-icon>Yeni Sayfa Ekle
+                            </a>
+                        </li>
                     </ul>
                 </li>
                 {{-- <li>

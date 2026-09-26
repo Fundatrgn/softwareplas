@@ -52,12 +52,22 @@ class SettingController extends Controller
         // Footer Ayarları
         $item->footer_copyright_text = $request->footer_copyright_text ?: null;
 
+        // Arama Motoru Bildirimleri (IndexNow)
+        $item->search_ping_enabled = $request->boolean('search_ping_enabled');
+        if (empty($item->indexnow_key)) {
+            $item->indexnow_key = bin2hex(random_bytes(16));
+        }
+
+        // Reklam / Analiz Kodları (Google Ads, Meta Pixel)
+        $item->google_ads_code = $request->google_ads_code;
+        $item->meta_pixel_code = $request->meta_pixel_code;
+
         // Site Görünümü / Renkler
-        $item->accent_color = $request->accent_color ?: '#D9784B';
-        $item->secondary_color = $request->secondary_color ?: '#7FA36F';
-        $item->heading_color = $request->heading_color ?: '#1F2D30';
-        $item->body_text_color = $request->body_text_color ?: '#4B5A5E';
-        $item->background_color = $request->background_color ?: '#F7F5F0';
+        $item->accent_color = $request->accent_color ?: '#223B52';
+        $item->secondary_color = $request->secondary_color ?: '#A8C39B';
+        $item->heading_color = $request->heading_color ?: '#18212B';
+        $item->body_text_color = $request->body_text_color ?: '#45566B';
+        $item->background_color = $request->background_color ?: '#F7F3EA';
         $item->whatsapp_number = $request->whatsapp_number;
 
         // Randevu / Çalışma Saatleri
@@ -101,6 +111,10 @@ class SettingController extends Controller
             $faviconName = $this->uploadImage($request, 'favicon');
             if ($faviconName) {
                 $item->favicon = $faviconName;
+            }
+            $logoWhiteName = $this->uploadImage($request, 'logo_white');
+            if ($logoWhiteName) {
+                $item->logo_white = $logoWhiteName;
             }
         } catch (\RuntimeException $e) {
             return redirect()->back()->withInput()->with('error', $e->getMessage());

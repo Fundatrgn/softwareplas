@@ -46,25 +46,33 @@
            renkler burada :root değişkenlerinin üzerine yazılır. Herhangi
            bir CSS dosyasına dokunmadan sitenin ana renklerini değiştirir. */
         :root {
-            --base-color: {{ $settings->accent_color ?? '#D9784B' }};
-            --base-color-1: {{ $settings->accent_color ?? '#D9784B' }};
-            --base-color-3: {{ $settings->accent_color ?? '#D9784B' }};
-            --base-color-5: {{ $settings->accent_color ?? '#D9784B' }};
-            --base-color-7: {{ $settings->accent_color ?? '#D9784B' }};
-            --base-color-2: {{ $settings->secondary_color ?? '#7FA36F' }};
-            --base-color-4: {{ $settings->secondary_color ?? '#7FA36F' }};
-            --base-color-6: {{ $settings->secondary_color ?? '#7FA36F' }};
-            --heading-color: {{ $settings->heading_color ?? '#1F2D30' }};
-            --body-color: {{ $settings->body_text_color ?? '#4B5A5E' }};
-            --page-bg: {{ $settings->background_color ?? '#F7F5F0' }};
+            /* Marya marka renk paleti (Lacivert/Adaçayı/Krem/Koyu) varsayılan
+               olarak burada tanımlı; admin panelinden değiştirilirse onun
+               yerine geçer. */
+            --base-color: {{ $settings->accent_color ?? '#223B52' }};
+            --base-color-1: {{ $settings->accent_color ?? '#223B52' }};
+            --base-color-3: {{ $settings->accent_color ?? '#223B52' }};
+            --base-color-5: {{ $settings->accent_color ?? '#223B52' }};
+            --base-color-7: {{ $settings->accent_color ?? '#223B52' }};
+            --base-color-2: {{ $settings->secondary_color ?? '#A8C39B' }};
+            --base-color-4: {{ $settings->secondary_color ?? '#A8C39B' }};
+            --base-color-6: {{ $settings->secondary_color ?? '#A8C39B' }};
+            --heading-color: {{ $settings->heading_color ?? '#18212B' }};
+            --body-color: {{ $settings->body_text_color ?? '#45566B' }};
+            --page-bg: {{ $settings->background_color ?? '#F7F3EA' }};
             --dark-surface: #FFFFFF;
-            --surface-border: rgba(31, 45, 48, 0.12);
-            --on-surface: {{ $settings->heading_color ?? '#1F2D30' }};
-            --on-surface-muted: {{ $settings->body_text_color ?? '#4B5A5E' }};
+            --surface-border: rgba(24, 33, 43, 0.12);
+            --on-surface: {{ $settings->heading_color ?? '#18212B' }};
+            --on-surface-muted: {{ $settings->body_text_color ?? '#45566B' }};
         }
     </style>
     <link rel="stylesheet" href="{{ asset('theme/assets/css/style.css') }}?v=35">
     <link rel="stylesheet" href="{{ asset('theme/assets/css/psikolog-theme.css') }}?v=35">
+    {{-- Admin panelinden (Ayarlar > Reklam ve Analiz Kodları) yapıştırılan
+         Google Ads/Analytics ve Meta Pixel kodları olduğu gibi buraya
+         enjekte edilir. --}}
+    {!! $settings->google_ads_code ?? '' !!}
+    {!! $settings->meta_pixel_code ?? '' !!}
 </head>
 
 <body class="ori-digital-studio">
@@ -93,7 +101,9 @@
                                 <a href="#">Kurumsal</a>
                                 <ul class="dropdown-menu clearfix">
                                     <li><a href="/hakkimizda">Hakkımızda </a></li>
-                                    {{-- <li><a  href="./ekibimiz.html">Ekibimiz</a></li> --}}
+                                    @foreach($custom_pages ?? [] as $ozelSayfa)
+                                        <li><a href="/kurumsal/{{ $ozelSayfa->slug }}">{{ $ozelSayfa->title }}</a></li>
+                                    @endforeach
                                 </ul>
                             </li>
                             <li class="dropdown">
@@ -157,11 +167,7 @@
                             <i class="fal fa-times"></i>
                         </div>
                         <div class="m-brand-logo d-flex align-items-center justify-content-between">
-                            <a href="/"><img src="{{ asset('images/' . ($settings->image ?? '')) }}" alt="" style="max-width:170px; width:100%; height:auto;"></a>
-                            <button type="button" id="theme-toggle-btn-mobile" aria-label="Koyu/Açık tema"
-                                style="display:inline-flex; align-items:center; justify-content:center; width:38px; height:38px; border-radius:50%; border:1px solid var(--surface-border); background:var(--page-bg); color:var(--heading-color); cursor:pointer; font-size:15px;">
-                                <i class="fas fa-moon" id="theme-toggle-icon-mobile"></i>
-                            </button>
+                            <a href="/"><img src="{{ asset('images/' . ($settings->logo_white ?? $settings->image ?? '')) }}" alt="" style="max-width:170px; width:100%; height:auto;"></a>
                         </div>
                         <nav class="mobile-main-navigation  clearfix ul-li">
                             <ul id="m-main-nav" class="nav navbar-nav clearfix">
@@ -173,7 +179,9 @@
                                     <a href="#">Kurumsal</a>
                                     <ul class="dropdown-menu clearfix">
                                         <li><a href="/hakkimizda">Hakkımızda </a></li>
-                                        {{-- <li><a  href="./ekibimiz.html">Ekibimiz</a></li> --}}
+                                        @foreach($custom_pages ?? [] as $ozelSayfa)
+                                            <li><a href="/kurumsal/{{ $ozelSayfa->slug }}">{{ $ozelSayfa->title }}</a></li>
+                                        @endforeach
                                     </ul>
                                 </li>
                                 <li class="dropdown">
@@ -210,13 +218,18 @@
                                     <a href="/sss">SSS</a>
                                 </li>
                                 <li class="">
-                                    <a href="/randevu" style="color: var(--base-color-1); font-weight:700;">Randevu Al</a>
+                                    <a href="/randevu" style="color: #A8C39B; font-weight:700;">Randevu Al</a>
                                 </li>
                                 <li class="">
                                     <a href="/iletisim">İletişim</a>
                                 </li>
                             </ul>
                         </nav>
+                        <button type="button" id="theme-toggle-btn-mobile" aria-label="Koyu/Açık tema"
+                            style="display:flex; align-items:center; justify-content:center; gap:8px; width:100%; margin-top:24px; padding:12px; border-radius:30px; border:1px solid var(--surface-border); background:var(--page-bg); color:var(--heading-color); cursor:pointer; font-size:14px; font-weight:600;">
+                            <i class="fas fa-moon" id="theme-toggle-icon-mobile"></i>
+                            <span id="theme-toggle-label-mobile">Koyu Tema</span>
+                        </button>
                     </div>
                 </div>
                 <!-- /Mobile-Menu -->
@@ -265,7 +278,7 @@
                     <div class="sidebar-info-contents headline pera-content">
                         <div class="content-inner">
                             <div class="logo">
-                                <a href="/"><img src="{{ asset('images/' . ($settings->image ?? '')) }}" alt="" style="max-width:180px; width:100%; height:auto;"></a>
+                                <a href="/"><img src="{{ asset('images/' . ($settings->logo_white ?? $settings->image ?? '')) }}" alt="" style="max-width:180px; width:100%; height:auto;"></a>
                             </div>
                             <div class="content-box">
                                 <h5>Hakkımda</h5>
@@ -299,6 +312,14 @@
             ['theme-toggle-icon', 'theme-toggle-icon-mobile'].forEach(function (id) {
                 var el = document.getElementById(id);
                 if (el) el.className = koyu ? 'fas fa-sun' : 'fas fa-moon';
+            });
+            var etiket = document.getElementById('theme-toggle-label-mobile');
+            if (etiket) etiket.textContent = koyu ? 'Açık Tema' : 'Koyu Tema';
+
+            // Koyu zeminli alanlarda (ör. footer) logonun beyaz sürümünü göster.
+            document.querySelectorAll('img[data-logo-dark]').forEach(function (img) {
+                var yeniSrc = koyu ? img.getAttribute('data-logo-dark') : img.getAttribute('data-logo-light');
+                if (yeniSrc && img.src !== yeniSrc) img.src = yeniSrc;
             });
         }
 

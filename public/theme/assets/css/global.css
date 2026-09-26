@@ -12,41 +12,44 @@
      tonda tanımlı.
      ------------------------------------------------------------------ */
 
-  /* Ana marka rengi (sıcak turuncu) — butonlar, linkler, ikonlar, hover'lar. */
-  --base-color: #D9784B;
-  --base-color-1: #D9784B;
-  --base-color-3: #D9784B;
-  --base-color-5: #D9784B;
-  --base-color-7: #D9784B;
+  /* Marya marka rengi (Lacivert) — butonlar, linkler, ikonlar, hover'lar. */
+  --base-color: #223B52;
+  --base-color-1: #223B52;
+  --base-color-3: #223B52;
+  --base-color-5: #223B52;
+  --base-color-7: #223B52;
 
-  /* İkincil renk (adaçayı yeşili) — vurgu detayları, ikon arka planları */
-  --base-color-2: #7FA36F;
-  --base-color-4: #7FA36F;
-  --base-color-6: #7FA36F;
+  /* İkincil renk (Marya Adaçayı) — vurgu detayları, ikon arka planları */
+  --base-color-2: #A8C39B;
+  --base-color-4: #A8C39B;
+  --base-color-6: #A8C39B;
 
   /* Başlık ve gövde metin renkleri: site açık zemin kullandığı için
-     ikisi de her zaman KOYU tonda olmalı. */
-  --heading-color: #1F2D30;
-  --body-color: #4B5A5E;
+     ikisi de her zaman KOYU tonda olmalı (Marya Koyu). */
+  --heading-color: #18212B;
+  --body-color: #45566B;
 
-  /* Ana sayfa arka planı: yumuşak krem/açık zemin (istenirse admin
-     panelinden değiştirilebilir). */
-  --page-bg: #F7F5F0;
+  /* Ana sayfa arka planı: Marya Krem (istenirse admin panelinden
+     değiştirilebilir). */
+  --page-bg: #F7F3EA;
 
   /* "Kart" yüzeyleri: footer, hizmet kartları, blog kenar çubuğu widget'ları,
      iletişim/randevu formu — sayfa zemininden ayırt edilsin diye saf beyaz. */
   --dark-surface: #FFFFFF;
-  --surface-border: rgba(31, 45, 48, 0.12);
+  --surface-border: rgba(24, 33, 43, 0.12);
 
-  --on-surface: #1F2D30;
-  --on-surface-muted: #6B7B7E;
+  --on-surface: #18212B;
+  --on-surface-muted: #5B6B78;
 
-  /* Fonts */
-  --heading-1: 'Arimo';
-  --heading-2: 'Oswald';
-  --heading-3: 'Jost';
-  --heading-4: 'Poppins';
-  --heading: 'Nunito';
-  --body-font: 'Rubik';
+  /* Fonts (Marya marka kimliği: Montserrat ana yazı tipi — başlık/gövde/
+     buton; Cormorant Garamond sadece seçili alıntı/vurgu metinlerinde,
+     bkz. --accent-font ve .ori-testimonial-item-1 p / blockquote). */
+  --heading-1: 'Montserrat';
+  --heading-2: 'Montserrat';
+  --heading-3: 'Montserrat';
+  --heading-4: 'Montserrat';
+  --heading: 'Montserrat';
+  --body-font: 'Montserrat';
+  --accent-font: 'Cormorant Garamond';
   --transition: 500ms all ease;
 }

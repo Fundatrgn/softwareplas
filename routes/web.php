@@ -29,6 +29,8 @@ use App\Http\Controllers\dashboard\SliderController;
 use App\Http\Controllers\general\AppointmentController as GeneralAppointmentController;
 use App\Http\Controllers\general\BlogController as GeneralBlogController;
 use App\Http\Controllers\general\HakkimizdaController as GeneralHakkimizdaController;
+use App\Http\Controllers\general\PageController as GeneralPageController;
+use App\Http\Controllers\dashboard\PageController;
 use App\Http\Controllers\general\HizmetlerController as GeneralHizmetlerController;
 use App\Http\Controllers\general\ReferansController as GeneralReferansController;
 use App\Http\Controllers\general\SSSController as GeneralSSSController;
@@ -49,7 +51,18 @@ use App\Http\Controllers\ReferansController as ControllersReferansController;
 
 Route::get('/',[HomeController::class,'index']);
 
+// IndexNow anahtar doğrulama dosyası (Bing/Yandex'e otomatik blog
+// bildirimi için, bkz. Ayarlar > Arama Motoru Bildirimleri).
+Route::get('/{key}.txt', function ($key) {
+    $settings = \App\Models\Setting::first();
+    if (! $settings || empty($settings->indexnow_key) || $settings->indexnow_key !== $key) {
+        abort(404);
+    }
+    return response($settings->indexnow_key, 200)->header('Content-Type', 'text/plain');
+})->where('key', '[A-Za-z0-9]{16,64}');
+
 Route::get('/hakkimizda', [GeneralHakkimizdaController::class, 'index']);
+Route::get('/kurumsal/{slug}', [GeneralPageController::class, 'show']);
 Route::get('/ekibimiz', [GeneralTeamController::class, 'index']);
 Route::get('/ekibimiz/{id}/{slug}', [GeneralTeamController::class, 'detay']);
 
@@ -133,6 +146,14 @@ Route::prefix('/admin')->middleware(['auth', 'role:yonetici'])->group(function (
     Route::post('/hakkimizda/add', [HakkimizdaController::class, 'store']);
     Route::get('/hakkimizda/del/{id}', [HakkimizdaController::class, 'del']);
     // hakkımızda
+
+    // Kurumsal menüsüne eklenen serbest sayfalar
+    Route::get('/sayfalar', [PageController::class, 'index']);
+    Route::get('/sayfalar/add', [PageController::class, 'add']);
+    Route::get('/sayfalar/add/{id}', [PageController::class, 'edit']);
+    Route::post('/sayfalar/add', [PageController::class, 'store']);
+    Route::get('/sayfalar/del/{id}', [PageController::class, 'del']);
+    // Kurumsal sayfalar
     // Ekibimiz
     Route::get('/ekibimiz', [TeamController::class, 'index']);
     Route::get('/ekibimiz/add', [TeamController::class, 'add']);
