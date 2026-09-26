@@ -62,10 +62,12 @@ CREATE TABLE `appointments` (
   `user_id` bigint(20) unsigned DEFAULT NULL COMMENT 'Randevuyu alan/gerçekleştiren personel (psikolog)',
   `room_id` bigint(20) unsigned DEFAULT NULL,
   `created_by` bigint(20) unsigned DEFAULT NULL COMMENT 'Kaydı oluşturan admin kullanıcı; null ise halka açık siteden gelmiştir',
+  `last_updated_by` bigint(20) unsigned DEFAULT NULL,
   `starts_at` datetime NOT NULL,
   `ends_at` datetime NOT NULL,
   `duration_minutes` smallint(5) unsigned NOT NULL DEFAULT 50,
   `status` varchar(255) NOT NULL DEFAULT 'bekliyor',
+  `last_action` varchar(255) DEFAULT NULL,
   `source` varchar(255) NOT NULL DEFAULT 'web',
   `patient_name_snapshot` varchar(255) DEFAULT NULL,
   `patient_phone_snapshot` varchar(255) DEFAULT NULL,
@@ -85,7 +87,9 @@ CREATE TABLE `appointments` (
   KEY `appointments_starts_at_ends_at_index` (`starts_at`,`ends_at`),
   KEY `appointments_status_index` (`status`),
   KEY `appointments_room_id_foreign` (`room_id`),
+  KEY `appointments_last_updated_by_foreign` (`last_updated_by`),
   CONSTRAINT `appointments_created_by_foreign` FOREIGN KEY (`created_by`) REFERENCES `users` (`id`) ON DELETE SET NULL,
+  CONSTRAINT `appointments_last_updated_by_foreign` FOREIGN KEY (`last_updated_by`) REFERENCES `users` (`id`) ON DELETE SET NULL,
   CONSTRAINT `appointments_patient_id_foreign` FOREIGN KEY (`patient_id`) REFERENCES `patients` (`id`) ON DELETE CASCADE,
   CONSTRAINT `appointments_room_id_foreign` FOREIGN KEY (`room_id`) REFERENCES `rooms` (`id`) ON DELETE SET NULL,
   CONSTRAINT `appointments_service_id_foreign` FOREIGN KEY (`service_id`) REFERENCES `services` (`id`) ON DELETE SET NULL,
@@ -263,7 +267,7 @@ CREATE TABLE `migrations` (
   `migration` varchar(255) NOT NULL,
   `batch` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=53 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=55 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -324,7 +328,9 @@ INSERT INTO `migrations` VALUES
 (49,'2026_09_26_150000_create_rooms_table',6),
 (50,'2026_09_26_150100_add_room_id_to_appointments_table',6),
 (51,'2026_09_26_150200_add_portal_login_to_patients_table',6),
-(52,'2026_09_26_150300_create_tests_tables',6);
+(52,'2026_09_26_150300_create_tests_tables',6),
+(53,'2026_09_26_160000_add_audit_fields_to_appointments_table',7),
+(54,'2026_09_26_170000_add_question_types_and_options',7);
 /*!40000 ALTER TABLE `migrations` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -928,6 +934,7 @@ CREATE TABLE `test_assignments` (
   `patient_id` bigint(20) unsigned NOT NULL,
   `test_id` bigint(20) unsigned NOT NULL,
   `appointment_id` bigint(20) unsigned DEFAULT NULL,
+  `question_ids` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL CHECK (json_valid(`question_ids`)),
   `assigned_by` bigint(20) unsigned DEFAULT NULL,
   `status` varchar(255) NOT NULL DEFAULT 'bekliyor',
   `answers` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL CHECK (json_valid(`answers`)),
@@ -957,6 +964,101 @@ LOCK TABLES `test_assignments` WRITE;
 UNLOCK TABLES;
 
 --
+-- Table structure for table `test_question_options`
+--
+
+DROP TABLE IF EXISTS `test_question_options`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8mb4 */;
+CREATE TABLE `test_question_options` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `test_question_id` bigint(20) unsigned NOT NULL,
+  `label` varchar(255) NOT NULL,
+  `value` int(11) NOT NULL DEFAULT 0,
+  `order` int(10) unsigned NOT NULL DEFAULT 0,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `test_question_options_test_question_id_foreign` (`test_question_id`),
+  CONSTRAINT `test_question_options_test_question_id_foreign` FOREIGN KEY (`test_question_id`) REFERENCES `test_questions` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=65 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `test_question_options`
+--
+
+LOCK TABLES `test_question_options` WRITE;
+/*!40000 ALTER TABLE `test_question_options` DISABLE KEYS */;
+INSERT INTO `test_question_options` VALUES
+(1,17,'Hiç',0,0,'2026-09-26 18:13:01','2026-09-26 18:13:01'),
+(2,17,'Birkaç gün',1,1,'2026-09-26 18:13:01','2026-09-26 18:13:01'),
+(3,17,'Yarısından fazla günlerde',2,2,'2026-09-26 18:13:01','2026-09-26 18:13:01'),
+(4,17,'Neredeyse her gün',3,3,'2026-09-26 18:13:01','2026-09-26 18:13:01'),
+(5,18,'Hiç',0,0,'2026-09-26 18:13:01','2026-09-26 18:13:01'),
+(6,18,'Birkaç gün',1,1,'2026-09-26 18:13:01','2026-09-26 18:13:01'),
+(7,18,'Yarısından fazla günlerde',2,2,'2026-09-26 18:13:01','2026-09-26 18:13:01'),
+(8,18,'Neredeyse her gün',3,3,'2026-09-26 18:13:01','2026-09-26 18:13:01'),
+(9,19,'Hiç',0,0,'2026-09-26 18:13:01','2026-09-26 18:13:01'),
+(10,19,'Birkaç gün',1,1,'2026-09-26 18:13:01','2026-09-26 18:13:01'),
+(11,19,'Yarısından fazla günlerde',2,2,'2026-09-26 18:13:01','2026-09-26 18:13:01'),
+(12,19,'Neredeyse her gün',3,3,'2026-09-26 18:13:01','2026-09-26 18:13:01'),
+(13,20,'Hiç',0,0,'2026-09-26 18:13:01','2026-09-26 18:13:01'),
+(14,20,'Birkaç gün',1,1,'2026-09-26 18:13:01','2026-09-26 18:13:01'),
+(15,20,'Yarısından fazla günlerde',2,2,'2026-09-26 18:13:01','2026-09-26 18:13:01'),
+(16,20,'Neredeyse her gün',3,3,'2026-09-26 18:13:01','2026-09-26 18:13:01'),
+(17,21,'Hiç',0,0,'2026-09-26 18:13:01','2026-09-26 18:13:01'),
+(18,21,'Birkaç gün',1,1,'2026-09-26 18:13:01','2026-09-26 18:13:01'),
+(19,21,'Yarısından fazla günlerde',2,2,'2026-09-26 18:13:01','2026-09-26 18:13:01'),
+(20,21,'Neredeyse her gün',3,3,'2026-09-26 18:13:01','2026-09-26 18:13:01'),
+(21,22,'Hiç',0,0,'2026-09-26 18:13:01','2026-09-26 18:13:01'),
+(22,22,'Birkaç gün',1,1,'2026-09-26 18:13:01','2026-09-26 18:13:01'),
+(23,22,'Yarısından fazla günlerde',2,2,'2026-09-26 18:13:01','2026-09-26 18:13:01'),
+(24,22,'Neredeyse her gün',3,3,'2026-09-26 18:13:01','2026-09-26 18:13:01'),
+(25,23,'Hiç',0,0,'2026-09-26 18:13:01','2026-09-26 18:13:01'),
+(26,23,'Birkaç gün',1,1,'2026-09-26 18:13:01','2026-09-26 18:13:01'),
+(27,23,'Yarısından fazla günlerde',2,2,'2026-09-26 18:13:01','2026-09-26 18:13:01'),
+(28,23,'Neredeyse her gün',3,3,'2026-09-26 18:13:01','2026-09-26 18:13:01'),
+(29,24,'Hiç',0,0,'2026-09-26 18:13:01','2026-09-26 18:13:01'),
+(30,24,'Birkaç gün',1,1,'2026-09-26 18:13:01','2026-09-26 18:13:01'),
+(31,24,'Yarısından fazla günlerde',2,2,'2026-09-26 18:13:01','2026-09-26 18:13:01'),
+(32,24,'Neredeyse her gün',3,3,'2026-09-26 18:13:01','2026-09-26 18:13:01'),
+(33,25,'Hiç',0,0,'2026-09-26 18:13:01','2026-09-26 18:13:01'),
+(34,25,'Birkaç gün',1,1,'2026-09-26 18:13:01','2026-09-26 18:13:01'),
+(35,25,'Yarısından fazla günlerde',2,2,'2026-09-26 18:13:01','2026-09-26 18:13:01'),
+(36,25,'Neredeyse her gün',3,3,'2026-09-26 18:13:01','2026-09-26 18:13:01'),
+(37,26,'Hiç',0,0,'2026-09-26 18:13:01','2026-09-26 18:13:01'),
+(38,26,'Birkaç gün',1,1,'2026-09-26 18:13:01','2026-09-26 18:13:01'),
+(39,26,'Yarısından fazla günlerde',2,2,'2026-09-26 18:13:01','2026-09-26 18:13:01'),
+(40,26,'Neredeyse her gün',3,3,'2026-09-26 18:13:01','2026-09-26 18:13:01'),
+(41,27,'Hiç',0,0,'2026-09-26 18:13:01','2026-09-26 18:13:01'),
+(42,27,'Birkaç gün',1,1,'2026-09-26 18:13:01','2026-09-26 18:13:01'),
+(43,27,'Yarısından fazla günlerde',2,2,'2026-09-26 18:13:01','2026-09-26 18:13:01'),
+(44,27,'Neredeyse her gün',3,3,'2026-09-26 18:13:01','2026-09-26 18:13:01'),
+(45,28,'Hiç',0,0,'2026-09-26 18:13:01','2026-09-26 18:13:01'),
+(46,28,'Birkaç gün',1,1,'2026-09-26 18:13:01','2026-09-26 18:13:01'),
+(47,28,'Yarısından fazla günlerde',2,2,'2026-09-26 18:13:01','2026-09-26 18:13:01'),
+(48,28,'Neredeyse her gün',3,3,'2026-09-26 18:13:01','2026-09-26 18:13:01'),
+(49,29,'Hiç',0,0,'2026-09-26 18:13:01','2026-09-26 18:13:01'),
+(50,29,'Birkaç gün',1,1,'2026-09-26 18:13:01','2026-09-26 18:13:01'),
+(51,29,'Yarısından fazla günlerde',2,2,'2026-09-26 18:13:01','2026-09-26 18:13:01'),
+(52,29,'Neredeyse her gün',3,3,'2026-09-26 18:13:01','2026-09-26 18:13:01'),
+(53,30,'Hiç',0,0,'2026-09-26 18:13:01','2026-09-26 18:13:01'),
+(54,30,'Birkaç gün',1,1,'2026-09-26 18:13:01','2026-09-26 18:13:01'),
+(55,30,'Yarısından fazla günlerde',2,2,'2026-09-26 18:13:01','2026-09-26 18:13:01'),
+(56,30,'Neredeyse her gün',3,3,'2026-09-26 18:13:01','2026-09-26 18:13:01'),
+(57,31,'Hiç',0,0,'2026-09-26 18:13:01','2026-09-26 18:13:01'),
+(58,31,'Birkaç gün',1,1,'2026-09-26 18:13:01','2026-09-26 18:13:01'),
+(59,31,'Yarısından fazla günlerde',2,2,'2026-09-26 18:13:01','2026-09-26 18:13:01'),
+(60,31,'Neredeyse her gün',3,3,'2026-09-26 18:13:01','2026-09-26 18:13:01'),
+(61,32,'Hiç',0,0,'2026-09-26 18:13:01','2026-09-26 18:13:01'),
+(62,32,'Birkaç gün',1,1,'2026-09-26 18:13:01','2026-09-26 18:13:01'),
+(63,32,'Yarısından fazla günlerde',2,2,'2026-09-26 18:13:01','2026-09-26 18:13:01'),
+(64,32,'Neredeyse her gün',3,3,'2026-09-26 18:13:01','2026-09-26 18:13:01');
+/*!40000 ALTER TABLE `test_question_options` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `test_questions`
 --
 
@@ -968,12 +1070,13 @@ CREATE TABLE `test_questions` (
   `test_id` bigint(20) unsigned NOT NULL,
   `order` int(10) unsigned NOT NULL DEFAULT 0,
   `text` text NOT NULL,
+  `type` varchar(255) NOT NULL DEFAULT 'single_choice',
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `test_questions_test_id_foreign` (`test_id`),
   CONSTRAINT `test_questions_test_id_foreign` FOREIGN KEY (`test_id`) REFERENCES `tests` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=33 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -983,22 +1086,22 @@ CREATE TABLE `test_questions` (
 LOCK TABLES `test_questions` WRITE;
 /*!40000 ALTER TABLE `test_questions` DISABLE KEYS */;
 INSERT INTO `test_questions` VALUES
-(1,1,1,'İşleri yapmaya karşı ilgi duymama veya bunlardan zevk almama','2026-09-26 13:33:39','2026-09-26 13:33:39'),
-(2,1,2,'Kendini çökkün, depresif ya da umutsuz hissetme','2026-09-26 13:33:39','2026-09-26 13:33:39'),
-(3,1,3,'Uykuya dalmakta/uykuyu sürdürmekte güçlük çekme, ya da çok fazla uyuma','2026-09-26 13:33:39','2026-09-26 13:33:39'),
-(4,1,4,'Yorgun hissetme veya enerjisinin az olması','2026-09-26 13:33:39','2026-09-26 13:33:39'),
-(5,1,5,'İştahsızlık ya da aşırı yeme','2026-09-26 13:33:39','2026-09-26 13:33:39'),
-(6,1,6,'Kendini kötü hissetme; başarısız biri olduğunu ya da kendinizi/ailenizi hayal kırıklığına uğrattığınızı düşünme','2026-09-26 13:33:39','2026-09-26 13:33:39'),
-(7,1,7,'Gazete okumak veya televizyon izlemek gibi işlere odaklanmakta güçlük çekme','2026-09-26 13:33:39','2026-09-26 13:33:39'),
-(8,1,8,'Başkalarının fark edebileceği kadar yavaş hareket etme/konuşma, ya da tam tersi her zamankinden çok daha huzursuz/hareketli olma','2026-09-26 13:33:39','2026-09-26 13:33:39'),
-(9,1,9,'Kendinize zarar vermeyi düşünme veya keşke ölseydim diye düşünme','2026-09-26 13:33:39','2026-09-26 13:33:39'),
-(10,2,1,'Sinirli, endişeli ya da gergin hissetme','2026-09-26 13:33:39','2026-09-26 13:33:39'),
-(11,2,2,'Endişelenmeyi durduramama ya da kontrol edememe','2026-09-26 13:33:39','2026-09-26 13:33:39'),
-(12,2,3,'Farklı konular hakkında çok fazla endişelenme','2026-09-26 13:33:39','2026-09-26 13:33:39'),
-(13,2,4,'Rahatlamakta güçlük çekme','2026-09-26 13:33:39','2026-09-26 13:33:39'),
-(14,2,5,'Yerinde duramayacak kadar huzursuz hissetme','2026-09-26 13:33:39','2026-09-26 13:33:39'),
-(15,2,6,'Kolayca sinirlenme ya da huzursuzlaşma','2026-09-26 13:33:39','2026-09-26 13:33:39'),
-(16,2,7,'Sanki kötü bir şey olacakmış gibi korku hissetme','2026-09-26 13:33:39','2026-09-26 13:33:39');
+(17,3,1,'İşleri yapmaya karşı ilgi duymama veya bunlardan zevk almama','single_choice','2026-09-26 18:13:01','2026-09-26 18:13:01'),
+(18,3,2,'Kendini çökkün, depresif ya da umutsuz hissetme','single_choice','2026-09-26 18:13:01','2026-09-26 18:13:01'),
+(19,3,3,'Uykuya dalmakta/uykuyu sürdürmekte güçlük çekme, ya da çok fazla uyuma','single_choice','2026-09-26 18:13:01','2026-09-26 18:13:01'),
+(20,3,4,'Yorgun hissetme veya enerjisinin az olması','single_choice','2026-09-26 18:13:01','2026-09-26 18:13:01'),
+(21,3,5,'İştahsızlık ya da aşırı yeme','single_choice','2026-09-26 18:13:01','2026-09-26 18:13:01'),
+(22,3,6,'Kendini kötü hissetme; başarısız biri olduğunu ya da kendinizi/ailenizi hayal kırıklığına uğrattığınızı düşünme','single_choice','2026-09-26 18:13:01','2026-09-26 18:13:01'),
+(23,3,7,'Gazete okumak veya televizyon izlemek gibi işlere odaklanmakta güçlük çekme','single_choice','2026-09-26 18:13:01','2026-09-26 18:13:01'),
+(24,3,8,'Başkalarının fark edebileceği kadar yavaş hareket etme/konuşma, ya da tam tersi her zamankinden çok daha huzursuz/hareketli olma','single_choice','2026-09-26 18:13:01','2026-09-26 18:13:01'),
+(25,3,9,'Kendinize zarar vermeyi düşünme veya keşke ölseydim diye düşünme','single_choice','2026-09-26 18:13:01','2026-09-26 18:13:01'),
+(26,4,1,'Sinirli, endişeli ya da gergin hissetme','single_choice','2026-09-26 18:13:01','2026-09-26 18:13:01'),
+(27,4,2,'Endişelenmeyi durduramama ya da kontrol edememe','single_choice','2026-09-26 18:13:01','2026-09-26 18:13:01'),
+(28,4,3,'Farklı konular hakkında çok fazla endişelenme','single_choice','2026-09-26 18:13:01','2026-09-26 18:13:01'),
+(29,4,4,'Rahatlamakta güçlük çekme','single_choice','2026-09-26 18:13:01','2026-09-26 18:13:01'),
+(30,4,5,'Yerinde duramayacak kadar huzursuz hissetme','single_choice','2026-09-26 18:13:01','2026-09-26 18:13:01'),
+(31,4,6,'Kolayca sinirlenme ya da huzursuzlaşma','single_choice','2026-09-26 18:13:01','2026-09-26 18:13:01'),
+(32,4,7,'Sanki kötü bir şey olacakmış gibi korku hissetme','single_choice','2026-09-26 18:13:01','2026-09-26 18:13:01');
 /*!40000 ALTER TABLE `test_questions` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1046,7 +1149,7 @@ CREATE TABLE `tests` (
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `tests_key_unique` (`key`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1056,8 +1159,8 @@ CREATE TABLE `tests` (
 LOCK TABLES `tests` WRITE;
 /*!40000 ALTER TABLE `tests` DISABLE KEYS */;
 INSERT INTO `tests` VALUES
-(1,'phq9','PHQ-9 (Depresyon Tarama Ölçeği)','Son 2 haftada aşağıdaki sorunlardan ne sıklıkla rahatsızlık duydunuz?','2026-09-26 13:33:39','2026-09-26 13:33:39'),
-(2,'gad7','GAD-7 (Anksiyete Tarama Ölçeği)','Son 2 haftada aşağıdaki sorunlardan ne sıklıkla rahatsızlık duydunuz?','2026-09-26 13:33:39','2026-09-26 13:33:39');
+(3,'phq9','PHQ-9 (Depresyon Tarama Ölçeği)','Son 2 haftada aşağıdaki sorunlardan ne sıklıkla rahatsızlık duydunuz?','2026-09-26 18:13:01','2026-09-26 18:13:01'),
+(4,'gad7','GAD-7 (Anksiyete Tarama Ölçeği)','Son 2 haftada aşağıdaki sorunlardan ne sıklıkla rahatsızlık duydunuz?','2026-09-26 18:13:01','2026-09-26 18:13:01');
 /*!40000 ALTER TABLE `tests` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1133,4 +1236,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2026-09-26 13:33:50
+-- Dump completed on 2026-09-26 18:13:17
