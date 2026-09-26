@@ -60,6 +60,7 @@ CREATE TABLE `appointments` (
   `patient_id` bigint(20) unsigned NOT NULL,
   `service_id` bigint(20) unsigned DEFAULT NULL,
   `user_id` bigint(20) unsigned DEFAULT NULL COMMENT 'Randevuyu alan/gerçekleştiren personel (psikolog)',
+  `room_id` bigint(20) unsigned DEFAULT NULL,
   `created_by` bigint(20) unsigned DEFAULT NULL COMMENT 'Kaydı oluşturan admin kullanıcı; null ise halka açık siteden gelmiştir',
   `starts_at` datetime NOT NULL,
   `ends_at` datetime NOT NULL,
@@ -83,8 +84,10 @@ CREATE TABLE `appointments` (
   KEY `appointments_created_by_foreign` (`created_by`),
   KEY `appointments_starts_at_ends_at_index` (`starts_at`,`ends_at`),
   KEY `appointments_status_index` (`status`),
+  KEY `appointments_room_id_foreign` (`room_id`),
   CONSTRAINT `appointments_created_by_foreign` FOREIGN KEY (`created_by`) REFERENCES `users` (`id`) ON DELETE SET NULL,
   CONSTRAINT `appointments_patient_id_foreign` FOREIGN KEY (`patient_id`) REFERENCES `patients` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `appointments_room_id_foreign` FOREIGN KEY (`room_id`) REFERENCES `rooms` (`id`) ON DELETE SET NULL,
   CONSTRAINT `appointments_service_id_foreign` FOREIGN KEY (`service_id`) REFERENCES `services` (`id`) ON DELETE SET NULL,
   CONSTRAINT `appointments_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE SET NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -260,7 +263,7 @@ CREATE TABLE `migrations` (
   `migration` varchar(255) NOT NULL,
   `batch` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=49 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=53 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -317,7 +320,11 @@ INSERT INTO `migrations` VALUES
 (45,'2026_09_26_110000_create_pages_table',4),
 (46,'2026_09_26_120000_add_search_ping_to_settings_table',4),
 (47,'2026_09_26_130000_add_tracking_codes_to_settings_table',4),
-(48,'2026_09_26_140000_create_testimonials_table',5);
+(48,'2026_09_26_140000_create_testimonials_table',5),
+(49,'2026_09_26_150000_create_rooms_table',6),
+(50,'2026_09_26_150100_add_room_id_to_appointments_table',6),
+(51,'2026_09_26_150200_add_portal_login_to_patients_table',6),
+(52,'2026_09_26_150300_create_tests_tables',6);
 /*!40000 ALTER TABLE `migrations` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -419,6 +426,9 @@ CREATE TABLE `patients` (
   `name` varchar(255) NOT NULL,
   `phone` varchar(255) NOT NULL,
   `email` varchar(255) DEFAULT NULL,
+  `username` varchar(255) DEFAULT NULL,
+  `password` varchar(255) DEFAULT NULL,
+  `portal_credentials_sent_at` timestamp NULL DEFAULT NULL,
   `birth_date` date DEFAULT NULL,
   `gender` varchar(255) DEFAULT NULL,
   `notes` text DEFAULT NULL,
@@ -426,6 +436,7 @@ CREATE TABLE `patients` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
+  UNIQUE KEY `patients_username_unique` (`username`),
   KEY `patients_phone_index` (`phone`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -530,6 +541,32 @@ CREATE TABLE `referanslar` (
 LOCK TABLES `referanslar` WRITE;
 /*!40000 ALTER TABLE `referanslar` DISABLE KEYS */;
 /*!40000 ALTER TABLE `referanslar` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `rooms`
+--
+
+DROP TABLE IF EXISTS `rooms`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8mb4 */;
+CREATE TABLE `rooms` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) NOT NULL,
+  `is_active` tinyint(1) NOT NULL DEFAULT 1,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `rooms`
+--
+
+LOCK TABLES `rooms` WRITE;
+/*!40000 ALTER TABLE `rooms` DISABLE KEYS */;
+/*!40000 ALTER TABLE `rooms` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -880,6 +917,92 @@ LOCK TABLES `team` WRITE;
 UNLOCK TABLES;
 
 --
+-- Table structure for table `test_assignments`
+--
+
+DROP TABLE IF EXISTS `test_assignments`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8mb4 */;
+CREATE TABLE `test_assignments` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `patient_id` bigint(20) unsigned NOT NULL,
+  `test_id` bigint(20) unsigned NOT NULL,
+  `appointment_id` bigint(20) unsigned DEFAULT NULL,
+  `assigned_by` bigint(20) unsigned DEFAULT NULL,
+  `status` varchar(255) NOT NULL DEFAULT 'bekliyor',
+  `answers` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL CHECK (json_valid(`answers`)),
+  `score` int(10) unsigned DEFAULT NULL,
+  `completed_at` timestamp NULL DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `test_assignments_patient_id_foreign` (`patient_id`),
+  KEY `test_assignments_test_id_foreign` (`test_id`),
+  KEY `test_assignments_appointment_id_foreign` (`appointment_id`),
+  KEY `test_assignments_assigned_by_foreign` (`assigned_by`),
+  CONSTRAINT `test_assignments_appointment_id_foreign` FOREIGN KEY (`appointment_id`) REFERENCES `appointments` (`id`) ON DELETE SET NULL,
+  CONSTRAINT `test_assignments_assigned_by_foreign` FOREIGN KEY (`assigned_by`) REFERENCES `users` (`id`) ON DELETE SET NULL,
+  CONSTRAINT `test_assignments_patient_id_foreign` FOREIGN KEY (`patient_id`) REFERENCES `patients` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `test_assignments_test_id_foreign` FOREIGN KEY (`test_id`) REFERENCES `tests` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `test_assignments`
+--
+
+LOCK TABLES `test_assignments` WRITE;
+/*!40000 ALTER TABLE `test_assignments` DISABLE KEYS */;
+/*!40000 ALTER TABLE `test_assignments` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `test_questions`
+--
+
+DROP TABLE IF EXISTS `test_questions`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8mb4 */;
+CREATE TABLE `test_questions` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `test_id` bigint(20) unsigned NOT NULL,
+  `order` int(10) unsigned NOT NULL DEFAULT 0,
+  `text` text NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `test_questions_test_id_foreign` (`test_id`),
+  CONSTRAINT `test_questions_test_id_foreign` FOREIGN KEY (`test_id`) REFERENCES `tests` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `test_questions`
+--
+
+LOCK TABLES `test_questions` WRITE;
+/*!40000 ALTER TABLE `test_questions` DISABLE KEYS */;
+INSERT INTO `test_questions` VALUES
+(1,1,1,'İşleri yapmaya karşı ilgi duymama veya bunlardan zevk almama','2026-09-26 13:33:39','2026-09-26 13:33:39'),
+(2,1,2,'Kendini çökkün, depresif ya da umutsuz hissetme','2026-09-26 13:33:39','2026-09-26 13:33:39'),
+(3,1,3,'Uykuya dalmakta/uykuyu sürdürmekte güçlük çekme, ya da çok fazla uyuma','2026-09-26 13:33:39','2026-09-26 13:33:39'),
+(4,1,4,'Yorgun hissetme veya enerjisinin az olması','2026-09-26 13:33:39','2026-09-26 13:33:39'),
+(5,1,5,'İştahsızlık ya da aşırı yeme','2026-09-26 13:33:39','2026-09-26 13:33:39'),
+(6,1,6,'Kendini kötü hissetme; başarısız biri olduğunu ya da kendinizi/ailenizi hayal kırıklığına uğrattığınızı düşünme','2026-09-26 13:33:39','2026-09-26 13:33:39'),
+(7,1,7,'Gazete okumak veya televizyon izlemek gibi işlere odaklanmakta güçlük çekme','2026-09-26 13:33:39','2026-09-26 13:33:39'),
+(8,1,8,'Başkalarının fark edebileceği kadar yavaş hareket etme/konuşma, ya da tam tersi her zamankinden çok daha huzursuz/hareketli olma','2026-09-26 13:33:39','2026-09-26 13:33:39'),
+(9,1,9,'Kendinize zarar vermeyi düşünme veya keşke ölseydim diye düşünme','2026-09-26 13:33:39','2026-09-26 13:33:39'),
+(10,2,1,'Sinirli, endişeli ya da gergin hissetme','2026-09-26 13:33:39','2026-09-26 13:33:39'),
+(11,2,2,'Endişelenmeyi durduramama ya da kontrol edememe','2026-09-26 13:33:39','2026-09-26 13:33:39'),
+(12,2,3,'Farklı konular hakkında çok fazla endişelenme','2026-09-26 13:33:39','2026-09-26 13:33:39'),
+(13,2,4,'Rahatlamakta güçlük çekme','2026-09-26 13:33:39','2026-09-26 13:33:39'),
+(14,2,5,'Yerinde duramayacak kadar huzursuz hissetme','2026-09-26 13:33:39','2026-09-26 13:33:39'),
+(15,2,6,'Kolayca sinirlenme ya da huzursuzlaşma','2026-09-26 13:33:39','2026-09-26 13:33:39'),
+(16,2,7,'Sanki kötü bir şey olacakmış gibi korku hissetme','2026-09-26 13:33:39','2026-09-26 13:33:39');
+/*!40000 ALTER TABLE `test_questions` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `testimonials`
 --
 
@@ -905,6 +1028,37 @@ CREATE TABLE `testimonials` (
 LOCK TABLES `testimonials` WRITE;
 /*!40000 ALTER TABLE `testimonials` DISABLE KEYS */;
 /*!40000 ALTER TABLE `testimonials` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `tests`
+--
+
+DROP TABLE IF EXISTS `tests`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8mb4 */;
+CREATE TABLE `tests` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `key` varchar(255) NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `description` text DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `tests_key_unique` (`key`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `tests`
+--
+
+LOCK TABLES `tests` WRITE;
+/*!40000 ALTER TABLE `tests` DISABLE KEYS */;
+INSERT INTO `tests` VALUES
+(1,'phq9','PHQ-9 (Depresyon Tarama Ölçeği)','Son 2 haftada aşağıdaki sorunlardan ne sıklıkla rahatsızlık duydunuz?','2026-09-26 13:33:39','2026-09-26 13:33:39'),
+(2,'gad7','GAD-7 (Anksiyete Tarama Ölçeği)','Son 2 haftada aşağıdaki sorunlardan ne sıklıkla rahatsızlık duydunuz?','2026-09-26 13:33:39','2026-09-26 13:33:39');
+/*!40000 ALTER TABLE `tests` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -979,4 +1133,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2026-09-26 12:12:48
+-- Dump completed on 2026-09-26 13:33:50
