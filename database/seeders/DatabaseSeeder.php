@@ -216,5 +216,8 @@ class DatabaseSeeder extends Seeder
                 'category_id' => $sssCategory->id,
             ]);
         }
+
+        // 8) Danışan Portalı öz-değerlendirme testleri (PHQ-9, GAD-7)
+        $this->call(PsychTestsSeeder::class);
     }
 }

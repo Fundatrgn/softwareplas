@@ -359,6 +359,38 @@ input, textarea, select {
 .line_animation .line_area {
   border-right: 1px solid var(--surface-border) !important;
 }
+
+/* "Sıcak Bir Dinleyici" kayan yazı bölümünün üst/alt çerçevesi
+   (.ori-text-scroll-section-2) şablonda sabit #1C1C1C renkteydi; koyu
+   temanın lacivert zemininden (farklı ton) belirgin şekilde ayrışıp
+   göze batan bir çizgi oluşturuyordu. Koyu temada tamamen kaldırıldı. */
+:root[data-theme="dark"] .ori-text-scroll-section-2 {
+  border-top-color: transparent !important;
+  border-bottom-color: transparent !important;
+}
+
+/* Header logosu: açık temada renkli/koyu metinli logo, koyu temada
+   beyaz metinli logo gösterilir. İkisi de basılır, CSS ile hangisinin
+   görüneceği seçilir (JS'siz, anlık tema geçişine uyumlu). */
+.brand-logo .logo-dark {
+  display: none;
+}
+:root[data-theme="dark"] .brand-logo .logo-light {
+  display: none;
+}
+:root[data-theme="dark"] .brand-logo .logo-dark {
+  display: inline-block;
+}
+
+/* Logo boyutu: şablonun tablet/mobil kırılım noktalarında brand-logo
+   kapsayıcısına sabit dar bir genişlik (150px) veriliyordu, bu da
+   büyütülen logoyu görünmeden kırpıyordu. Kapsayıcı genişliği burada
+   gevşetiliyor. */
+@media screen and (max-width: 1024px) {
+  .ori-header-section .brand-logo {
+    width: 190px;
+  }
+}
 .line_animation .line_area:before {
   background-image: -webkit-gradient(linear, left bottom, left top, from(var(--base-color-1)), to(transparent)) !important;
   background-image: linear-gradient(0deg, var(--base-color-1), transparent) !important;

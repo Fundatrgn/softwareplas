@@ -116,14 +116,13 @@
 })();
 </script>
 
-<!-- =====================================================================
-     İçerik Koruma (Caydırıcı Önlemler): Sağ tık menüsü ve devtools/
-     kaynak-görüntüleme kısayolları (F12, Ctrl+Shift+I/J/C, Ctrl+U)
-     engellenir. ÖNEMLİ SINIRLAMA: Bu, sıradan ziyaretçiyi caydırır ama
-     teknik olarak "Sayfa Kaynağını Görüntüle"yi tamamen engellemek
-     mümkün değildir — tarayıcı bunu JavaScript çalışmadan önce, ham
-     sunucu yanıtından gösterir; hiçbir web sitesi bunu %100 engelleyemez.
-     ===================================================================== */
+{{-- İçerik Koruma (Caydırıcı Önlemler) açıklaması: Sağ tık menüsü ve
+     devtools/kaynak görüntüleme kısayolları engellenir. Sıradan
+     ziyaretçiyi caydırır ama tarayıcı ham sunucu yanıtını JavaScript
+     çalışmadan önce gösterebildiğinden, teknik olarak yüzde yüz bir
+     engelleme mümkün değildir. Bu not bilerek Blade yorum sözdizimiyle
+     yazıldı, çünkü Blade yorumları derlenmiş HTML çıktısına hiç dahil
+     edilmez ve dolayısıyla ziyaretçiye hiçbir şekilde görünmez. --}}
 <script>
 (function () {
     document.addEventListener('contextmenu', function (e) { e.preventDefault(); });

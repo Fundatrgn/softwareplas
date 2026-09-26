@@ -100,6 +100,24 @@
                 <li>
                     <a class="has-arrow" href="javascript:;">
                         <div class="parent-icon">
+                            <ion-icon name="business-outline"></ion-icon>
+                        </div>
+                        <div class="menu-title">Terapi Odaları</div>
+                    </a>
+                    <ul>
+                        <li> <a href="/admin/odalar">
+                                <ion-icon name="ellipse-outline"></ion-icon>Odalar
+                            </a>
+                        </li>
+                        <li> <a href="/admin/odalar/durum">
+                                <ion-icon name="ellipse-outline"></ion-icon>Doluluk Durumu
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <a class="has-arrow" href="javascript:;">
+                        <div class="parent-icon">
                             <ion-icon name="people-outline"></ion-icon>
                         </div>
                         <div class="menu-title">Danışanlar</div>

@@ -46,6 +46,7 @@ class Appointment extends Model
         'patient_id',
         'service_id',
         'user_id',
+        'room_id',
         'created_by',
         'starts_at',
         'ends_at',
@@ -82,6 +83,11 @@ class Appointment extends Model
     public function psychologist()
     {
         return $this->belongsTo(User::class, 'user_id');
+    }
+
+    public function room()
+    {
+        return $this->belongsTo(Room::class);
     }
 
     public function createdBy()

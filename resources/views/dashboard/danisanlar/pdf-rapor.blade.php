@@ -64,6 +64,25 @@
         <p>Bu danışanın kayıtlı bir randevu geçmişi yok.</p>
     @endforelse
 
+    <h3>Öz-Değerlendirme Testleri</h3>
+    @forelse($testAssignments as $ta)
+        <div class="seans">
+            <div class="baslik">
+                {{ $ta->test->name }}
+                <span class="durum">{{ $ta->isCompleted() ? 'Tamamlandı' : 'Bekliyor' }}</span>
+            </div>
+            <div>
+                Atanma: {{ $ta->created_at->format('d.m.Y') }}
+                @if($ta->isCompleted())
+                    · Tamamlanma: {{ $ta->completed_at->format('d.m.Y') }}
+                    · Puan: <strong>{{ $ta->score }} ({{ $ta->severityLabel() }})</strong>
+                @endif
+            </div>
+        </div>
+    @empty
+        <p>Bu danışana henüz bir test atanmadı.</p>
+    @endforelse
+
     <div class="altbilgi">Bu rapor gizlilik ilkesi çerçevesinde sadece yetkili personel tarafından kullanılmak üzere oluşturulmuştur.</div>
 </body>
 </html>

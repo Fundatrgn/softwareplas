@@ -119,6 +119,36 @@
                         </div>
                     </div>
                 </div>
+
+                <div class="col-lg-6">
+                    <div class="card">
+                        <div class="card-body">
+                            <h6>Danışan Portalı — Test Durumu</h6>
+                            <p class="mb-3">
+                                Bekleyen: <strong>{{ $testBekleyen }}</strong> ·
+                                Tamamlanan: <strong>{{ $testTamamlanan }}</strong>
+                            </p>
+                            <h6 class="small text-muted">Son Tamamlanan Testler</h6>
+                            @if($sonTamamlananTestler->isEmpty())
+                                <p class="text-muted mb-0">Henüz tamamlanmış test yok.</p>
+                            @else
+                                <table class="table table-sm">
+                                    <thead><tr><th>Danışan</th><th>Test</th><th>Puan</th><th>Tarih</th></tr></thead>
+                                    <tbody>
+                                        @foreach($sonTamamlananTestler as $ta)
+                                            <tr>
+                                                <td><a href="/admin/danisanlar/{{ $ta->patient_id }}">{{ $ta->patient->name }}</a></td>
+                                                <td><a href="/admin/testler/{{ $ta->id }}">{{ $ta->test->name }}</a></td>
+                                                <td>{{ $ta->score }} ({{ $ta->severityLabel() }})</td>
+                                                <td>{{ $ta->completed_at?->format('d.m.Y') }}</td>
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            @endif
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

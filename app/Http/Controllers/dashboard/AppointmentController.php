@@ -395,7 +395,7 @@ class AppointmentController extends Controller
         return redirect('/admin/randevular/liste')->with('success', 'Randevu silindi.');
     }
 
-    public function updateStatus(Request $request, $id, AppointmentNotificationService $notifier)
+    public function updateStatus(Request $request, $id, AppointmentNotificationService $notifier, \App\Services\PatientPortalService $portal)
     {
         $appointment = Appointment::findOrFail($id);
 
@@ -403,7 +403,26 @@ class AppointmentController extends Controller
             'status' => 'required|in:' . implode(',', array_keys(Appointment::STATUSES)),
             'doctor_notes' => 'nullable|string',
             'cancel_reason' => 'nullable|string',
+            'room_id' => $request->status === Appointment::STATUS_CONFIRMED ? 'required|exists:rooms,id' : 'nullable|exists:rooms,id',
         ]);
+
+        if ($request->status === Appointment::STATUS_CONFIRMED) {
+            $cakisma = Appointment::where('room_id', $request->room_id)
+                ->where('id', '!=', $appointment->id)
+                ->whereIn('status', Appointment::BLOCKING_STATUSES)
+                ->overlapping($appointment->starts_at, $appointment->ends_at)
+                ->exists();
+
+            if ($cakisma) {
+                return redirect()->back()->withInput()->with('error', 'Seçtiğiniz oda bu saat aralığında başka bir randevu için zaten kullanılıyor. Lütfen farklı bir oda seçin.');
+            }
+
+            $appointment->room_id = $request->room_id;
+
+            if ($appointment->patient) {
+                $portal->ensureCredentials($appointment->patient);
+            }
+        }
 
         if ($request->status === Appointment::STATUS_COMPLETED) {
             $notes = trim((string) ($request->doctor_notes ?? $appointment->doctor_notes));

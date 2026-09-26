@@ -34,6 +34,10 @@
     <!-- Mobile Specific Meta -->
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
+    <!-- Marya Tipografi: Montserrat (ana yazı tipi) + Cormorant Garamond (vurgu) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,600&family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500;1,600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('theme/assets/css/bootstrap.min.css') }}">
     <link rel="stylesheet" href="{{ asset('theme/assets/css/fontawesome-all.css') }}">
     <link rel="stylesheet" href="{{ asset('theme/assets/css/animate.css') }}">
@@ -87,7 +91,8 @@
             <div class="ori-header-content d-flex align-items-center justify-content-between">
                 <div class="brand-logo">
                     <a href="#">
-                        <img src="{{ asset('images/' . $settings->image ?? '') }}" alt="Site Logosu" style="max-width: 190px; width:100%; height:auto;">
+                        <img class="logo-light" src="{{ asset('images/' . ($settings->image ?? '')) }}" alt="Site Logosu" style="max-width: 240px; width:100%; height:auto;">
+                        <img class="logo-dark" src="{{ asset('images/' . ($settings->logo_white ?? $settings->image ?? '')) }}" alt="Site Logosu" style="max-width: 240px; width:100%; height:auto;">
                     </a>
                 </div>
                 <div class="ori-main-navigation-area">
@@ -101,6 +106,7 @@
                                 <a href="#">Kurumsal</a>
                                 <ul class="dropdown-menu clearfix">
                                     <li><a href="/hakkimizda">Hakkımızda </a></li>
+                                    <li><a href="/ekibimiz">Ekibimiz</a></li>
                                     @foreach($custom_pages ?? [] as $ozelSayfa)
                                         <li><a href="/kurumsal/{{ $ozelSayfa->slug }}">{{ $ozelSayfa->title }}</a></li>
                                     @endforeach
@@ -167,7 +173,7 @@
                             <i class="fal fa-times"></i>
                         </div>
                         <div class="m-brand-logo d-flex align-items-center justify-content-between">
-                            <a href="/"><img src="{{ asset('images/' . ($settings->logo_white ?? $settings->image ?? '')) }}" alt="" style="max-width:170px; width:100%; height:auto;"></a>
+                            <a href="/"><img src="{{ asset('images/' . ($settings->logo_white ?? $settings->image ?? '')) }}" alt="" style="max-width:210px; width:100%; height:auto;"></a>
                         </div>
                         <nav class="mobile-main-navigation  clearfix ul-li">
                             <ul id="m-main-nav" class="nav navbar-nav clearfix">
@@ -278,7 +284,7 @@
                     <div class="sidebar-info-contents headline pera-content">
                         <div class="content-inner">
                             <div class="logo">
-                                <a href="/"><img src="{{ asset('images/' . ($settings->logo_white ?? $settings->image ?? '')) }}" alt="" style="max-width:180px; width:100%; height:auto;"></a>
+                                <a href="/"><img src="{{ asset('images/' . ($settings->logo_white ?? $settings->image ?? '')) }}" alt="" style="max-width:220px; width:100%; height:auto;"></a>
                             </div>
                             <div class="content-box">
                                 <h5>Hakkımda</h5>

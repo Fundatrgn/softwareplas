@@ -66,6 +66,10 @@
                                     <td>{{ $appointment->psychologist?->name ?? '—' }}</td>
                                 </tr>
                                 <tr>
+                                    <th>Terapi Odası</th>
+                                    <td>{{ $appointment->room?->name ?? '—' }}</td>
+                                </tr>
+                                <tr>
                                     <th>Kaynak</th>
                                     <td>{{ $appointment->sourceLabel() }}</td>
                                 </tr>
@@ -136,6 +140,13 @@
                                 <form method="POST" action="/admin/randevular/{{ $appointment->id }}/durum">
                                     @csrf
                                     <input type="hidden" name="status" value="onaylandi">
+                                    <label class="form-label small mb-1">Terapi Odası *</label>
+                                    <select name="room_id" class="form-select mb-2" required>
+                                        <option value="">Oda seçin...</option>
+                                        @foreach(\App\Models\Room::where('is_active', true)->orderBy('name')->get() as $oda)
+                                            <option value="{{ $oda->id }}" {{ $appointment->room_id == $oda->id ? 'selected' : '' }}>{{ $oda->name }}</option>
+                                        @endforeach
+                                    </select>
                                     <button type="submit" class="btn btn-outline-primary w-100">Onayla</button>
                                 </form>
                                 @endif

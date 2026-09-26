@@ -40,6 +40,15 @@ return [
             'driver' => 'session',
             'provider' => 'users',
         ],
+
+        // Danışan Portalı: admin/psikolog panelinden ayrı, danışanların
+        // kendi randevu/test bilgilerine giriş yaptığı bağımsız oturum.
+        // Şifre sıfırlama bilerek YOK — sadece admin panelinden
+        // sıfırlanabilir (bkz. PatientController).
+        'patient' => [
+            'driver' => 'session',
+            'provider' => 'patients',
+        ],
     ],
 
     /*
@@ -69,6 +78,11 @@ return [
         //     'driver' => 'database',
         //     'table' => 'users',
         // ],
+
+        'patients' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\Patient::class,
+        ],
     ],
 
     /*

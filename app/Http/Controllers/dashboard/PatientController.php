@@ -4,6 +4,8 @@ namespace App\Http\Controllers\dashboard;
 
 use App\Http\Controllers\Controller;
 use App\Models\Patient;
+use App\Models\Test;
+use App\Services\PatientPortalService;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 
@@ -34,11 +36,34 @@ class PatientController extends Controller
 
         $gelmediSayisi = $appointments->where('status', \App\Models\Appointment::STATUS_NO_SHOW)->count();
 
+        $testAssignments = $patient->testAssignments()->with('test')->orderByDesc('created_at')->get();
+        $tests = Test::orderBy('name')->get();
+
         return view('dashboard.danisanlar.show', [
             'patient' => $patient,
             'appointments' => $appointments,
             'gelmediSayisi' => $gelmediSayisi,
+            'testAssignments' => $testAssignments,
+            'tests' => $tests,
         ]);
+    }
+
+    /**
+     * Danışan Portalı şifresini (yoksa oluşturarak, varsa sıfırlayarak)
+     * üretir ve danışana e-posta ile gönderir. Danışan kendisi şifresini
+     * asla sıfırlayamaz — bu bilerek sadece buradan tetiklenir.
+     */
+    public function resetPortalPassword($id, PatientPortalService $portal)
+    {
+        $patient = Patient::findOrFail($id);
+
+        if (empty($patient->email)) {
+            return redirect()->back()->with('error', 'Bu danışanın kayıtlı bir e-postası yok; portal şifresi gönderilemedi. Önce e-posta adresini ekleyin.');
+        }
+
+        $portal->resetPassword($patient);
+
+        return redirect()->back()->with('success', 'Danışan portalı giriş bilgileri oluşturuldu/sıfırlandı ve e-posta ile gönderildi.');
     }
 
     /**
@@ -55,9 +80,15 @@ class PatientController extends Controller
             ->orderByDesc('starts_at')
             ->get();
 
+        $testAssignments = $patient->testAssignments()
+            ->with('test')
+            ->orderByDesc('created_at')
+            ->get();
+
         $pdf = Pdf::loadView('dashboard.danisanlar.pdf-rapor', [
             'patient' => $patient,
             'appointments' => $appointments,
+            'testAssignments' => $testAssignments,
         ])->setPaper('a4');
 
         $dosyaAdi = 'danisan-raporu-' . \Illuminate\Support\Str::slug($patient->name) . '.pdf';

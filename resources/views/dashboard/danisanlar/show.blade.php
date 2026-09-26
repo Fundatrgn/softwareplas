@@ -45,6 +45,57 @@
                             @endif
                         </div>
                     </div>
+
+                    <div class="card">
+                        <div class="card-body">
+                            <h6>Danışan Portalı</h6>
+                            @if($patient->hasPortalAccess())
+                                <p class="mb-1"><strong>Kullanıcı Adı:</strong> {{ $patient->username }}</p>
+                                <p class="text-muted small">Şifre güvenlik nedeniyle burada gösterilmez. Danışan unuttuysa aşağıdan yeni bir şifre oluşturup gönderebilirsiniz.</p>
+                            @else
+                                <p class="text-muted small">Bu danışanın henüz portal girişi yok.</p>
+                            @endif
+                            <form method="POST" action="/admin/danisanlar/{{ $patient->id }}/portal-sifre-sifirla" onsubmit="return confirm('Yeni bir şifre oluşturulup danışana e-posta ile gönderilecek. Devam edilsin mi?');">
+                                @csrf
+                                <button type="submit" class="btn btn-outline-primary btn-sm w-100">
+                                    {{ $patient->hasPortalAccess() ? 'Şifreyi Sıfırla ve Gönder' : 'Portal Girişi Oluştur ve Gönder' }}
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-body">
+                            <h6>Testler</h6>
+                            <form method="POST" action="/admin/danisanlar/{{ $patient->id }}/test-ata" class="d-flex gap-2 mb-3">
+                                @csrf
+                                <select name="test_id" class="form-select form-select-sm" required>
+                                    <option value="">Test seçin...</option>
+                                    @foreach($tests as $t)
+                                        <option value="{{ $t->id }}">{{ $t->name }}</option>
+                                    @endforeach
+                                </select>
+                                <button type="submit" class="btn btn-outline-primary btn-sm text-nowrap">Ata</button>
+                            </form>
+                            @forelse($testAssignments as $ta)
+                                <div class="mb-2 pb-2 border-bottom d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <strong>{{ $ta->test->name }}</strong><br>
+                                        <span class="text-muted small">{{ $ta->created_at->format('d.m.Y') }}</span>
+                                    </div>
+                                    <div class="text-end">
+                                        @if($ta->isCompleted())
+                                            <a href="/admin/testler/{{ $ta->id }}" class="badge bg-success text-decoration-none">{{ $ta->score }} puan — {{ $ta->severityLabel() }}</a>
+                                        @else
+                                            <span class="badge bg-secondary">Bekliyor</span>
+                                        @endif
+                                    </div>
+                                </div>
+                            @empty
+                                <p class="text-muted small mb-0">Henüz test atanmadı.</p>
+                            @endforelse
+                        </div>
+                    </div>
                 </div>
 
                 <div class="col-lg-8">

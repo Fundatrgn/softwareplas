@@ -5,6 +5,7 @@ namespace App\Http\Controllers\dashboard;
 use App\Http\Controllers\Controller;
 use App\Models\Appointment;
 use App\Models\Patient;
+use App\Models\TestAssignment;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 
@@ -74,6 +75,14 @@ class ReportController extends Controller
             ];
         });
 
+        $testBekleyen = TestAssignment::where('status', TestAssignment::STATUS_PENDING)->count();
+        $testTamamlanan = TestAssignment::where('status', TestAssignment::STATUS_COMPLETED)->count();
+        $sonTamamlananTestler = TestAssignment::with('patient', 'test')
+            ->where('status', TestAssignment::STATUS_COMPLETED)
+            ->orderByDesc('completed_at')
+            ->take(10)
+            ->get();
+
         return view('dashboard.raporlar.index', [
             'durumDagilimi' => $durumDagilimi,
             'toplamRandevu' => $toplamRandevu,
@@ -86,6 +95,9 @@ class ReportController extends Controller
             'noShowListesi' => $noShowListesi,
             'aylikTrend' => $aylikTrend,
             'esik' => self::NO_SHOW_WARNING_THRESHOLD,
+            'testBekleyen' => $testBekleyen,
+            'testTamamlanan' => $testTamamlanan,
+            'sonTamamlananTestler' => $sonTamamlananTestler,
         ]);
     }
 }
