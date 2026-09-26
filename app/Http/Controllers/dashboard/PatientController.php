@@ -17,7 +17,9 @@ class PatientController extends Controller
 
         $patients = Patient::withCount('appointments')
             ->when($q !== '', function ($query) use ($q) {
-                $query->where('name', 'like', "%{$q}%")->orWhere('phone', 'like', "%{$q}%");
+                $query->where('name', 'like', "%{$q}%")
+                    ->orWhere('phone', 'like', "%{$q}%")
+                    ->orWhere('username', 'like', "%{$q}%");
             })
             ->orderBy('name')
             ->paginate(20)
@@ -64,6 +66,24 @@ class PatientController extends Controller
         $portal->resetPassword($patient);
 
         return redirect()->back()->with('success', 'Danışan portalı giriş bilgileri oluşturuldu/sıfırlandı ve e-posta ile gönderildi.');
+    }
+
+    /**
+     * Admin/psikolog danışan için ELLE bir şifre belirler (yüz yüze
+     * görüşmede e-posta beklemeden sözlü iletmek için). İsterse aynı
+     * anda bilgilendirme e-postası da gönderilebilir.
+     */
+    public function setPortalPassword(Request $request, $id, PatientPortalService $portal)
+    {
+        $patient = Patient::findOrFail($id);
+
+        $request->validate([
+            'yeni_sifre' => 'required|string|min:4|max:64',
+        ]);
+
+        $portal->setPassword($patient, $request->yeni_sifre, $request->boolean('eposta_gonder'));
+
+        return redirect()->back()->with('success', 'Danışan portalı şifresi belirlendi' . ($request->boolean('eposta_gonder') ? ' ve e-posta ile gönderildi.' : '.'));
     }
 
     /**

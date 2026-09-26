@@ -38,7 +38,7 @@
                         <div class="card-body">
                             <h5 class="d-flex justify-content-between align-items-center">
                                 {{ $appointment->starts_at->translatedFormat('d F Y, H:i') }} - {{ $appointment->ends_at->format('H:i') }}
-                                <span class="badge bg-primary">{{ $appointment->statusLabel() }}</span>
+                                <span class="badge bg-primary">{{ $appointment->displayStatusLabel() }}</span>
                             </h5>
                             <table class="table">
                                 <tr>
@@ -72,6 +72,21 @@
                                 <tr>
                                     <th>Kaynak</th>
                                     <td>{{ $appointment->sourceLabel() }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Oluşturan</th>
+                                    <td>{{ $appointment->createdBy?->name ?? 'Web sitesi (ziyaretçi)' }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Son Güncelleyen</th>
+                                    <td>
+                                        @if($appointment->lastUpdatedBy)
+                                            {{ $appointment->lastUpdatedBy->name }}
+                                            <span class="text-muted small">— {{ ucfirst($appointment->last_action ?? '') }} · {{ $appointment->updated_at->translatedFormat('d.m.Y H:i') }}</span>
+                                        @else
+                                            —
+                                        @endif
+                                    </td>
                                 </tr>
                                 @if($appointment->request_note)
                                 <tr>

@@ -28,6 +28,16 @@
                         @if($assignment->completed_at) · Tamamlanma: {{ $assignment->completed_at->format('d.m.Y H:i') }} @endif
                     </p>
 
+                    @if(!$assignment->isCompleted())
+                        <div class="alert alert-light border d-flex justify-content-between align-items-center">
+                            <span class="small">Yüz yüze görüşmede danışan girişi olmadan bu testi doldurmak için bağlantı:</span>
+                            <button type="button" class="btn btn-outline-primary btn-sm text-nowrap"
+                                onclick="navigator.clipboard.writeText('{{ \Illuminate\Support\Facades\URL::signedRoute('danisan.test.misafir', ['assignmentId' => $assignment->id]) }}'); this.textContent='Kopyalandı!'; setTimeout(() => this.textContent='Bağlantıyı Kopyala', 1500);">
+                                Bağlantıyı Kopyala
+                            </button>
+                        </div>
+                    @endif
+
                     @if($assignment->isCompleted())
                         <table class="table table-striped">
                             <thead>
@@ -35,14 +45,22 @@
                             </thead>
                             <tbody>
                                 @php $cevaplar = $assignment->answers ?? []; @endphp
-                                @foreach($assignment->test->questions as $q)
+                                @foreach($sorular as $q)
                                     @php
                                         $deger = $cevaplar[$q->id] ?? null;
-                                        $etiketler = ['Hiç', 'Birkaç gün', 'Yarısından fazla günlerde', 'Neredeyse her gün'];
+                                        if ($q->type === 'text') {
+                                            $goruntu = $deger !== null && $deger !== '' ? $deger : '—';
+                                        } elseif ($q->type === 'multi_choice') {
+                                            $secilenIdler = (array) $deger;
+                                            $goruntu = $q->options->whereIn('id', $secilenIdler)->pluck('label')->implode(', ') ?: '—';
+                                        } else {
+                                            $secilenSecenek = $deger !== null ? $q->options->firstWhere('id', (int) $deger) : null;
+                                            $goruntu = $secilenSecenek ? $secilenSecenek->label . ' (' . $secilenSecenek->value . ')' : '—';
+                                        }
                                     @endphp
                                     <tr>
                                         <td>{{ $q->text }}</td>
-                                        <td class="text-end">{{ $deger !== null ? $etiketler[$deger] . " ($deger)" : '—' }}</td>
+                                        <td class="text-end">{{ $goruntu }}</td>
                                     </tr>
                                 @endforeach
                             </tbody>

@@ -84,6 +84,18 @@
                                     <option value="yuz_yuze">Yüz Yüze (Kurum Ziyareti)</option>
                                 </select>
                             </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Terapi Odası *</label>
+                                <select class="form-select" name="room_id" required>
+                                    <option value="">Oda seçin...</option>
+                                    @foreach($odalar as $oda)
+                                        <option value="{{ $oda->id }}">{{ $oda->name }}</option>
+                                    @endforeach
+                                </select>
+                                @if($odalar->isEmpty())
+                                    <div class="form-text text-danger">Henüz aktif oda tanımlanmadı. Önce "Terapi Odaları" sayfasından oda ekleyin.</div>
+                                @endif
+                            </div>
 
                             <div class="col-md-12" id="gun-durum-alani" style="display:none;">
                                 <div class="alert alert-light border small mb-0" id="gun-durum-metni"></div>

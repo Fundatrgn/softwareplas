@@ -25,7 +25,7 @@ class PortalController extends Controller
     public function showTest($id)
     {
         $patient = Auth::guard('patient')->user();
-        $assignment = TestAssignment::with('test.questions')
+        $assignment = TestAssignment::with('test')
             ->where('patient_id', $patient->id)
             ->findOrFail($id);
 
@@ -33,13 +33,17 @@ class PortalController extends Controller
             return redirect('/danisan/panel')->with('error', 'Bu testi zaten tamamladınız.');
         }
 
-        return view('danisan.test', ['assignment' => $assignment]);
+        return view('danisan.test', [
+            'assignment' => $assignment,
+            'sorular' => $assignment->applicableQuestions(),
+            'formAction' => "/danisan/test/{$assignment->id}",
+        ]);
     }
 
     public function submitTest(Request $request, $id)
     {
         $patient = Auth::guard('patient')->user();
-        $assignment = TestAssignment::with('test.questions')
+        $assignment = TestAssignment::with('test')
             ->where('patient_id', $patient->id)
             ->findOrFail($id);
 
@@ -47,26 +51,8 @@ class PortalController extends Controller
             return redirect('/danisan/panel')->with('error', 'Bu testi zaten tamamladınız.');
         }
 
-        $questionIds = $assignment->test->questions->pluck('id');
-        $rules = [];
-        foreach ($questionIds as $qid) {
-            $rules["cevap.$qid"] = 'required|integer|min:0|max:3';
-        }
-        $request->validate($rules);
-
-        $answers = [];
-        $toplam = 0;
-        foreach ($questionIds as $qid) {
-            $deger = (int) $request->input("cevap.$qid");
-            $answers[$qid] = $deger;
-            $toplam += $deger;
-        }
-
-        $assignment->answers = $answers;
-        $assignment->score = $toplam;
-        $assignment->status = TestAssignment::STATUS_COMPLETED;
-        $assignment->completed_at = now();
-        $assignment->save();
+        $request->validate(['cevap' => 'required|array']);
+        $assignment->applyAnswers($request->input('cevap'));
 
         return redirect('/danisan/panel')->with('success', 'Test tamamlandı, teşekkür ederiz.');
     }

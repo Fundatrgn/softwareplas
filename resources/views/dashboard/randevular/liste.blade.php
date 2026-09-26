@@ -56,6 +56,7 @@
                                     <th>Hizmet</th>
                                     <th>Psikolog</th>
                                     <th>Durum</th>
+                                    <th>Son İşlem</th>
                                     <th class="text-end">İşlemler</th>
                                 </tr>
                             </thead>
@@ -67,7 +68,14 @@
                                         <td>{{ $a->patient_phone_snapshot ?? $a->patient?->phone ?? '—' }}</td>
                                         <td>{{ $a->service?->title ?? '—' }}</td>
                                         <td>{{ $a->psychologist?->name ?? '—' }}</td>
-                                        <td><span class="badge bg-primary">{{ $a->statusLabel() }}</span></td>
+                                        <td><span class="badge bg-primary">{{ $a->displayStatusLabel() }}</span></td>
+                                        <td class="small text-muted">
+                                            @if($a->lastUpdatedBy)
+                                                {{ $a->lastUpdatedBy->name }}<br>{{ $a->updated_at->format('d.m.Y H:i') }}
+                                            @else
+                                                —
+                                            @endif
+                                        </td>
                                         <td class="text-end">
                                             <a href="/admin/randevular/{{ $a->id }}" class="btn btn-sm btn-outline-secondary" title="Görüntüle"><ion-icon name="eye-outline"></ion-icon></a>
                                             <a href="/admin/randevular/{{ $a->id }}/duzenle" class="btn btn-sm btn-outline-primary" title="Düzenle"><ion-icon name="create-outline"></ion-icon></a>

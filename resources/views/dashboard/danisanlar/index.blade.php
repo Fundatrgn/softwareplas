@@ -25,7 +25,7 @@
                 <div class="card-body">
                     <form method="GET" class="mb-3">
                         <div class="input-group" style="max-width:400px">
-                            <input type="text" name="q" class="form-control" placeholder="İsim veya telefon ara..." value="{{ $q }}">
+                            <input type="text" name="q" class="form-control" placeholder="İsim, telefon veya kullanıcı adı ara..." value="{{ $q }}">
                             <button class="btn btn-outline-secondary" type="submit"><ion-icon name="search-outline"></ion-icon></button>
                         </div>
                     </form>
@@ -37,6 +37,7 @@
                                     <th>Ad Soyad</th>
                                     <th>Telefon</th>
                                     <th>E-posta</th>
+                                    <th>Kullanıcı Adı</th>
                                     <th>Randevu Sayısı</th>
                                     <th>#</th>
                                 </tr>
@@ -47,6 +48,7 @@
                                         <td><a href="/admin/danisanlar/{{ $item->id }}">{{ $item->name }}</a></td>
                                         <td>{{ $item->phone }}</td>
                                         <td>{{ $item->email ?? '—' }}</td>
+                                        <td>{{ $item->username ?? '—' }}</td>
                                         <td>{{ $item->appointments_count }}</td>
                                         <td>
                                             <a href="/admin/danisanlar/{{ $item->id }}" class="text-primary" title="Görüntüle">
@@ -58,7 +60,7 @@
                                         </td>
                                     </tr>
                                 @empty
-                                    <tr><td colspan="5" class="text-center text-muted">Kayıt bulunamadı.</td></tr>
+                                    <tr><td colspan="6" class="text-center text-muted">Kayıt bulunamadı.</td></tr>
                                 @endforelse
                             </tbody>
                         </table>

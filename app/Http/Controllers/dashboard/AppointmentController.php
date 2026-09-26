@@ -5,6 +5,7 @@ namespace App\Http\Controllers\dashboard;
 use App\Http\Controllers\Controller;
 use App\Models\Appointment;
 use App\Models\Patient;
+use App\Models\Room;
 use App\Models\Services;
 use App\Models\Setting;
 use App\Models\User;
@@ -30,7 +31,7 @@ class AppointmentController extends Controller
      */
     public function liste(Request $request)
     {
-        $query = Appointment::with('patient', 'service', 'psychologist')
+        $query = Appointment::with('patient', 'service', 'psychologist', 'lastUpdatedBy')
             ->orderByDesc('starts_at');
 
         if ($request->filled('q')) {
@@ -146,6 +147,7 @@ class AppointmentController extends Controller
         return view('dashboard.randevular.add', [
             'hizmetler' => Services::orderBy('order', 'ASC')->get(),
             'psikologlar' => User::orderBy('name')->get(),
+            'odalar' => Room::where('is_active', true)->orderBy('name')->get(),
             'tarih' => $request->query('tarih'),
             'saat' => $request->query('saat'),
             'varsayilanSure' => (new AvailabilityService(Setting::first()))->slotDuration(),
@@ -172,7 +174,7 @@ class AppointmentController extends Controller
         return response()->json($patients);
     }
 
-    public function store(Request $request, AppointmentNotificationService $notifier)
+    public function store(Request $request, AppointmentNotificationService $notifier, \App\Services\PatientPortalService $portal)
     {
         $request->validate([
             'patient_id' => 'nullable|exists:patients,id',
@@ -181,6 +183,7 @@ class AppointmentController extends Controller
             'email' => 'nullable|email|max:255',
             'service_id' => 'nullable|exists:services,id',
             'user_id' => 'nullable|exists:users,id',
+            'room_id' => 'required|exists:rooms,id',
             'tarih' => 'required|date',
             'saat' => 'required|date_format:H:i',
             'sure' => 'nullable|integer|min:10|max:240',
@@ -200,6 +203,19 @@ class AppointmentController extends Controller
         // çakışma olup olmadığına bakılır.
         if ($availability->hasConflict($startsAt, $startsAt->copy()->addMinutes($duration))) {
             return redirect()->back()->withInput()->with('error', 'Bu saat aralığında başka bir randevu var. Lütfen farklı bir saat seçin.');
+        }
+
+        // Bu randevu doğrudan "onaylandı" durumunda oluşturulduğu için
+        // (bkz. aşağıdaki Appointment::create), oda çakışması da randevu
+        // onaylama akışındaki (updateStatus) ile aynı mantıkla burada
+        // kontrol edilir.
+        $odaCakisma = Appointment::where('room_id', $request->room_id)
+            ->whereIn('status', Appointment::BLOCKING_STATUSES)
+            ->overlapping($startsAt, $startsAt->copy()->addMinutes($duration))
+            ->exists();
+
+        if ($odaCakisma) {
+            return redirect()->back()->withInput()->with('error', 'Seçtiğiniz oda bu saat aralığında başka bir randevu için zaten kullanılıyor. Lütfen farklı bir oda seçin.');
         }
 
         if ($request->patient_id) {
@@ -242,7 +258,10 @@ class AppointmentController extends Controller
                 'patient_id' => $patient->id,
                 'service_id' => $request->service_id,
                 'user_id' => $request->user_id,
+                'room_id' => $request->room_id,
                 'created_by' => auth()->id(),
+                'last_updated_by' => auth()->id(),
+                'last_action' => 'oluşturuldu',
                 'starts_at' => $bu,
                 'ends_at' => $bu->copy()->addMinutes($duration),
                 'duration_minutes' => $duration,
@@ -255,6 +274,7 @@ class AppointmentController extends Controller
             ]);
 
             $notifier->notifyCreated($appointment);
+            $portal->ensureCredentials($patient);
             $olusturulan++;
 
             if ($i === 0) {
@@ -275,7 +295,7 @@ class AppointmentController extends Controller
 
     public function show($id)
     {
-        $appointment = Appointment::with('patient', 'service', 'psychologist', 'notificationLogs')->findOrFail($id);
+        $appointment = Appointment::with('patient', 'service', 'psychologist', 'notificationLogs', 'createdBy', 'lastUpdatedBy')->findOrFail($id);
 
         return view('dashboard.randevular.show', ['appointment' => $appointment]);
     }
@@ -307,6 +327,8 @@ class AppointmentController extends Controller
         $appointment->starts_at = $yeniBaslangic;
         $appointment->ends_at = $yeniBitis;
         $appointment->duration_minutes = $sure;
+        $appointment->last_updated_by = auth()->id();
+        $appointment->last_action = 'yeniden planlandı';
         $appointment->save();
 
         $notifier->notifyStatusChanged($appointment);
@@ -376,6 +398,8 @@ class AppointmentController extends Controller
             'ends_at' => $yeniBitis,
             'duration_minutes' => (int) $request->sure,
             'request_note' => $request->not,
+            'last_updated_by' => auth()->id(),
+            'last_action' => 'güncellendi',
         ]);
 
         $notifier->notifyStatusChanged($appointment);
@@ -438,7 +462,17 @@ class AppointmentController extends Controller
             $appointment->cancel_reason = $request->cancel_reason;
         }
 
+        $durumEylemleri = [
+            Appointment::STATUS_PENDING => 'bekliyor olarak işaretlendi',
+            Appointment::STATUS_CONFIRMED => 'onaylandı',
+            Appointment::STATUS_COMPLETED => 'tamamlandı',
+            Appointment::STATUS_CANCELLED => 'iptal edildi',
+            Appointment::STATUS_NO_SHOW => 'gelmedi olarak işaretlendi',
+        ];
+
         $appointment->status = $request->status;
+        $appointment->last_updated_by = auth()->id();
+        $appointment->last_action = $durumEylemleri[$request->status] ?? $request->status;
         $appointment->save();
 
         $notifier->notifyStatusChanged($appointment);

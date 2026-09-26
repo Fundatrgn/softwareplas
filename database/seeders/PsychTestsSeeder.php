@@ -4,14 +4,24 @@ namespace Database\Seeders;
 
 use App\Models\Test;
 use App\Models\TestQuestion;
+use App\Models\TestQuestionOption;
 use Illuminate\Database\Seeder;
 
 /**
  * Danışan Portalı öz-değerlendirme testleri (PHQ-9, GAD-7 — serbestçe
- * kullanılabilen, telifsiz standart tarama ölçekleri).
+ * kullanılabilen, telifsiz standart tarama ölçekleri). Diğer tüm testler
+ * gibi tek-seçimli sorular + seçenek/puan yapısı kullanır (bkz.
+ * TestQuestionOption), böylece admin panelinden de düzenlenebilirler.
  */
 class PsychTestsSeeder extends Seeder
 {
+    private array $olcek = [
+        ['label' => 'Hiç', 'value' => 0],
+        ['label' => 'Birkaç gün', 'value' => 1],
+        ['label' => 'Yarısından fazla günlerde', 'value' => 2],
+        ['label' => 'Neredeyse her gün', 'value' => 3],
+    ];
+
     public function run(): void
     {
         if (Test::where('key', 'phq9')->exists()) {
@@ -36,11 +46,7 @@ class PsychTestsSeeder extends Seeder
             'Kendinize zarar vermeyi düşünme veya keşke ölseydim diye düşünme',
         ];
         foreach ($phq9Sorular as $i => $soru) {
-            $q = new TestQuestion();
-            $q->test_id = $phq9->id;
-            $q->order = $i + 1;
-            $q->text = $soru;
-            $q->save();
+            $this->soruEkle($phq9->id, $i + 1, $soru);
         }
 
         $gad7 = new Test();
@@ -59,11 +65,26 @@ class PsychTestsSeeder extends Seeder
             'Sanki kötü bir şey olacakmış gibi korku hissetme',
         ];
         foreach ($gad7Sorular as $i => $soru) {
-            $q = new TestQuestion();
-            $q->test_id = $gad7->id;
-            $q->order = $i + 1;
-            $q->text = $soru;
-            $q->save();
+            $this->soruEkle($gad7->id, $i + 1, $soru);
+        }
+    }
+
+    private function soruEkle(int $testId, int $sira, string $metin): void
+    {
+        $q = new TestQuestion();
+        $q->test_id = $testId;
+        $q->order = $sira;
+        $q->text = $metin;
+        $q->type = TestQuestion::TYPE_SINGLE;
+        $q->save();
+
+        foreach ($this->olcek as $i => $secenek) {
+            $opt = new TestQuestionOption();
+            $opt->test_question_id = $q->id;
+            $opt->label = $secenek['label'];
+            $opt->value = $secenek['value'];
+            $opt->order = $i;
+            $opt->save();
         }
     }
 }

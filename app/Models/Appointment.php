@@ -48,6 +48,8 @@ class Appointment extends Model
         'user_id',
         'room_id',
         'created_by',
+        'last_updated_by',
+        'last_action',
         'starts_at',
         'ends_at',
         'duration_minutes',
@@ -95,6 +97,11 @@ class Appointment extends Model
         return $this->belongsTo(User::class, 'created_by');
     }
 
+    public function lastUpdatedBy()
+    {
+        return $this->belongsTo(User::class, 'last_updated_by');
+    }
+
     public function notificationLogs()
     {
         return $this->hasMany(NotificationLog::class);
@@ -103,6 +110,20 @@ class Appointment extends Model
     public function statusLabel(): string
     {
         return self::STATUSES[$this->status] ?? $this->status;
+    }
+
+    /**
+     * Onaylanmış bir randevu, onaylandıktan SONRA bir kez daha
+     * düzenlenirse (bkz. update()), durum etiketine bunu da yansıtır
+     * — böylece "onaylandı" görünen bir randevunun aslında sonradan
+     * değiştirildiği gözden kaçmaz.
+     */
+    public function displayStatusLabel(): string
+    {
+        if ($this->status === self::STATUS_CONFIRMED && $this->last_action === 'güncellendi') {
+            return 'Onaylandı ve Güncellendi';
+        }
+        return $this->statusLabel();
     }
 
     public function sourceLabel(): string

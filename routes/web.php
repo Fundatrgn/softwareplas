@@ -12,6 +12,7 @@ use App\Http\Controllers\dashboard\EmailSettingController;
 use App\Http\Controllers\dashboard\FooterMenuController;
 use App\Http\Controllers\dashboard\TestimonialController;
 use App\Http\Controllers\dashboard\RoomController;
+use App\Http\Controllers\dashboard\TestBuilderController;
 use App\Http\Controllers\dashboard\PatientController;
 use App\Http\Controllers\dashboard\ReportController;
 use App\Http\Controllers\dashboard\HakkimizdaController;
@@ -104,6 +105,13 @@ Route::post('ckeditor/image_upload', [CkeditorController::class, 'upload'])->nam
 Route::get('login', [LoginController::class,'index'])->name('login');
 Route::post('/login',[LoginController::class,'login']);
 
+// Yüz yüze görüşmede danışan girişi olmadan tek bir testin doldurulması
+// (imzalı/signed bağlantı — bkz. admin panelindeki "Bağlantıyı Kopyala")
+Route::match(['get', 'post'], '/danisan/test-misafir/{assignmentId}', [\App\Http\Controllers\danisan\GuestTestController::class, 'handle'])
+    ->whereNumber('assignmentId')
+    ->middleware('signed')
+    ->name('danisan.test.misafir');
+
 // Danışan Portalı (admin panelinden tamamen ayrı, danışan giriş yapar)
 Route::get('/danisan/giris', [\App\Http\Controllers\danisan\AuthController::class, 'index']);
 Route::post('/danisan/giris', [\App\Http\Controllers\danisan\AuthController::class, 'login']);
@@ -141,6 +149,8 @@ Route::prefix('/admin')->middleware('auth')->group(function () {
     Route::get('/danisanlar/{id}', [PatientController::class, 'show'])->whereNumber('id');
     Route::get('/danisanlar/{id}/pdf', [PatientController::class, 'pdfReport'])->whereNumber('id');
     Route::post('/danisanlar/{id}/portal-sifre-sifirla', [PatientController::class, 'resetPortalPassword'])->whereNumber('id');
+    Route::post('/danisanlar/{id}/portal-sifre-belirle', [PatientController::class, 'setPortalPassword'])->whereNumber('id');
+    Route::get('/danisanlar/{id}/test-ata/{testId}', [\App\Http\Controllers\dashboard\TestAssignmentController::class, 'customize'])->whereNumber('id')->whereNumber('testId');
     Route::post('/danisanlar/{id}/test-ata', [\App\Http\Controllers\dashboard\TestAssignmentController::class, 'assign'])->whereNumber('id');
     // Danışanlar
 
@@ -148,6 +158,28 @@ Route::prefix('/admin')->middleware('auth')->group(function () {
     Route::get('/testler/{id}', [\App\Http\Controllers\dashboard\TestAssignmentController::class, 'show'])->whereNumber('id');
     Route::post('/testler/{id}/sil', [\App\Http\Controllers\dashboard\TestAssignmentController::class, 'destroy'])->whereNumber('id');
     // Danışan Testleri
+
+    // Test Şablonları (admin'in kendi testlerini/sorularını hazırladığı alan)
+    Route::get('/test-sablonlari', [TestBuilderController::class, 'index']);
+    Route::get('/test-sablonlari/add', [TestBuilderController::class, 'add']);
+    Route::get('/test-sablonlari/add/{id}', [TestBuilderController::class, 'edit'])->whereNumber('id');
+    Route::post('/test-sablonlari/add', [TestBuilderController::class, 'store']);
+    Route::get('/test-sablonlari/del/{id}', [TestBuilderController::class, 'destroy'])->whereNumber('id');
+    Route::get('/test-sablonlari/{id}/sorular', [TestBuilderController::class, 'questions'])->whereNumber('id');
+    Route::post('/test-sablonlari/{id}/sorular', [TestBuilderController::class, 'storeQuestion'])->whereNumber('id');
+    Route::get('/test-sablonlari/soru/{id}/duzenle', [TestBuilderController::class, 'editQuestion'])->whereNumber('id');
+    Route::post('/test-sablonlari/soru/{id}', [TestBuilderController::class, 'updateQuestion'])->whereNumber('id');
+    Route::get('/test-sablonlari/soru/{id}/sil', [TestBuilderController::class, 'destroyQuestion'])->whereNumber('id');
+    // Test Şablonları
+
+    // Terapi Odaları (psikolog da randevu için oda görebilmeli/seçebilmeli)
+    Route::get('/odalar', [RoomController::class, 'index']);
+    Route::get('/odalar/durum', [RoomController::class, 'durum']);
+    Route::get('/odalar/add', [RoomController::class, 'add']);
+    Route::get('/odalar/add/{id}', [RoomController::class, 'edit']);
+    Route::post('/odalar/add', [RoomController::class, 'store']);
+    Route::get('/odalar/del/{id}', [RoomController::class, 'del']);
+    // Terapi Odaları
 
     // Raporlar (CRM)
     Route::get('/raporlar', [ReportController::class, 'index']);
@@ -181,15 +213,6 @@ Route::prefix('/admin')->middleware(['auth', 'role:yonetici'])->group(function (
     Route::post('/yorumlar/add', [TestimonialController::class, 'store']);
     Route::get('/yorumlar/del/{id}', [TestimonialController::class, 'del']);
     // Danışan Yorumları
-
-    // Terapi Odaları
-    Route::get('/odalar', [RoomController::class, 'index']);
-    Route::get('/odalar/durum', [RoomController::class, 'durum']);
-    Route::get('/odalar/add', [RoomController::class, 'add']);
-    Route::get('/odalar/add/{id}', [RoomController::class, 'edit']);
-    Route::post('/odalar/add', [RoomController::class, 'store']);
-    Route::get('/odalar/del/{id}', [RoomController::class, 'del']);
-    // Terapi Odaları
     // Ekibimiz
     Route::get('/ekibimiz', [TeamController::class, 'index']);
     Route::get('/ekibimiz/add', [TeamController::class, 'add']);

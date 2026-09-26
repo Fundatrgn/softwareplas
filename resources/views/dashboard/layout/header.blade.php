@@ -133,6 +133,14 @@
                         </li>
                     </ul>
                 </li>
+                <li>
+                    <a href="/admin/test-sablonlari">
+                        <div class="parent-icon">
+                            <ion-icon name="clipboard-outline"></ion-icon>
+                        </div>
+                        <div class="menu-title">Test Şablonları</div>
+                    </a>
+                </li>
 
                 @if(auth()->user()->isYonetici())
                 <li class="menu-label">İçerik</li>

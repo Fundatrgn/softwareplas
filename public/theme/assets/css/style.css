@@ -91,12 +91,11 @@ CSS Table Of Content
 
 =====================================================================*/
 /*=========
-Font load
+Font load — Google Fonts CDN @import kaldırıldı (bazı sunucu/tarayıcı
+ağlarında bu adrese erişim engellenip fontun hiç yüklenmemesine yol
+açıyordu). Montserrat + Cormorant Garamond artık kendi sunucumuzda
+barındırılıyor, bkz. global.css @font-face tanımları.
 ===========*/
-@import url("https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400;1,500&display=swap");
-/*global area*/
-/*----------------------------------------------------*/
-@import url("https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap");
 @media (prefers-reduced-motion: no-preference) {
   :root {
     scroll-behavior: inherit;

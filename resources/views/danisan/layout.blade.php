@@ -5,11 +5,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Danışan Portalı | {{ $settings->site_title ?? 'Marya' }}</title>
     <link rel="icon" href="{{ asset('images/' . ($settings->favicon ?? '')) }}">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400;0,500;0,600;0,700;0,800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('theme/assets/css/bootstrap.min.css') }}">
     <style>
+        @font-face {
+            font-family: 'Montserrat';
+            src: url('{{ asset('theme/assets/fonts/montserrat/Montserrat-Regular.ttf') }}') format('truetype');
+            font-weight: 400; font-style: normal; font-display: swap;
+        }
+        @font-face {
+            font-family: 'Montserrat';
+            src: url('{{ asset('theme/assets/fonts/montserrat/Montserrat-Medium.ttf') }}') format('truetype');
+            font-weight: 500; font-style: normal; font-display: swap;
+        }
+        @font-face {
+            font-family: 'Montserrat';
+            src: url('{{ asset('theme/assets/fonts/montserrat/Montserrat-Bold.ttf') }}') format('truetype');
+            font-weight: 700; font-style: normal; font-display: swap;
+        }
         :root {
             --base-color-1: {{ $settings->accent_color ?? '#223B52' }};
             --heading-color: {{ $settings->heading_color ?? '#18212B' }};

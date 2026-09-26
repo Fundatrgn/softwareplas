@@ -51,15 +51,30 @@
                             <h6>Danışan Portalı</h6>
                             @if($patient->hasPortalAccess())
                                 <p class="mb-1"><strong>Kullanıcı Adı:</strong> {{ $patient->username }}</p>
-                                <p class="text-muted small">Şifre güvenlik nedeniyle burada gösterilmez. Danışan unuttuysa aşağıdan yeni bir şifre oluşturup gönderebilirsiniz.</p>
+                                <p class="text-muted small">Şifre güvenlik nedeniyle burada gösterilmez. Danışan kendi şifresini sıfırlayamaz; sadece buradan sıfırlayabilir ya da yüz yüze görüşmede sözlü iletmek için elle belirleyebilirsiniz.</p>
                             @else
                                 <p class="text-muted small">Bu danışanın henüz portal girişi yok.</p>
                             @endif
-                            <form method="POST" action="/admin/danisanlar/{{ $patient->id }}/portal-sifre-sifirla" onsubmit="return confirm('Yeni bir şifre oluşturulup danışana e-posta ile gönderilecek. Devam edilsin mi?');">
+
+                            <form method="POST" action="/admin/danisanlar/{{ $patient->id }}/portal-sifre-sifirla" class="mb-3" onsubmit="return confirm('Rastgele yeni bir şifre oluşturulup danışana e-posta ile gönderilecek. Devam edilsin mi?');">
                                 @csrf
                                 <button type="submit" class="btn btn-outline-primary btn-sm w-100">
-                                    {{ $patient->hasPortalAccess() ? 'Şifreyi Sıfırla ve Gönder' : 'Portal Girişi Oluştur ve Gönder' }}
+                                    {{ $patient->hasPortalAccess() ? 'Rastgele Şifre Oluştur ve E-posta Gönder' : 'Portal Girişi Oluştur ve E-posta Gönder' }}
                                 </button>
+                            </form>
+
+                            <hr>
+                            <p class="text-muted small mb-2">Yüz yüze görüşmede, e-posta beklemeden kendi belirlediğiniz bir şifreyi doğrudan kaydedin:</p>
+                            <form method="POST" action="/admin/danisanlar/{{ $patient->id }}/portal-sifre-belirle">
+                                @csrf
+                                <div class="input-group input-group-sm mb-2">
+                                    <input type="text" name="yeni_sifre" class="form-control" placeholder="Yeni şifre (en az 4 karakter)" required minlength="4">
+                                    <button type="submit" class="btn btn-outline-secondary">Kaydet</button>
+                                </div>
+                                <div class="form-check form-check-sm">
+                                    <input class="form-check-input" type="checkbox" value="1" name="eposta_gonder" id="epostaGonder">
+                                    <label class="form-check-label small" for="epostaGonder">Ayrıca danışana bilgilendirme e-postası gönder</label>
+                                </div>
                             </form>
                         </div>
                     </div>
@@ -67,16 +82,15 @@
                     <div class="card">
                         <div class="card-body">
                             <h6>Testler</h6>
-                            <form method="POST" action="/admin/danisanlar/{{ $patient->id }}/test-ata" class="d-flex gap-2 mb-3">
-                                @csrf
-                                <select name="test_id" class="form-select form-select-sm" required>
+                            <div class="d-flex gap-2 mb-3">
+                                <select id="test_secim" class="form-select form-select-sm">
                                     <option value="">Test seçin...</option>
                                     @foreach($tests as $t)
-                                        <option value="{{ $t->id }}">{{ $t->name }}</option>
+                                        <option value="/admin/danisanlar/{{ $patient->id }}/test-ata/{{ $t->id }}">{{ $t->name }}</option>
                                     @endforeach
                                 </select>
-                                <button type="submit" class="btn btn-outline-primary btn-sm text-nowrap">Ata</button>
-                            </form>
+                                <button type="button" class="btn btn-outline-primary btn-sm text-nowrap" onclick="var v=document.getElementById('test_secim').value; if(v) window.location=v;">Devam Et</button>
+                            </div>
                             @forelse($testAssignments as $ta)
                                 <div class="mb-2 pb-2 border-bottom d-flex justify-content-between align-items-center">
                                     <div>
@@ -88,6 +102,11 @@
                                             <a href="/admin/testler/{{ $ta->id }}" class="badge bg-success text-decoration-none">{{ $ta->score }} puan — {{ $ta->severityLabel() }}</a>
                                         @else
                                             <span class="badge bg-secondary">Bekliyor</span>
+                                            <button type="button" class="btn btn-outline-secondary btn-sm py-0 px-1"
+                                                onclick="navigator.clipboard.writeText('{{ \Illuminate\Support\Facades\URL::signedRoute('danisan.test.misafir', ['assignmentId' => $ta->id]) }}'); this.textContent='Kopyalandı!'; setTimeout(() => this.textContent='Bağlantıyı Kopyala', 1500);"
+                                                title="Yüz yüze görüşmede danışan girişi olmadan bu testi doldurmak için bağlantıyı kopyala">
+                                                Bağlantıyı Kopyala
+                                            </button>
                                         @endif
                                     </div>
                                 </div>

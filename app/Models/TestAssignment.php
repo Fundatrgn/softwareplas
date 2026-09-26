@@ -14,6 +14,7 @@ class TestAssignment extends Model
 
     protected $casts = [
         'answers' => 'array',
+        'question_ids' => 'array',
         'completed_at' => 'datetime',
     ];
 
@@ -48,5 +49,61 @@ class TestAssignment extends Model
             return null;
         }
         return $this->test->severityLabel($this->score);
+    }
+
+    /**
+     * Bu atamada kullanılacak sorular: admin bu atamaya özel bir soru
+     * alt kümesi seçtiyse (question_ids) sadece onlar, aksi halde
+     * testin tüm soruları.
+     */
+    public function applicableQuestions()
+    {
+        $tumSorular = $this->test->questions()->with('options')->get();
+
+        if (empty($this->question_ids)) {
+            return $tumSorular;
+        }
+
+        return $tumSorular->whereIn('id', $this->question_ids)->values();
+    }
+
+    /**
+     * Formdan gelen cevapları (cevap[soru_id] = seçenek_id | [seçenek_id,...] | metin)
+     * doğrular, puanlar ve kaydeder. Tek/çoklu seçim sorularının puanı
+     * seçilen seçeneklerin "value" toplamıdır; açık uçlu sorular puanlamaya
+     * dahil edilmez, sadece metin olarak saklanır.
+     */
+    public function applyAnswers(array $cevaplar): void
+    {
+        $sorular = $this->applicableQuestions();
+        $answers = [];
+        $toplam = 0;
+
+        foreach ($sorular as $q) {
+            $cevap = $cevaplar[$q->id] ?? null;
+
+            if ($q->type === 'text') {
+                $answers[$q->id] = (string) $cevap;
+                continue;
+            }
+
+            if ($q->type === 'multi_choice') {
+                $secilenler = array_map('intval', (array) $cevap);
+                $answers[$q->id] = $secilenler;
+                $toplam += $q->options->whereIn('id', $secilenler)->sum('value');
+                continue;
+            }
+
+            // single_choice
+            $secilenId = (int) $cevap;
+            $answers[$q->id] = $secilenId;
+            $toplam += (int) ($q->options->firstWhere('id', $secilenId)?->value ?? 0);
+        }
+
+        $this->answers = $answers;
+        $this->score = $toplam;
+        $this->status = self::STATUS_COMPLETED;
+        $this->completed_at = now();
+        $this->save();
     }
 }

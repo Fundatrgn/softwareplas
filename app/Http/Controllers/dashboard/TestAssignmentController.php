@@ -11,6 +11,22 @@ use Illuminate\Http\Request;
 class TestAssignmentController extends Controller
 {
     /**
+     * Bir test seçildikten sonra, atamadan önce hangi soruların dahil
+     * edileceğini seçme adımı (varsayılan: tümü işaretli).
+     * GET /admin/danisanlar/{patient}/test-ata/{test}
+     */
+    public function customize($patientId, $testId)
+    {
+        $patient = Patient::findOrFail($patientId);
+        $test = Test::with('questions.options')->findOrFail($testId);
+
+        return view('dashboard.danisanlar.test-ata-ozellestir', [
+            'patient' => $patient,
+            'test' => $test,
+        ]);
+    }
+
+    /**
      * Bir danışana yeni bir test atar (danışan portalında görünür).
      * POST /admin/danisanlar/{patient}/test-ata
      */
@@ -20,11 +36,21 @@ class TestAssignmentController extends Controller
 
         $request->validate([
             'test_id' => 'required|exists:tests,id',
+            'question_ids' => 'nullable|array',
+            'question_ids.*' => 'integer|exists:test_questions,id',
         ]);
+
+        $test = Test::findOrFail($request->test_id);
+        $secilenSorular = $request->input('question_ids', []);
+        $tumSoruSayisi = $test->questions()->count();
 
         $assignment = new TestAssignment();
         $assignment->patient_id = $patient->id;
-        $assignment->test_id = $request->test_id;
+        $assignment->test_id = $test->id;
+        // Tüm sorular işaretliyse null bırakılır (testin ileride
+        // eklenecek yeni sorularını da otomatik kapsasın diye);
+        // aksi halde sadece seçilen alt küme kaydedilir.
+        $assignment->question_ids = (count($secilenSorular) < $tumSoruSayisi) ? array_values($secilenSorular) : null;
         $assignment->assigned_by = auth()->id();
         $assignment->status = TestAssignment::STATUS_PENDING;
         $assignment->save();
@@ -38,9 +64,12 @@ class TestAssignmentController extends Controller
      */
     public function show($id)
     {
-        $assignment = TestAssignment::with('patient', 'test.questions')->findOrFail($id);
+        $assignment = TestAssignment::with('patient', 'test.questions.options')->findOrFail($id);
 
-        return view('dashboard.testler.show', ['assignment' => $assignment]);
+        return view('dashboard.testler.show', [
+            'assignment' => $assignment,
+            'sorular' => $assignment->applicableQuestions(),
+        ]);
     }
 
     public function destroy($id)

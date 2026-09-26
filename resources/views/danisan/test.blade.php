@@ -16,19 +16,32 @@
             </div>
         @endif
 
-        <form method="POST" action="/danisan/test/{{ $assignment->id }}">
+        <form method="POST" action="{{ $formAction }}">
             @csrf
-            @foreach($assignment->test->questions as $i => $q)
+            @foreach($sorular as $i => $q)
                 <div class="mb-4">
                     <p class="mb-2"><strong>{{ $i + 1 }}.</strong> {{ $q->text }}</p>
-                    <div class="d-flex flex-column gap-1">
-                        @foreach(['Hiç', 'Birkaç gün', 'Yarısından fazla günlerde', 'Neredeyse her gün'] as $deger => $etiket)
-                            <div class="form-check">
-                                <input class="form-check-input" type="radio" name="cevap[{{ $q->id }}]" id="q{{ $q->id }}_{{ $deger }}" value="{{ $deger }}" required>
-                                <label class="form-check-label" for="q{{ $q->id }}_{{ $deger }}">{{ $etiket }}</label>
-                            </div>
-                        @endforeach
-                    </div>
+                    @if($q->type === 'text')
+                        <textarea class="form-control" name="cevap[{{ $q->id }}]" rows="3" required></textarea>
+                    @elseif($q->type === 'multi_choice')
+                        <div class="d-flex flex-column gap-1">
+                            @foreach($q->options as $opt)
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" name="cevap[{{ $q->id }}][]" id="q{{ $q->id }}_{{ $opt->id }}" value="{{ $opt->id }}">
+                                    <label class="form-check-label" for="q{{ $q->id }}_{{ $opt->id }}">{{ $opt->label }}</label>
+                                </div>
+                            @endforeach
+                        </div>
+                    @else
+                        <div class="d-flex flex-column gap-1">
+                            @foreach($q->options as $opt)
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="cevap[{{ $q->id }}]" id="q{{ $q->id }}_{{ $opt->id }}" value="{{ $opt->id }}" required>
+                                    <label class="form-check-label" for="q{{ $q->id }}_{{ $opt->id }}">{{ $opt->label }}</label>
+                                </div>
+                            @endforeach
+                        </div>
+                    @endif
                 </div>
             @endforeach
             <div class="d-grid">
