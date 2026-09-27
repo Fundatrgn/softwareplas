@@ -186,6 +186,7 @@
                                     <a href="#">Kurumsal</a>
                                     <ul class="dropdown-menu clearfix">
                                         <li><a href="/hakkimizda">Hakkımızda </a></li>
+                                        <li><a href="/ekibimiz">Ekibimiz</a></li>
                                         @foreach($custom_pages ?? [] as $ozelSayfa)
                                             <li><a href="/kurumsal/{{ $ozelSayfa->slug }}">{{ $ozelSayfa->title }}</a></li>
                                         @endforeach
