@@ -267,7 +267,7 @@ CREATE TABLE `migrations` (
   `migration` varchar(255) NOT NULL,
   `batch` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=55 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=56 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -330,7 +330,8 @@ INSERT INTO `migrations` VALUES
 (51,'2026_09_26_150200_add_portal_login_to_patients_table',6),
 (52,'2026_09_26_150300_create_tests_tables',6),
 (53,'2026_09_26_160000_add_audit_fields_to_appointments_table',7),
-(54,'2026_09_26_170000_add_question_types_and_options',7);
+(54,'2026_09_26_170000_add_question_types_and_options',7),
+(55,'2026_09_27_090000_add_display_type_and_mobile_image_to_slider_table',8);
 /*!40000 ALTER TABLE `migrations` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -757,7 +758,9 @@ CREATE TABLE `slider` (
   `threed` varchar(255) DEFAULT '',
   `btn_text` varchar(255) NOT NULL,
   `image` varchar(255) DEFAULT NULL,
+  `image_mobile` varchar(255) DEFAULT NULL,
   `text_position` varchar(255) NOT NULL DEFAULT 'orta',
+  `display_type` varchar(255) NOT NULL DEFAULT 'normal',
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
@@ -771,7 +774,7 @@ CREATE TABLE `slider` (
 LOCK TABLES `slider` WRITE;
 /*!40000 ALTER TABLE `slider` DISABLE KEYS */;
 INSERT INTO `slider` VALUES
-(1,1,'Kendinize Zaman Ayırın','Bireysel, çift ve online terapiyle yanınızdayım. Değişim için ilk adımı birlikte atalım.','','','','Randevu Al','hero-slider.svg','orta','2026-09-20 14:44:05','2026-09-20 14:44:05');
+(1,1,'Kendinize Zaman Ayırın','Bireysel, çift ve online terapiyle yanınızdayım. Değişim için ilk adımı birlikte atalım.','','','','Randevu Al','hero-slider.svg',NULL,'orta','normal','2026-09-20 14:44:05','2026-09-20 14:44:05');
 /*!40000 ALTER TABLE `slider` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1236,4 +1239,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2026-09-26 18:13:17
+-- Dump completed on 2026-09-27  6:46:21
