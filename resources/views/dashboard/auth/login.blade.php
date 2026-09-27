@@ -16,9 +16,10 @@
   <!-- CSS Files -->
   <link href="{{asset('dashboard/assets/css/bootstrap.min.css')}}" rel="stylesheet">
   <link href="{{asset('dashboard/assets/css/bootstrap-extended.css')}}" rel="stylesheet">
-  <link href="{{asset('dashboard/assets/css/style.css')}}" rel="stylesheet">
+  <link href="{{asset('dashboard/assets/css/style.css')}}?v=2" rel="stylesheet">
   <link href="{{asset('dashboard/assets/css/icons.css')}}" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+  {{-- Roboto Google Fonts CDN kaldırıldı; kendi sunucumuzda barındırılan
+       Montserrat kullanılıyor (bkz. dashboard/assets/css/style.css). --}}
 
   <title>Admin Panel</title>
 </head>

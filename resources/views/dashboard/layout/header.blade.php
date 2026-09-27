@@ -32,9 +32,11 @@
     <!-- CSS Files -->
     <link href="{{ asset('dashboard/assets/css/bootstrap.min.css') }}" rel="stylesheet">
     <link href="{{ asset('dashboard/assets/css/bootstrap-extended.css') }}" rel="stylesheet">
-    <link href="{{ asset('dashboard/assets/css/style.css') }}" rel="stylesheet">
+    <link href="{{ asset('dashboard/assets/css/style.css') }}?v=2" rel="stylesheet">
     <link href="{{ asset('dashboard/assets/css/icons.css') }}" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+    {{-- Roboto Google Fonts CDN kaldırıldı; admin panel de artık kendi
+         sunucumuzda barındırılan Montserrat'ı kullanıyor (bkz.
+         dashboard/assets/css/style.css @font-face). --}}
 
     <script src="https://cdn.ckeditor.com/4.22.1/standard/ckeditor.js"></script>
     <!--Theme Styles-->
@@ -245,6 +247,25 @@
                         </li>
                         <li> <a href="/admin/yorumlar/add">
                                 <ion-icon name="ellipse-outline"></ion-icon>Yeni Yorum Ekle
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+
+                <li>
+                    <a href="javascript:;" class="has-arrow">
+                        <div class="parent-icon">
+                            <ion-icon name="people-circle-outline"></ion-icon>
+                        </div>
+                        <div class="menu-title">Ekibimiz</div>
+                    </a>
+                    <ul>
+                        <li> <a href="/admin/ekibimiz">
+                                <ion-icon name="ellipse-outline"></ion-icon>Tümünü Gör
+                            </a>
+                        </li>
+                        <li> <a href="/admin/ekibimiz/add">
+                                <ion-icon name="ellipse-outline"></ion-icon>Yeni Ekle
                             </a>
                         </li>
                     </ul>
