@@ -34,6 +34,19 @@
                         </div>
                     </div>
                 </div>
+                <div class="col-lg-3 col-md-6">
+                    <div class="ori-footer-widget">
+                        <div class="menu-location-widget ul-li-block">
+                            <h2 class="widget-title text-uppercase">Hızlı Bağlantılar</h2>
+                            <ul>
+                                <li><a href="/danisan/giris">Danışan Girişi</a></li>
+                                <li><a href="/randevu">Randevu Al</a></li>
+                                <li><a href="/sss">Sık Sorulan Sorular</a></li>
+                                <li><a href="/iletisim">İletişim</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
                 @if(!empty($settings->footer_menu_title) && isset($footer_links) && $footer_links->isNotEmpty())
                 <div class="col-lg-3 col-md-6">
                     <div class="ori-footer-widget">

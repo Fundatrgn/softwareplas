@@ -50,6 +50,7 @@ class SliderController extends Controller
             $item->text_position = in_array($request->text_position, ['sol', 'orta', 'sag'], true)
                 ? $request->text_position
                 : 'orta';
+            $item->display_type = $request->display_type === 'tam' ? 'tam' : 'normal';
             // Şablondan kalma, admin formunda hiç gösterilmeyen eski alanlar.
             // Veritabanında boş bırakılamaz olduğu için burada güvenli
             // varsayılan (boş metin) atanıyor.
@@ -60,6 +61,11 @@ class SliderController extends Controller
             $imageName = $this->uploadImage($request);
             if ($imageName) {
                 $item->image = $imageName;
+            }
+
+            $mobileImageName = $this->uploadImage($request, 'image_mobile');
+            if ($mobileImageName) {
+                $item->image_mobile = $mobileImageName;
             }
 
             $item->save();

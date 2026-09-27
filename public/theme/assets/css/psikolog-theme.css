@@ -424,6 +424,23 @@ input, textarea, select {
   padding: 0 clamp(24px, 8vw, 100px) 0 6vw;
 }
 
+/* .ori-slider-img, görsel olarak .ori-slider-text'in İÇİNDE bir <div>
+   olduğu için (bkz. general/home.blade.php), text-align:left/right
+   ayarları miras yoluyla görseli de metinle AYNI tarafa itiyordu — yani
+   "Yazı Konumu: Sol" seçildiğinde görsel de sola kayıyordu. Bu üç kural,
+   görselin kendi text-align değerini metninkinden bağımsız olarak
+   KARŞI tarafa sabitler: metin solda ise görsel sağda kalır, metin
+   sağda ise görsel solda kalır. "Orta" davranışı hiç değişmedi. */
+.ori-slider-align-sol .ori-slider-img {
+  text-align: right;
+}
+.ori-slider-align-sag .ori-slider-img {
+  text-align: left;
+}
+.ori-slider-align-orta .ori-slider-img {
+  text-align: center;
+}
+
 /* =====================================================================
    Konturlu (outline) Metin Rengi Düzeltmesi: style.css'teki bazı "içi
    boş, sadece kontur çizgili" başlık efektleri (-webkit-text-stroke)
@@ -682,4 +699,95 @@ input, textarea, select {
   line-height: 1;
   color: var(--body-color);
   cursor: pointer;
+}
+
+/* =====================================================================
+   Anasayfa Slider — "Kaydır" Göstergesi Konum Düzeltmesi
+   style.css'te bu bileşen "bottom:-50px" ile bilerek hero bölümünün
+   ALT SINIRININ 50px dışına taşırılmıştı. Sitenin güncel yüksekliğiyle
+   bu, göstergenin (KAYDIR yazısı + fare ikonu) tam ortadan ikiye
+   bölünüp yarısının koyu hero zemininde, yarısının bir sonraki (beyaz)
+   bölümün üstünde asılı kalmasına yol açıyordu. Artık gösterge hero
+   bölümünün İÇİNDE, alt kenara yakın sabit bir noktada duruyor.
+   ===================================================================== */
+.ori-slider-section-1 .ori-slider-scroll {
+  bottom: 30px !important;
+}
+
+/* =====================================================================
+   Anasayfa Slider — Görsel Giriş Efekti Düzeltmesi
+   style.css'teki orijinal efekt, slayt görselini "translateY(50px)"
+   ile aşağıdan yukarı doğru kaydırarak beliriyordu; bu hareket,
+   görselin altı kesik/yarım şekilde ekrana girmesi gibi tuhaf bir
+   izlenim veriyordu. Yerine, görselin olduğu yerde hafifçe büyüyerek
+   belirdiği daha sakin bir efekt kondu (dikey kayma yok).
+   ===================================================================== */
+.ori-slider-content-1 .ori-slider-img {
+  -webkit-transform: scale(0.94);
+          transform: scale(0.94);
+}
+.ori-slider-content-1.slick-current.slick-active .ori-slider-img {
+  -webkit-transform: scale(1);
+          transform: scale(1);
+}
+
+/* =====================================================================
+   Anasayfa Slider — "Tam Boyut" (Boydan Boya Görsel) Modu
+   Admin panelinden bir slayt için "Kullanım Tipi: Tam Boyut" seçilirse
+   (bkz. dashboard/slider/add.blade.php, general/home.blade.php), metin
+   ve görsel yan yana değil; görsel tüm slayt alanını kaplar, başlık/
+   açıklama/buton ise (varsa) görselin üzerinde ortalanmış bir katman
+   olarak görünür. Masaüstü ve mobil için ayrı görsel yüklenebilir.
+   ===================================================================== */
+.ori-slider-content-1--full {
+  min-height: 640px;
+  padding: 0 !important;
+  overflow: hidden;
+}
+.ori-slider-content-1--full:before {
+  /* style.css'teki alt-koyulaştırma gradyanı tam boyut modunda
+     gerekmiyor; okunabilirlik zaten .ori-slider-full-overlay:before
+     ile sağlanıyor. */
+  content: none;
+}
+.ori-slider-full-bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+.ori-slider-full-bg img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.ori-slider-full-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 60px 24px;
+}
+.ori-slider-full-overlay:before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(13, 13, 13, 0.25) 0%, rgba(13, 13, 13, 0.55) 100%);
+  z-index: -1;
+}
+.ori-slider-full-overlay h1,
+.ori-slider-full-overlay p {
+  color: #fff;
+}
+.ori-slider-full-overlay h1 span {
+  -webkit-text-stroke-color: #fff !important;
+}
+@media (max-width: 767px) {
+  .ori-slider-content-1--full {
+    min-height: 480px;
+  }
 }

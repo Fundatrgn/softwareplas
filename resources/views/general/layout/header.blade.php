@@ -45,7 +45,7 @@
     <link rel="stylesheet" href="{{ asset('theme/assets/css/video.min.css') }}">
     <link rel="stylesheet" href="{{ asset('theme/assets/css/slick-theme.css') }}">
     <link rel="stylesheet" href="{{ asset('theme/assets/css/slick.css') }}">
-    <link rel="stylesheet" href="{{ asset('theme/assets/css/global.css') }}?v=36">
+    <link rel="stylesheet" href="{{ asset('theme/assets/css/global.css') }}?v=37">
     <style>
         /* Admin panelinden ("Ayarlar > Site Görünümü / Renkler") seçilen
            renkler burada :root değişkenlerinin üzerine yazılır. Herhangi
@@ -71,8 +71,8 @@
             --on-surface-muted: {{ $settings->body_text_color ?? '#45566B' }};
         }
     </style>
-    <link rel="stylesheet" href="{{ asset('theme/assets/css/style.css') }}?v=36">
-    <link rel="stylesheet" href="{{ asset('theme/assets/css/psikolog-theme.css') }}?v=36">
+    <link rel="stylesheet" href="{{ asset('theme/assets/css/style.css') }}?v=37">
+    <link rel="stylesheet" href="{{ asset('theme/assets/css/psikolog-theme.css') }}?v=37">
     {{-- Admin panelinden (Ayarlar > Reklam ve Analiz Kodları) yapıştırılan
          Google Ads/Analytics ve Meta Pixel kodları olduğu gibi buraya
          enjekte edilir. --}}
